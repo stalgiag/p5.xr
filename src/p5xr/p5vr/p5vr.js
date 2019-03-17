@@ -2,18 +2,12 @@
 let xrDevice = null;
 let xrSession = null;
 let xrFrameOfRef = null;
-//     // WebGL scene globals.
-let gl = null;
-let _
 
+let gl = null;
 
 p5.prototype.createVRCanvas = function () {
     var polyfill = new WebXRPolyfill();
     var versionShim = new WebXRVersionShim();
-
-    // this.createCanvas(100, 100, WEBGL);
-    // gl = this.renderer.GL;
-    // console.log('MADE VR CANVAS');
     initVR(this);
 }
 
@@ -140,6 +134,15 @@ function onSessionEnded(event) {
 }
 
 p5.RendererGL.prototype._update = function() {
+    /* TODO: Figure out how to avoid overwriting this function */
+    /* IE: Override the resetting of cameraMatrices in _update */
+    /*
+    /*
+    /*
+    /*
+    /*
+    */
+
     // reset model view and apply initial camera transform
     // (containing only look at info; no projection).
     // this.uMVMatrix.set(
@@ -163,6 +166,15 @@ p5.RendererGL.prototype._update = function() {
     // p5.instance._renderer.uMVMatrix.set(viewMat);
     // p5.instance._renderer.uPMatrix.set(projMat);
     // reset light data for new frame.
+
+    /*
+    /*
+    /*
+    /*
+    /*
+    */
+    /* TODO: Figure out how to avoid overwriting this function */
+    /* IE: Override the resetting of cameraMatrices in _update */
   
     this.ambientLightColors.length = 0;
     this.directionalLightDirections.length = 0;
