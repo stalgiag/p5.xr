@@ -31,21 +31,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     <title>p5.XR VR Example</title>
 
-    <link href='css/common.css' rel='stylesheet'></link>
+    <!-- <link href='css/common.css' rel='stylesheet'></link> -->
 
-    <!--The polyfill is not needed for browser that have native API support,
-        but is linked by these samples for wider compatibility.-->
-    <!--script src='https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.js'></script-->
-    <script src='js/webxr-polyfill.js'></script>
+ 
 
     <!--This script patches up around implementation differences in past browser versions
         so that the samples can always be written against the most recent spec changes.
         It won't be necessary after the API has been officially shipped for a bit.-->
-    <script src='js/webxr-version-shim.js'></script>
+    <!-- <script src='../../../src/webxr/webxr-version-shim.js'></script> -->
 
-    <script src='js/webxr-button.js'></script>
-    <script src='p5.js'></script>
-    <script src='p5vr.js'></script>
+    <!-- <script src='../../../src/webxr/webxr-button.js'></script> -->
+
+       <!--The polyfill is not needed for browser that have native API support,
+        but is linked by these samples for wider compatibility.-->
+    <!-- <script src='https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.js'></script> -->
+    <script src='../assets/p5.js'></script>
+    <script src='../../../dist/p5xr.js'></script>
+    <!-- <script src='p5vr.js'></script> -->
   </head>
   <body>
     <!-- <header>

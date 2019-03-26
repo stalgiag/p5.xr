@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "parcel build ./src/app.js --out-file p5xr.js",
+    "build": "parcel build ./src/app.js --no-minify --out-file p5xr.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

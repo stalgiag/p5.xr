@@ -1,7 +1,11 @@
-
 let init = 0;
 
+
 function preload() {
+    console.log('here');
+}
+
+function setup() {
     createVRCanvas();
 }
 

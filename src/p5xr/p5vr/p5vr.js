@@ -1,6 +1,6 @@
 import WebXRPolyfill from 'webxr-polyfill';
 
-p5vr = function() {
+export default() => {
 
     let xrDevice = null;
     let xrSession = null;
@@ -10,7 +10,7 @@ p5vr = function() {
 
     p5.prototype.createVRCanvas = function () {
         var polyfill = new WebXRPolyfill();
-        var versionShim = new WebXRVersionShim();
+        // var versionShim = new WebXRVersionShim();
         initVR(this);
     }
 
@@ -186,7 +186,4 @@ p5vr = function() {
         this.pointLightPositions.length = 0;
         this.pointLightColors.length = 0;
     };
-}
-
-module.exports = p5vr;
-
+};
