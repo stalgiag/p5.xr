@@ -1,6 +1,6 @@
 import WebXRPolyfill from 'webxr-polyfill';
 
-export default() => {
+export default () => {
 
     let xrDevice = null;
     let xrSession = null;
@@ -8,23 +8,26 @@ export default() => {
 
     let gl = null;
 
+    let curClearColor = null;
+
     p5.prototype.createVRCanvas = function () {
         var polyfill = new WebXRPolyfill();
-        // var versionShim = new WebXRVersionShim();
+        var versionShim = new WebXRVersionShim();
         initVR(this);
+        noLoop();
     }
 
     // Called when we've successfully acquired a XRSession. In response we
     // will set up the necessary session state and kick off the frame loop.
     function onVRSessionStarted(session) {
-        xrSession = session;
+        // xrSession = session;
         // Listen for the sessions 'end' event so we can respond if the user
         // or UA ends the session for any reason.
         session.addEventListener('end', onSessionEnded);
         // Create a WebGL context to render with, initialized to be compatible
         // with the XRDisplay we're presenting to.
         createCanvas(windowWidth, windowHeight, WEBGL);
-        console.log('MADE VR CANVAS');
+        console.log('MADE VR CANVAS OF WIDTH:' + width + ' AND HEIGHT:' + height);
         let canvas = p5.instance.canvas;
         gl = canvas.getContext('webgl', {
             compatibleXRDevice: session.device
@@ -43,30 +46,34 @@ export default() => {
         });
     }
 
-    function initVR(_pInst) {
+    function initVR() {
         // Is WebXR available on this UA?
+        // Is WebXR available on this UA?
+        let xrButton = new XRDeviceButton({
+            onRequestSession: onVRButtonClicked,
+            onEndSession: onSessionEnded
+        });
+        document.querySelector('header').appendChild(xrButton.domElement);
+        console.log('supported');
         if (navigator.xr) {
-            // Request an XRDevice connected to the system.
-            let xrButton = document.getElementById('xr-button');
+            // Request a list of all the XR Devices connected to the system.
             navigator.xr.requestDevice().then((device) => {
-                xrDevice = device;
+                // If the device allows creation of immersive sessions set it as the
+                // target of the 'Enter XR' button.
                 device.supportsSession({ immersive: true }).then(() => {
-                    xrButton.addEventListener('click', onVRButtonClicked);
-                    xrButton.innerHTML = 'Enter XR';
-                    xrButton.disabled = false;
-                    console.log('supported');
+                    xrButton.setDevice(device);
                 });
             });
         }
     }
 
-    function onVRButtonClicked() {
+
+
+    function onVRButtonClicked(device) {
         console.log('clicked');
-        if (!xrSession) {
-            xrDevice.requestSession({ immersive: true }).then(onVRSessionStarted);
-        } else {
-            xrSession.end();
-        }
+        // requestSession must be called within a user gesture event
+        // like click or touch when requesting an immersive session.
+        device.requestSession({ immersive: true }).then(onVRSessionStarted);
     }
 
 
@@ -94,31 +101,59 @@ export default() => {
             // and draw them into the corresponding viewport here, but we're
             // keeping this sample slim so we're not bothering to draw any
             // geometry.
-            background(200, 0, 200);
+            _clearVR();
             for (let view of frame.views) {
                 let viewport = session.baseLayer.getViewport(view);
                 gl.viewport(viewport.x, viewport.y,
                     viewport.width, viewport.height);
                 p5.instance._renderer.uMVMatrix.set(pose.getViewMatrix(view));
                 p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
-                drawing();
-                // Draw something.
-                //   drawScene(view.projectionMatrix, pose.getViewMatrix(view));
+                _drawEye();
             }
         }
     }
 
-    let viewX = 0;
+    p5.prototype.setVRBackgroundColor = function(r, g, b) {
+        curClearColor = color(r, g, b);
+    }
 
-    function drawing() {
+    function _clearVR() {
+        if(curClearColor === null) {
+            return;
+        }
+
+        background(curClearColor);
+    }
+
+    function _drawEye() {
         // 
-        fill(0, 150, 100);
-        translate(0, 0, 10);
-        strokeWeight(0.1);
-        rotateX(10);
-        rotateY(20);
-        box(5);
-        p5.instance._renderer._update();
+        if (!p5.instance._renderer.isP3D) {
+            return;
+        }
+
+        var context = window;
+        var userSetup = context.setup;
+        var userDraw = context.draw;
+        if (typeof userDraw === 'function') {
+            if (typeof userSetup === 'undefined') {
+                context.scale(context._pixelDensity, context._pixelDensity);
+            }
+            var callMethod = function (f) {
+                f.call(context);
+            };
+            if (context._renderer.isP3D) {
+                context._renderer._update();
+            }
+            context._setProperty('frameCount', context.frameCount + 1);
+            context._registeredMethods.pre.forEach(callMethod);
+            p5.instance._inUserDraw = true;
+            try {
+                userDraw();
+            } finally {
+                p5.instance._inUserDraw = false;
+            }
+            context._registeredMethods.post.forEach(callMethod);
+        }
     }
 
     function onEndSession(session) {
