@@ -68,4 +68,4 @@ p5.RendererGL.prototype._update = function (){
 
 
 // p5vr();
-// p5ar();
+p5ar();

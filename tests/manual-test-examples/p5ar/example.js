@@ -1,9 +1,9 @@
-function preload() {
-    console.log('preload');
-    createARCanvas();
+function preload(){
+  console.log('preload');
+  createARCanvas();
 }
-function setup() {
-    print('setup');
+function setup(){
+  print('setup');
 }
 
 // function setup() {

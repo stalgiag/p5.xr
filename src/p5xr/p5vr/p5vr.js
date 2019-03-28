@@ -146,7 +146,7 @@ export default class p5vr{
         if (context._renderer.isP3D){
           context._renderer._update();
         }
-        context._setProperty('frameCount', context.frameCount + 1);
+        context._setProperty('frameCount', context.frameCount + 0.5);
         context._registeredMethods.pre.forEach(callMethod);
         p5.instance._inUserDraw = true;
         try {
@@ -158,19 +158,18 @@ export default class p5vr{
       }
     };
 
-    this.onEndSession = function(session){
-      session.end();
+    this.onEndSession = function(){
+      
     };
 
     // Called either when the user has explicitly ended the session (like in
     // onEndSession()) or when the UA has ended the session for any reason.
     // At this point the session object is no longer usable and should be
     // discarded.
-    this.onSessionEnded = function(event){
+    this.onSessionEnded = function(){
+      this.xrSession.end();
       this.xrSession = null;
       this.xrButton.innerHTML = 'Enter VR';
-      // In this simple case discard the WebGL context too, since we're not
-      // rendering anything else to the screen with it.
       this.gl = null;
     };
   }
