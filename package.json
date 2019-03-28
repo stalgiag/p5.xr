@@ -28,5 +28,8 @@
   "homepage": "https://github.com/stalgiag/p5.xr#readme",
   "dependencies": {
     "webxr-polyfill": "^1.0.13"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.3"
   }
 }
