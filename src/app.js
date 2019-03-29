@@ -83,7 +83,3 @@ p5.RendererGL.prototype._update = function (){
   this.pointLightPositions.length = 0;
   this.pointLightColors.length = 0;
 };
-
-
-// p5vr();
-p5ar();

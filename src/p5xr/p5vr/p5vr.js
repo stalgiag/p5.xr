@@ -26,7 +26,6 @@ export default class p5vr{
     this.curClearColor = null;
 
     this.polyfill = new WebXRPolyfill();
-    this.versionShim = new WebXRVersionShim();
     
     
     /**
@@ -71,9 +70,6 @@ export default class p5vr{
       // create p5 canvas
       createCanvas(windowWidth, windowHeight, WEBGL);
 
-      // TODO: set up preload decrementing
-      p5.instance._decrementPreload();
-
       // make a plan for where canvas should live
       let canvas = p5.instance.canvas;
 
@@ -92,7 +88,7 @@ export default class p5vr{
       // this case an 'eye-level' frame of reference means that all poses will
       // be relative to the location where the XRDevice was first detected.
       session.requestFrameOfReference('eye-level').then((frameOfRef) => {
-        this.xrFrameOfRef = frameOfRef;
+        this.vrFrameOfRef = frameOfRef;
         // Inform the session that we're ready to begin drawing.
         session.requestAnimationFrame(this.onXRFrame.bind(this));
       });
@@ -103,6 +99,7 @@ export default class p5vr{
      * @param {XRDevice}
      */
     this.onVRButtonClicked = function(device){
+      
       // requestSession must be called within a user gesture event
       // like click or touch when requesting an immersive session.
       device.requestSession({ immersive: true }).then(this.startSketch.bind(this)
