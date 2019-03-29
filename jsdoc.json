@@ -1,0 +1,25 @@
+{
+      "tags": {
+        "allowUnknownTags": false
+    },
+    "source": {
+        "include": "./src",
+        "exclude": ["./src/webxr"],
+        "includePattern": ".js$"
+    },
+    "plugins": [
+        "plugins/markdown",
+        "node_modules/jsdoc-export-default-interop/dist/index"
+    ],
+    "opts": {
+        "template": "node_modules/docdash",
+        "encoding": "utf8",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

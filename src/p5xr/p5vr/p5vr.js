@@ -1,24 +1,43 @@
 import WebXRPolyfill from 'webxr-polyfill';
 
+/**
+ * p5vr class holds all state and methods that are specific to VR
+ * @class
+ *
+ * @constructor
+ *
+ * @property vrDevice  {XRDevice} the current VR compatible device
+ * @property vrSession  {XRSession} the current VR session
+ * @property vrFrameOfRef  {XRFrameOfReference} the current VR frame of reference 
+ * (starting point for transform, default eye-level)
+ * @property gl  {WebGLRenderingContext} points to p5.RendererGL.GL (the WebGL Rendering Context)
+ * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
+ */
 
-/* @method class p5vr 
-*/ 
 export default class p5vr{
   constructor(){
-    this.xrDevice = null;
-    this.xrSession = null;
-    this.xrFrameOfRef = null;
+    this.vrDevice = null;
+    this.vrSession = null;
+    this.vrFrameOfRef = null;
 
     this.gl = null;
 
+    // TODO: initialize with default and make this use p5.Color
     this.curClearColor = null;
 
     this.polyfill = new WebXRPolyfill();
     this.versionShim = new WebXRVersionShim();
-    console.log('constructor');
-
+    
+    
+    /**
+     * Called by `createVRCanvas()`.
+     * Creates the button for entering VR.
+     * Requests an XRDevice object based on current device.
+     * Checks if the device supports an immersive session.
+     * Then binds the device to the button. <br>
+     * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
+     */
     this.initVR = function(){
-      console.log('init');
       // Is WebXR available on this UA?
       let xrButton = new XRDeviceButton({
         onRequestSession: this.onVRButtonClicked.bind(this),
@@ -38,17 +57,22 @@ export default class p5vr{
         });
       }
     };
-
+    /**
+     * This is where the actual p5 canvas is first created, and
+     * the GL rendering context is accessed by p5vr. 
+     * The current XRSession also gets a frame of reference and
+     * base rendering layer. <br>
+     * <b>TODO:</b> Make sure that p5's preload isn't actually completed until this function 
+     * is called.
+     * @param {XRSession}
+     */
     this.startSketch = function(session){
-      console.log('session started');
 
       // create p5 canvas
       createCanvas(windowWidth, windowHeight, WEBGL);
 
       // TODO: set up preload decrementing
       p5.instance._decrementPreload();
-
-      console.log('MADE VR CANVAS OF WIDTH: ',width,' AND HEIGHT: ',height);
 
       // make a plan for where canvas should live
       let canvas = p5.instance.canvas;
@@ -74,21 +98,31 @@ export default class p5vr{
       });
     };
 
+    /**
+     * `device.requestSession()` must be called within a user gesture event.
+     * @param {XRDevice}
+     */
     this.onVRButtonClicked = function(device){
-      console.log('clicked');
       // requestSession must be called within a user gesture event
       // like click or touch when requesting an immersive session.
       device.requestSession({ immersive: true }).then(this.startSketch.bind(this)
       );
     };
 
+    /**
+     * This is the method that is attached to the event that announces
+     * availability of a new frame. The next animation frame is requested here,
+     * the device pose is retrieved, the modelViewMatrix (`uMVMatrix`) for p5 is set,
+     * and each eye is drawn
+     * @param frame {XRFrame}
+     */
     this.onXRFrame = function (t, frame){
       let session = frame.session;
       // Inform the session that we're ready for the next frame.
       session.requestAnimationFrame(this.onXRFrame.bind(this));
       // Get the XRDevice pose relative to the Frame of Reference we created
       // earlier.
-      let pose = frame.getDevicePose(this.xrFrameOfRef);
+      let pose = frame.getDevicePose(this.vrFrameOfRef);
       // Getting the pose may fail if, for example, tracking is lost. So we
       // have to check to make sure that we got a valid pose before attempting
       // to render with it. If not in this case we'll just leave the
@@ -99,13 +133,7 @@ export default class p5vr{
         // which is where any content to be displayed on the XRDevice must be
         // rendered.
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, session.baseLayer.framebuffer);
-        // Update the clear color so that we can observe the color in the
-        // headset changing over time.
-        let time = Date.now();
-        // Normally you'd loop through each of the views reported by the frame
-        // and draw them into the corresponding viewport here, but we're
-        // keeping this sample slim so we're not bothering to draw any
-        // geometry.
+
         this._clearVR();
         for (let view of frame.views){
           let viewport = session.baseLayer.getViewport(view);
@@ -118,6 +146,9 @@ export default class p5vr{
       }
     };
 
+    /**
+     * clears the background based on the current clear color (`curClearColor`)
+     */
     this._clearVR = function(){
       if (this.curClearColor === null){
         return;
@@ -126,6 +157,12 @@ export default class p5vr{
       window.p5.instance.background(this.curClearColor);
     };
 
+    /**
+     * Runs the code that the user has in `draw()` once for each eye
+     * <b>TODO: </b> optimizations!
+     * <b>TODO: </b> make a different `_update` function so that the p5.RendererGL.prototype
+     * does not need to be modified (ie: we need to reset everything except the model view matrix)
+     */
     this._drawEye = function (){
       // 
       if (!p5.instance._renderer.isP3D){
@@ -162,15 +199,18 @@ export default class p5vr{
       
     };
 
-    // Called either when the user has explicitly ended the session (like in
-    // onEndSession()) or when the UA has ended the session for any reason.
-    // At this point the session object is no longer usable and should be
-    // discarded.
+    /**
+    * Called either when the user has explicitly ended the session
+    *  or when the UA has ended the session for any reason.
+    * The vrSession is ended and discarded. p5 is reset with `remove()`
+    * 
+    */
     this.onSessionEnded = function(){
-      this.xrSession.end();
-      this.xrSession = null;
+      this.vrSession.end();
+      this.vrSession = null;
       this.xrButton.innerHTML = 'Enter VR';
       this.gl = null;
+      window.p5.instance.remove();
     };
   }
 }

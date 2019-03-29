@@ -1,4 +1,5 @@
 import WebXRPolyfill from 'webxr-polyfill';
+// currently a stub
 
 export default class p5ar{
   constructor(){
