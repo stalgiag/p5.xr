@@ -137,16 +137,17 @@ export default class p5vr extends p5xr{
         xrCompatible: true
       });
       self.gl.makeXRCompatible().then(() => {
-        self.xrSession.updateRenderState({
-          baseLayer: new XRWebGLLayer(self.xrSession, self.gl)
-        });
+        // self.xrSession.updateRenderState({
+        //   baseLayer: new XRWebGLLayer(self.xrSession, self.gl)
+        // });
+        self.xrSession.baseLayer = new XRWebGLLayer(self.xrSession, self.gl);
       });
 
       self.xrSession.requestReferenceSpace({ type: 'stationary', subtype: 'eye-level' }).
-      then((refSpace) => {
+        then((refSpace) => {
           self.xrFrameOfRef = refSpace;
           // Inform the session that we're ready to begin drawing.
-          self.xrSession.requestAnimationFrame(onXRFrame);
+          self.xrSession.requestAnimationFrame(self.onXRFrame);
         });
     };
 
@@ -164,7 +165,12 @@ export default class p5vr extends p5xr{
       session.requestAnimationFrame(self.onXRFrame);
       // Get the XRDevice pose relative to the Frame of Reference we created
       // earlier.
-      let pose = frame.getDevicePose(self.xrFrameOfRef);
+      let pose;
+      if(self.injectedPolyfill){
+        pose = frame.getDevicePose(self.xrFrameOfRef);
+      } else {
+        pose = frame.getViewerPose(self.xrFrameOfRef);
+      }
       // Getting the pose may fail if, for example, tracking is lost. So we
       // have to check to make sure that we got a valid pose before attempting
       // to render with it. If not in this case we'll just leave the
@@ -177,13 +183,25 @@ export default class p5vr extends p5xr{
         self.gl.bindFramebuffer(self.gl.FRAMEBUFFER, session.baseLayer.framebuffer);
 
         self._clearVR();
-        for (let view of frame.views){
-          let viewport = session.baseLayer.getViewport(view);
-          self.gl.viewport(viewport.x, viewport.y,
-            viewport.width, viewport.height);
-          p5.instance._renderer.uMVMatrix.set(pose.getViewMatrix(view));
-          p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
-          self._drawEye();
+
+        if(self.injectedPolyfill){
+          for (let view of frame.views){
+            let viewport = session.baseLayer.getViewport(view);
+            self.gl.viewport(viewport.x, viewport.y,
+              viewport.width, viewport.height);
+            p5.instance._renderer.uMVMatrix.set(pose.getViewMatrix(view));
+            p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
+            self._drawEye();
+          }
+        } else {
+          for (let view of pose.views){
+            let viewport = session.baseLayer.getViewport(view);
+            self.gl.viewport(viewport.x, viewport.y,
+              viewport.width, viewport.height);
+            p5.instance._renderer.uMVMatrix.set(view.viewMatrix);
+            p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
+            self._drawEye();
+          }
         }
       }
     };
