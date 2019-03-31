@@ -49,7 +49,7 @@ class XRRayShim {
   }
 }
 
-class WebXRVersionShim {
+export default class WebXRVersionShim {
   constructor() {
     if (this._shouldApplyPatch()) {
       this._applyPatch();
