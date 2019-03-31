@@ -2,8 +2,10 @@
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
 
-let _p5vr;
+// p5.instance.registerPreloadMethod('createVRCanvas', p5.prototype);
 
+
+// let _p5vr;
 /**
  * starts the process of creating a VR-ready canvas
  * This actually just creates a button that will set into motion
@@ -15,8 +17,10 @@ let _p5vr;
  */
 p5.prototype.createVRCanvas = function (){
   noLoop();
-  _p5vr = new p5vr();
-  _p5vr.initVR();
+  window.p5xrInst = new p5vr();
+  // _p5vr = window.p5vr;
+  // window.p5vr.instance = _p5vr;
+  p5xrInst.initVR();
 };
 
 /**
@@ -29,9 +33,8 @@ p5.prototype.createVRCanvas = function (){
  * @param  {Number} b blue value of background
  */
 p5.prototype.setVRBackgroundColor = function(r, g, b){
-  _p5vr.curClearColor = color(r, g, b);
+  p5xrInst.curClearColor = color(r, g, b);
 };
-
 
 p5.RendererGL.prototype._update = function (){
   /* TODO: Figure out how to avoid overwriting this function */
