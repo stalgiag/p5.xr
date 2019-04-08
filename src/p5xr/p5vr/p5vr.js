@@ -89,15 +89,6 @@ export default class p5vr extends p5xr{
       } else {
         self.onRequestSessionNoPF();
       }
-      // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
-      // sessions baseLayer. This allows any content rendered to the layer to
-      // be displayed on the XRDevice;
-          
-
-      // Get a frame of reference, which is required for querying poses. In
-      // this case an 'eye-level' frame of reference means that all poses will
-      // be relative to the location where the XRDevice was first detected.
-      
     };
 
     /**
@@ -122,8 +113,13 @@ export default class p5vr extends p5xr{
       self.gl = canvas.getContext('webgl', {
         compatibleXRDevice: self.xrSession.device
       });
+      // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+      // sessions baseLayer. This allows any content rendered to the layer to
+      // be displayed on the XRDevice;
       self.xrSession.baseLayer = new XRWebGLLayer(self.xrSession, self.gl);
-
+      // Get a frame of reference, which is required for querying poses. In
+      // this case an 'eye-level' frame of reference means that all poses will
+      // be relative to the location where the XRDevice was first detected.
       self.xrSession.requestFrameOfReference('eye-level').then((frameOfRef) => {
         self.xrFrameOfRef = frameOfRef;
         // Inform the session that we're ready to begin drawing.
@@ -137,12 +133,14 @@ export default class p5vr extends p5xr{
         xrCompatible: true
       });
       self.gl.makeXRCompatible().then(() => {
-        // self.xrSession.updateRenderState({
-        //   baseLayer: new XRWebGLLayer(self.xrSession, self.gl)
-        // });
+        // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+        // sessions baseLayer. This allows any content rendered to the layer to
+        // be displayed on the XRDevice;
         self.xrSession.baseLayer = new XRWebGLLayer(self.xrSession, self.gl);
       });
-
+      // Get a frame of reference, which is required for querying poses. In
+      // this case an 'eye-level' frame of reference means that all poses will
+      // be relative to the location where the XRDevice was first detected.
       self.xrSession.requestReferenceSpace({ type: 'stationary', subtype: 'eye-level' }).
         then((refSpace) => {
           self.xrFrameOfRef = refSpace;
