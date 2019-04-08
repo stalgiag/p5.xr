@@ -36,6 +36,24 @@ p5.prototype.setVRBackgroundColor = function(r, g, b){
   p5xrInst.curClearColor = color(r, g, b);
 };
 
+/**
+ * starts the process of creating a VR-ready canvas
+ * This actually just creates a button that will set into motion
+ * the creation of a AR canvas and creates a new p5ar object.
+ *  This should be called in `preload()` so
+ * that the entire sketch can wait to start until the user has "entered AR"
+ * via a button click gesture
+ * @method createARCanvas
+ */
+p5.prototype.createARCanvas = function (){
+  noLoop();
+  window.p5xrInst = new p5ar();
+  // _p5vr = window.p5vr;
+  // window.p5vr.instance = _p5vr;
+  p5xrInst.initAR();
+};
+
+
 p5.RendererGL.prototype._update = function (){
   /* TODO: Figure out how to avoid overwriting this function */
   /* IE: Override the resetting of cameraMatrices in _update */
