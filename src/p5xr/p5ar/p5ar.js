@@ -63,16 +63,17 @@ export default class p5ar extends p5xr{
      */
     this.startSketch = function(session){
       self.xrSession = xrButton.session = session;
-      p5.instance._decrementPreload();
       // create p5 canvas
+      self._preloadOverride();
       // HACK TO GET RENDERING CONTEXT 4/7/19
       createCanvas(1,1, WEBGL);
 
       self.canvas = p5.instance.canvas;
       
       self.onRequestSessionNoPF();
-      
+      p5.instance._decrementPreload();
     };
+
 
     /**
      * `device.requestSession()` must be called within a user gesture event.

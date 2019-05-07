@@ -34,6 +34,15 @@ export default class p5xr{
     }
     window.versionShim = new WebXRVersionShim();
     _instance = this;
+
+    this.preloadOverride = function(){
+      let context = window;
+      let loadingScreen = document.getElementById(context._loadingScreenId);
+      if (loadingScreen){
+        loadingScreen.parentNode.removeChild(loadingScreen);
+      }
+      context._setup();
+    };
     
   }
 

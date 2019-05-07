@@ -13,6 +13,7 @@ export default class p5vr extends p5xr{
     super();
     let self = this.instance;
     let xrButton;
+    
     /**
      * Called by `createVRCanvas()`.
      * Creates the button for entering VR.
@@ -22,7 +23,6 @@ export default class p5vr extends p5xr{
      * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
      */
     this.initVR = function(){
-      
       p5.instance._incrementPreload();
       // Is WebXR available on this UA?
       xrButton = new XRDeviceButton({
@@ -62,7 +62,6 @@ export default class p5vr extends p5xr{
         // xrButton.addEventListener('click', self.onVRButtonClicked);
         // xrButton.innerHTML = 'Enter XR';
         // xrButton.disabled = false;
-
       });
     };
 
@@ -79,7 +78,7 @@ export default class p5vr extends p5xr{
       self.xrSession = xrButton.session = session;
       xrButton.innerHTML = 'Exit VR';
       // create p5 canvas
-      p5.instance._decrementPreload();
+      self.preloadOverride();
       createCanvas(windowWidth, windowHeight, WEBGL);
       // make a plan for where canvas should live
       let canvas = p5.instance.canvas;
@@ -89,6 +88,7 @@ export default class p5vr extends p5xr{
       } else {
         self.onRequestSessionNoPF();
       }
+      p5.instance._decrementPreload();
     };
 
     /**
@@ -148,7 +148,6 @@ export default class p5vr extends p5xr{
           self.xrSession.requestAnimationFrame(self.onXRFrame);
         });
     };
-
     /**
      * This is the method that is attached to the event that announces
      * availability of a new frame. The next animation frame is requested here,
@@ -181,7 +180,7 @@ export default class p5vr extends p5xr{
         self.gl.bindFramebuffer(self.gl.FRAMEBUFFER, session.baseLayer.framebuffer);
 
         self._clearVR();
-
+        
         if(self.injectedPolyfill){
           for (let view of frame.views){
             let viewport = session.baseLayer.getViewport(view);
@@ -215,6 +214,7 @@ export default class p5vr extends p5xr{
       p5.instance.background(this.curClearColor);
     };
 
+
     /**
      * Runs the code that the user has in `draw()` once for each eye
      * <b>TODO: </b> optimizations!
@@ -224,9 +224,10 @@ export default class p5vr extends p5xr{
     this._drawEye = function (){
       // 2D Mode should use graphics object
       if (!p5.instance._renderer.isP3D){
+        console.error('Sketch does not have 3D Renderer');
         return;
       }
-
+      
       var context = window;
       var userSetup = context.setup;
       var userDraw = context.draw;
@@ -240,6 +241,8 @@ export default class p5vr extends p5xr{
         // TODO Just call a different function that does this minus matrix reset
         if (context._renderer.isP3D){
           context._renderer._update();
+        } else {
+          console.error('Context does not have 3D Renderer');
         }
         context._setProperty('frameCount', context.frameCount + 0.5);
         context._registeredMethods.pre.forEach(callMethod);

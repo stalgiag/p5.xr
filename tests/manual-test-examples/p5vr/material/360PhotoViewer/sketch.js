@@ -6,9 +6,7 @@ function preload(){
   setVRBackgroundColor(200, 0, 150);
 }
 
-let counter = 0;
 function draw(){
-  if(counter<2){counter++;return;}
   rotateX(90);
   noStroke();
   texture(tex);

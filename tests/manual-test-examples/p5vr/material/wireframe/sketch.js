@@ -12,11 +12,7 @@ function preload(){
   setVRBackgroundColor(0,0,0);
 }
 
-let counter = 0;
-
 function draw(){
-  // hack since createVRCanvas isn't preloading right yet
-  if(counter<2){counter++; return;}
 
   translate(0,-100, -500);
   push();
