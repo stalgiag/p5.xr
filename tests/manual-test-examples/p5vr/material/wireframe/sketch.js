@@ -6,15 +6,18 @@
 var teapot;
 
 function preload(){
-  teapot = loadModel('../wireframe/assets/teapot.obj', true);
-  // smooth();
   createVRCanvas();
+  teapot = loadModel('../wireframe/assets/teapot.obj', true);
   setVRBackgroundColor(0,0,0);
+}
+
+function setup(){
+  smooth();
 }
 
 function draw(){
 
-  translate(0,-100, -500);
+  translate(0,-100, -200);
   push();
   stroke(100, 100, 200);
   noFill();
@@ -24,7 +27,7 @@ function draw(){
   model(teapot);
   pop();
 
-  for (var i = -10; i < 10; i++){
+  for (var i = -5; i < 5; i++){
     push();
     stroke(0, 200, 0);
     noFill();

@@ -35,13 +35,34 @@ export default class p5xr{
     window.versionShim = new WebXRVersionShim();
     _instance = this;
 
-    this.preloadOverride = function(){
-      let context = window;
-      let loadingScreen = document.getElementById(context._loadingScreenId);
+    this.removeLoadingElement = function(){
+      let loadingScreen = document.getElementById(window._loadingScreenId);
       if (loadingScreen){
         loadingScreen.parentNode.removeChild(loadingScreen);
       }
+    };
+
+    this.preloadOverride = function(){
+      let context = window;
       context._setup();
+    };
+
+    /**
+    * Called either when the user has explicitly ended the session
+    *  or when the UA has ended the session for any reason.
+    * The xrSession is ended and discarded. p5 is reset with `remove()`
+    * 
+    */
+    this.onSessionEnded = function(){
+      self.xrSession.end();
+      self.xrSession = null;
+      xrButton.innerHTML = 'Enter VR';
+      var p5Canvi = document.getElementsByClassName('p5Canvas');
+      while(p5Canvi.length > 0){
+        p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
+      }
+      xrButton.session = null;
+      self.gl = null;
     };
     
   }

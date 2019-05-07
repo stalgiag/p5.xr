@@ -24,6 +24,7 @@ export default class p5vr extends p5xr{
      */
     this.initVR = function(){
       p5.instance._incrementPreload();
+      self.removeLoadingElement();
       // Is WebXR available on this UA?
       xrButton = new XRDeviceButton({
         onRequestSession: self.onVRButtonClicked,
@@ -76,6 +77,7 @@ export default class p5vr extends p5xr{
      */
     this.startSketch = function(session){
       self.xrSession = xrButton.session = session;
+      self.xrSession.addEventListener('end', self.onSessionEnded);
       xrButton.innerHTML = 'Exit VR';
       // create p5 canvas
       self.preloadOverride();
@@ -254,21 +256,6 @@ export default class p5vr extends p5xr{
         }
         context._registeredMethods.post.forEach(callMethod);
       }
-    };
-
-    /**
-    * Called either when the user has explicitly ended the session
-    *  or when the UA has ended the session for any reason.
-    * The xrSession is ended and discarded. p5 is reset with `remove()`
-    * 
-    */
-    this.onSessionEnded = function(){
-      self.xrSession.end();
-      self.xrSession = null;
-      xrButton.innerHTML = 'Enter VR';
-      p5.instance.remove();
-      xrButton.session = null;
-      self.gl = null;
     };
   }
 }

@@ -8,7 +8,10 @@ function preload(){
   createVRCanvas();
   setVRBackgroundColor(50, 50, 50);
 }
-
+function setup(){
+  smooth();
+  noStroke();
+}
 function draw(){
   translate(-200, 0, -100);
   push();

@@ -17,6 +17,7 @@ export default class p5ar extends p5xr{
     this.initAR = function(){
       
       p5.instance._incrementPreload();
+      self.removeLoadingElement();
       // Is WebXR available on this UA?
       xrButton = new XRDeviceButton({
         onRequestSession: self.onVRButtonClicked,
@@ -63,6 +64,7 @@ export default class p5ar extends p5xr{
      */
     this.startSketch = function(session){
       self.xrSession = xrButton.session = session;
+      self.xrSession.addEventListener('end', self.onSessionEnded);
       // create p5 canvas
       self._preloadOverride();
       // HACK TO GET RENDERING CONTEXT 4/7/19
