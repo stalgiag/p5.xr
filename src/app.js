@@ -2,10 +2,10 @@
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
 
-// p5.instance.registerPreloadMethod('createVRCanvas', p5.prototype);
+window.p5xr = {
+  instance: null
+};
 
-
-// let _p5vr;
 /**
  * starts the process of creating a VR-ready canvas
  * This actually just creates a button that will set into motion
@@ -17,10 +17,8 @@ import p5ar from '../src/p5xr/p5ar/p5ar.js';
  */
 p5.prototype.createVRCanvas = function (){
   noLoop();
-  window.p5xrInst = new p5vr();
-  // _p5vr = window.p5vr;
-  // window.p5vr.instance = _p5vr;
-  p5xrInst.initVR();
+  p5xr.instance = new p5vr();
+  p5xr.instance.initVR();
 };
 
 /**
@@ -33,7 +31,7 @@ p5.prototype.createVRCanvas = function (){
  * @param  {Number} b blue value of background
  */
 p5.prototype.setVRBackgroundColor = function(r, g, b){
-  p5xrInst.curClearColor = color(r, g, b);
+  p5xr.instance.curClearColor = color(r, g, b);
 };
 
 /**
@@ -47,15 +45,12 @@ p5.prototype.setVRBackgroundColor = function(r, g, b){
  */
 p5.prototype.createARCanvas = function (){
   noLoop();
-  window.p5xrInst = new p5ar();
-  // _p5vr = window.p5vr;
-  // window.p5vr.instance = _p5vr;
-  p5xrInst.initAR();
+  p5xr.instance = new p5ar();
+  p5xr.instance.initAR();
 };
 
-
 p5.RendererGL.prototype._update = function (){
-  /* TODO: Figure out how to avoid overwriting this function */
+  /* TODO: Make a diff function to avoid overwriting this function */
   /* IE: Override the resetting of cameraMatrices in _update */
   /*
     /*
@@ -94,7 +89,7 @@ p5.RendererGL.prototype._update = function (){
     /*
     /*
     */
-  /* TODO: Figure out how to avoid overwriting this function */
+  /* TODO: Make different function to avoid overwriting this function */
   /* IE: Override the resetting of cameraMatrices in _update */
 
   this.ambientLightColors.length = 0;

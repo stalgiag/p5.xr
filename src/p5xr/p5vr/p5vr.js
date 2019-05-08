@@ -8,12 +8,10 @@ import p5xr from '../core/p5xr';
  *
  */
 
-export default class p5vr extends p5xr{
-  constructor(){
+export default class p5vr extends p5xr {
+  constructor() {
     super();
-    let self = this.instance;
-    let xrButton;
-    
+    let self = p5xr.instance;
     /**
      * Called by `createVRCanvas()`.
      * Creates the button for entering VR.
@@ -22,47 +20,25 @@ export default class p5vr extends p5xr{
      * Then binds the device to the button. <br>
      * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
      */
-    this.initVR = function(){
-      p5.instance._incrementPreload();
-      self.removeLoadingElement();
-      // Is WebXR available on this UA?
-      xrButton = new XRDeviceButton({
-        onRequestSession: self.onVRButtonClicked,
-        onEndSession: self.onSessionEnded
-      });
-      document.querySelector('header').appendChild(xrButton.domElement);
-
-      if (navigator.xr){
-        // Request a list of all the XR Devices connected to the system.
-        
-        // If the device allows creation of immersive sessions set it as the
-        // target of the 'Enter XR' button.
-        if(self.injectedPolyfill){
-          self.polyFillSessionCheck();
-        } else {
-          self.noPolyFillSessionCheck();
-        }
-      }
+    this.initVR = function() {
+      
     };
 
-    this.polyFillSessionCheck = function(){
+    this.polyFillSessionCheck = function() {
       navigator.xr.requestDevice().then((device) => {
         device.supportsSession({ immersive: true }).then(() => {
           console.log('supported with polyfill');
-          xrButton.setDevice(device);
+          self.xrButton.setDevice(device);
         });
       });
     };
 
-    this.noPolyFillSessionCheck = function(){
+    this.noPolyFillSessionCheck = function() {
       navigator.xr.supportsSessionMode('immersive-vr').then(() => {
         console.log('supported without polyfill');
         // Updates the button to start an XR session when clicked.
         // HACK
-        xrButton.setDevice(true);
-        // xrButton.addEventListener('click', self.onVRButtonClicked);
-        // xrButton.innerHTML = 'Enter XR';
-        // xrButton.disabled = false;
+        self.xrButton.setDevice(true);
       });
     };
 
@@ -75,17 +51,16 @@ export default class p5vr extends p5xr{
      * is called.
      * @param {XRSession}
      */
-    this.startSketch = function(session){
-      self.xrSession = xrButton.session = session;
+    this.startSketch = function(session) {
+      self.xrSession = self.xrButton.session = session;
       self.xrSession.addEventListener('end', self.onSessionEnded);
-      xrButton.innerHTML = 'Exit VR';
       // create p5 canvas
       self.preloadOverride();
       createCanvas(windowWidth, windowHeight, WEBGL);
       // make a plan for where canvas should live
       let canvas = p5.instance.canvas;
       
-      if(self.injectedPolyfill){
+      if(self.injectedPolyfill) {
         self.onRequestSessionPolyfill();
       } else {
         self.onRequestSessionNoPF();
@@ -97,8 +72,8 @@ export default class p5vr extends p5xr{
      * `device.requestSession()` must be called within a user gesture event.
      * @param {XRDevice}
      */
-    this.onVRButtonClicked = function(device){
-      if(self.injectedPolyfill){
+    this.onVRButtonClicked = function(device) {
+      if(self.injectedPolyfill) {
         console.log('requesting session with device and immersive = true');
         device.requestSession({ immersive: true }).then(self.startSketch);
       } else {
@@ -109,7 +84,7 @@ export default class p5vr extends p5xr{
       // like click or touch when requesting an immersive session.
     };
 
-    this.onRequestSessionPolyfill = function(){
+    this.onRequestSessionPolyfill = function() {
       console.log('set context with compatible device');
       // get a copy of the same gl that p5 is using
       self.gl = canvas.getContext('webgl', {
@@ -129,7 +104,7 @@ export default class p5vr extends p5xr{
       });
     };
 
-    this.onRequestSessionNoPF = function(){
+    this.onRequestSessionNoPF = function() {
       console.log('set context with xrCompatible: true');
       self.gl = canvas.getContext('webgl', {
         xrCompatible: true
@@ -157,15 +132,15 @@ export default class p5vr extends p5xr{
      * and each eye is drawn
      * @param frame {XRFrame}
      */
-    this.onXRFrame = function (t, frame){
+    this.onXRFrame = function (t, frame) {
       let session = self.xrSession = frame.session;
-      if(session === null || self.gl === null){return;}
+      if(session === null || self.gl === null) {return;}
       // Inform the session that we're ready for the next frame.
       session.requestAnimationFrame(self.onXRFrame);
       // Get the XRDevice pose relative to the Frame of Reference we created
       // earlier.
       let pose;
-      if(self.injectedPolyfill){
+      if(self.injectedPolyfill) {
         pose = frame.getDevicePose(self.xrFrameOfRef);
       } else {
         pose = frame.getViewerPose(self.xrFrameOfRef);
@@ -175,7 +150,7 @@ export default class p5vr extends p5xr{
       // to render with it. If not in this case we'll just leave the
       // framebuffer cleared, so tracking loss means the scene will simply
       // dissapear.
-      if (pose){
+      if (pose) {
         // If we do have a valid pose, bind the WebGL layer's framebuffer,
         // which is where any content to be displayed on the XRDevice must be
         // rendered.
@@ -183,8 +158,8 @@ export default class p5vr extends p5xr{
 
         self._clearVR();
         
-        if(self.injectedPolyfill){
-          for (let view of frame.views){
+        if(self.injectedPolyfill) {
+          for (let view of frame.views) {
             let viewport = session.baseLayer.getViewport(view);
             self.gl.viewport(viewport.x, viewport.y,
               viewport.width, viewport.height);
@@ -193,7 +168,7 @@ export default class p5vr extends p5xr{
             self._drawEye();
           }
         } else {
-          for (let view of pose.views){
+          for (let view of pose.views) {
             let viewport = session.baseLayer.getViewport(view);
             self.gl.viewport(viewport.x, viewport.y,
               viewport.width, viewport.height);
@@ -208,8 +183,8 @@ export default class p5vr extends p5xr{
     /**
      * clears the background based on the current clear color (`curClearColor`)
      */
-    this._clearVR = function(){
-      if (this.curClearColor === null){
+    this._clearVR = function() {
+      if (this.curClearColor === null) {
         return;
       }
 
@@ -223,9 +198,9 @@ export default class p5vr extends p5xr{
      * <b>TODO: </b> make a different `_update` function so that the p5.RendererGL.prototype
      * does not need to be modified (ie: we need to reset everything except the model view matrix)
      */
-    this._drawEye = function (){
+    this._drawEye = function () {
       // 2D Mode should use graphics object
-      if (!p5.instance._renderer.isP3D){
+      if (!p5.instance._renderer.isP3D) {
         console.error('Sketch does not have 3D Renderer');
         return;
       }
@@ -233,15 +208,15 @@ export default class p5vr extends p5xr{
       var context = window;
       var userSetup = context.setup;
       var userDraw = context.draw;
-      if (typeof userDraw === 'function'){
-        if (typeof userSetup === 'undefined'){
+      if (typeof userDraw === 'function') {
+        if (typeof userSetup === 'undefined') {
           context.scale(context._pixelDensity, context._pixelDensity);
         }
-        var callMethod = function (f){
+        var callMethod = function (f) {
           f.call(context);
         };
         // TODO Just call a different function that does this minus matrix reset
-        if (context._renderer.isP3D){
+        if (context._renderer.isP3D) {
           context._renderer._update();
         } else {
           console.error('Context does not have 3D Renderer');

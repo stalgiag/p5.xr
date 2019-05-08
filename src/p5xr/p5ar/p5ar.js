@@ -3,7 +3,7 @@ import p5xr from '../core/p5xr';
 export default class p5ar extends p5xr{
   constructor(){
     super();
-    let self = this.instance;
+    // let self = p5xr.instance;
     let xrButton;
     this.canvas = null;
     /**
@@ -47,11 +47,6 @@ export default class p5ar extends p5xr{
         console.log('supported without polyfill');
         // TEMPORARY HACK 4/7/19
         xrButton.setDevice(true);
-        // xrButton.setTitle('Enter AR');
-        // xrButton.addEventListener('click', self.onVRButtonClicked);
-        // xrButton.innerHTML = 'Enter XR';
-        // xrButton.disabled = false;
-
       });
     };
 
@@ -71,7 +66,6 @@ export default class p5ar extends p5xr{
       createCanvas(1,1, WEBGL);
 
       self.canvas = p5.instance.canvas;
-      
       self.onRequestSessionNoPF();
       p5.instance._decrementPreload();
     };
@@ -160,14 +154,7 @@ export default class p5ar extends p5xr{
         self.gl.bindFramebuffer(self.gl.FRAMEBUFFER, session.baseLayer.framebuffer);
 
         if(self.injectedPolyfill){
-          // NOT WORKING CURRENTLY
-          // for (let view of frame.views){
-          //   let viewport = session.baseLayer.getViewport(view);
-          //   self.gl.viewport(viewport.x, viewport.y,
-          //     viewport.width, viewport.height);
-          //   p5.instance._renderer.uMVMatrix.set(pose.getViewMatrix(view));
-          //   p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
-          //   self._drawEye();
+          // STUB
         } else {
           for (let view of pose.views){
             let viewport = session.baseLayer.getViewport(view);
@@ -217,21 +204,6 @@ export default class p5ar extends p5xr{
         }
         context._registeredMethods.post.forEach(callMethod);
       }
-    };
-
-    /**
-    * Called either when the user has explicitly ended the session
-    *  or when the UA has ended the session for any reason.
-    * The xrSession is ended and discarded. p5 is reset with `remove()`
-    * 
-    */
-    this.onSessionEnded = function(){
-      self.xrSession.end();
-      self.xrSession = null;
-      xrButton.innerHTML = 'Enter AR';
-      p5.instance.remove();
-      xrButton.session = null;
-      self.gl = null;
     };
   }
 }
