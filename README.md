@@ -13,6 +13,4 @@ to build package:
 to build docs:
 - `npm run docs`
 
-[very simple test for chrome](https://editor.p5js.org/stalgiag/present/Lr2fjH7M9)
-
 you may need to enable the WebXR flag in your browser by going to `chrome://flags/#webxr` in your url bar
