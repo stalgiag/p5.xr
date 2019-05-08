@@ -1,12 +1,12 @@
 let tex;
 
-function preload(){
+function preload() {
   tex = loadImage('../../../assets/equirectangular.png');
   createVRCanvas();
   setVRBackgroundColor(200, 0, 150);
 }
 
-function draw(){
+function draw() {
   rotateX(90);
   noStroke();
   texture(tex);

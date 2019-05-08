@@ -264,7 +264,7 @@
         "sort-keys": "off",
         "sort-vars": "off",
         "space-before-blocks": "off",
-        "space-before-function-paren": "off",
+        "space-before-function-paren": ["error", "always"],
         "space-in-parens": "off",
         "space-infix-ops": "off",
         "space-unary-ops": "error",

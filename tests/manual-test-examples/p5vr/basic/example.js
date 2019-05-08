@@ -1,12 +1,12 @@
-function preload(){
+function preload() {
   createVRCanvas();
 }
 
-function setup(){
+function setup() {
   setVRBackgroundColor(200, 0, 150);
 }
 
-function draw(){
+function draw() {
   fill(0, 150, 100);
   translate(0, 0, 10);
   strokeWeight(0.1);
