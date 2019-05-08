@@ -115,6 +115,14 @@ export default class p5xr {
       session.requestAnimationFrame(self.onXRFrame);
       // Get the XRDevice pose relative to the Frame of Reference we created
       // earlier.
+      if(p5.instance.width < window.innerWidth * window.devicePixelRatio) {
+        let oldWidth = p5.instance.width;
+        p5.instance.resizeCanvas(
+          window.innerWidth * window.devicePixelRatio,
+          window.innerHeight * window.devicePixelRatio
+        );
+        console.log('p5 Canvas resized from '+oldWidth+' to '+p5.instance.width);
+      }
       let pose;
       if(self.injectedPolyfill) {
         pose = frame.getDevicePose(self.xrFrameOfRef);

@@ -65,6 +65,7 @@ export default class p5vr extends p5xr {
       // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
       // sessions baseLayer. This allows any content rendered to the layer to
       // be displayed on the XRDevice;
+      
       self.xrSession.baseLayer = new XRWebGLLayer(self.xrSession, self.gl);
       // Get a frame of reference, which is required for querying poses. In
       // this case an 'eye-level' frame of reference means that all poses will
