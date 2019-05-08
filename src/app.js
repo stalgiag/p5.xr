@@ -15,10 +15,25 @@ window.p5xr = {
  * via a button click gesture
  * @method createVRCanvas
  */
-p5.prototype.createVRCanvas = function (){
+p5.prototype.createVRCanvas = function() {
   noLoop();
   p5xr.instance = new p5vr();
-  p5xr.instance.initVR();
+  p5xr.instance.init();
+};
+
+/**
+ * starts the process of creating a VR-ready canvas
+ * This actually just creates a button that will set into motion
+ * the creation of a AR canvas and creates a new p5ar object.
+ * This should be called in `preload()` so
+ * that the entire sketch can wait to start until the user has "entered AR"
+ * via a button click gesture
+ * @method createARCanvas
+ */
+p5.prototype.createARCanvas = function() {
+  noLoop();
+  p5xr.instance = new p5ar();
+  p5xr.instance.init();
 };
 
 /**
@@ -30,26 +45,11 @@ p5.prototype.createVRCanvas = function (){
  * @param  {Number} g green value of background
  * @param  {Number} b blue value of background
  */
-p5.prototype.setVRBackgroundColor = function(r, g, b){
+p5.prototype.setVRBackgroundColor = function(r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
 };
 
-/**
- * starts the process of creating a VR-ready canvas
- * This actually just creates a button that will set into motion
- * the creation of a AR canvas and creates a new p5ar object.
- *  This should be called in `preload()` so
- * that the entire sketch can wait to start until the user has "entered AR"
- * via a button click gesture
- * @method createARCanvas
- */
-p5.prototype.createARCanvas = function (){
-  noLoop();
-  p5xr.instance = new p5ar();
-  p5xr.instance.initAR();
-};
-
-p5.RendererGL.prototype._update = function (){
+p5.RendererGL.prototype._update = function() {
   /* TODO: Make a diff function to avoid overwriting this function */
   /* IE: Override the resetting of cameraMatrices in _update */
   /*

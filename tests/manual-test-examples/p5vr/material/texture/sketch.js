@@ -3,16 +3,16 @@ var img;
 var vid;
 var theta = 0;
 
-function preload(){
+function preload() {
   img = loadImage('../../../assets/UV_Grid_Sm.jpg');
   createVRCanvas();
   setVRBackgroundColor(50, 50, 50);
 }
-function setup(){
+function setup() {
   smooth();
   noStroke();
 }
-function draw(){
+function draw() {
   translate(-200, 0, -100);
   push();
   rotate(theta * mouseX * 0.001, [1, 1, 1]);
