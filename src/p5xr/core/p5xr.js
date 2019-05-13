@@ -169,8 +169,6 @@ export default class p5xr {
     /**
      * Runs the code that the user has in `draw()` once for each eye
      * <b>TODO: </b> optimizations!
-     * <b>TODO: </b> make a different `_update` function so that the p5.RendererGL.prototype
-     * does not need to be modified (ie: we need to reset everything except the model view matrix)
      */
     this._drawEye = function() {
       // 2D Mode should use graphics object
@@ -191,7 +189,7 @@ export default class p5xr {
         };
         // TODO Just call a different function that does this minus matrix reset
         if (context._renderer.isP3D) {
-          context._renderer._update();
+          context._renderer._updatexr();
         } else {
           console.error('Context does not have 3D Renderer');
         }
