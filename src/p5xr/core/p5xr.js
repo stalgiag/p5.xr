@@ -187,7 +187,6 @@ export default class p5xr {
         var callMethod = function(f) {
           f.call(context);
         };
-        // TODO Just call a different function that does this minus matrix reset
         if (context._renderer.isP3D) {
           context._renderer._updatexr();
         } else {
