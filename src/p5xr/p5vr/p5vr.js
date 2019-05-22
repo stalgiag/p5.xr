@@ -13,6 +13,8 @@ export default class p5vr extends p5xr {
     super();
     let self = this;
 
+    this.vrGlobals = undefined;
+
     this.initVR = function() {
       this.init();
     };
