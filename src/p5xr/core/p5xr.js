@@ -47,6 +47,15 @@ export default class p5xr {
       context._setup();
     };
 
+    this._updatexr = function() {
+      p5.instance._renderer.ambientLightColors.length = 0;
+      p5.instance._renderer.directionalLightDirections.length = 0;
+      p5.instance._renderer.directionalLightColors.length = 0;
+    
+      p5.instance._renderer.pointLightPositions.length = 0;
+      p5.instance._renderer.pointLightColors.length = 0;
+    };
+
     /**
      * Called by `createVRCanvas()` or `createARCanvas`.
      * Creates the button for entering XR.
@@ -188,7 +197,7 @@ export default class p5xr {
           f.call(context);
         };
         if (context._renderer.isP3D) {
-          context._renderer._updatexr();
+          self._updatexr();
         } else {
           console.error('Context does not have 3D Renderer');
         }

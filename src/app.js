@@ -1,7 +1,6 @@
 
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
-import p5xr from './p5xr/core/p5xr';
 
 window.p5xr = {
   instance: null
@@ -48,13 +47,4 @@ p5.prototype.createARCanvas = function() {
  */
 p5.prototype.setVRBackgroundColor = function(r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
-};
-
-p5xr.prototype._updatexr = function () {
-  this.ambientLightColors.length = 0;
-  this.directionalLightDirections.length = 0;
-  this.directionalLightColors.length = 0;
-
-  this.pointLightPositions.length = 0;
-  this.pointLightColors.length = 0;
 };
