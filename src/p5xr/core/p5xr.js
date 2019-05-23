@@ -47,6 +47,15 @@ export default class p5xr {
       context._setup();
     };
 
+    this._updatexr = function() {
+      p5.instance._renderer.ambientLightColors.length = 0;
+      p5.instance._renderer.directionalLightDirections.length = 0;
+      p5.instance._renderer.directionalLightColors.length = 0;
+    
+      p5.instance._renderer.pointLightPositions.length = 0;
+      p5.instance._renderer.pointLightColors.length = 0;
+    };
+
     /**
      * Called by `createVRCanvas()` or `createARCanvas`.
      * Creates the button for entering XR.
@@ -170,8 +179,6 @@ export default class p5xr {
     /**
      * Runs the code that the user has in `draw()` once for each eye
      * <b>TODO: </b> optimizations!
-     * <b>TODO: </b> make a different `_update` function so that the p5.RendererGL.prototype
-     * does not need to be modified (ie: we need to reset everything except the model view matrix)
      */
     this._drawEye = function(eyeIndex) {
       if(self.isVR) {
@@ -197,9 +204,8 @@ export default class p5xr {
         // var callMethod = function(f) {
         //   f.call(context);
         // };
-        // TODO Just call a different function that does this minus matrix reset
         if (context._renderer.isP3D) {
-          context._renderer._update();
+          self._updatexr();
         } else {
           console.error('Context does not have 3D Renderer');
         }
