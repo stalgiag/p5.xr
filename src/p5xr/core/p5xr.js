@@ -124,14 +124,14 @@ export default class p5xr {
       session.requestAnimationFrame(self.onXRFrame);
       // Get the XRDevice pose relative to the Frame of Reference we created
       // earlier.
-      if(p5.instance.width < window.innerWidth * window.devicePixelRatio) {
-        let oldWidth = p5.instance.width;
-        p5.instance.resizeCanvas(
-          window.innerWidth * window.devicePixelRatio,
-          window.innerHeight * window.devicePixelRatio
-        );
-        console.log('p5 Canvas resized from '+oldWidth+' to '+p5.instance.width);
-      }
+      // if(p5.instance.width < window.innerWidth * window.devicePixelRatio) {
+      //   let oldWidth = p5.instance.width;
+      //   p5.instance.resizeCanvas(
+      //     window.innerWidth * window.devicePixelRatio,
+      //     window.innerHeight * window.devicePixelRatio
+      //   );
+      //   console.log('p5 Canvas resized from '+oldWidth+' to '+p5.instance.width);
+      // }
       let pose;
       if(self.injectedPolyfill) {
         pose = frame.getDevicePose(self.xrFrameOfRef);
@@ -154,13 +154,14 @@ export default class p5xr {
         }
         
         if(self.injectedPolyfill) {
-          for (let view of frame.views) {
+          for(let i=0; i<frame.views.length; i++) {
+            let view = frame.views[i];
             let viewport = session.baseLayer.getViewport(view);
             self.gl.viewport(viewport.x, viewport.y,
               viewport.width, viewport.height);
             p5.instance._renderer.uMVMatrix.set(pose.getViewMatrix(view));
             p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
-            self._drawEye();
+            self._drawEye(i);
           }
         } else {
           for (let view of pose.views) {
@@ -169,7 +170,7 @@ export default class p5xr {
               viewport.width, viewport.height);
             p5.instance._renderer.uMVMatrix.set(view.viewMatrix);
             p5.instance._renderer.uPMatrix.set(view.projectionMatrix);
-            self._drawEye();
+            self._drawEye(i);
           }
         }
       }
@@ -179,7 +180,14 @@ export default class p5xr {
      * Runs the code that the user has in `draw()` once for each eye
      * <b>TODO: </b> optimizations!
      */
-    this._drawEye = function() {
+    this._drawEye = function(eyeIndex) {
+      if(self.isVR) {
+        if(eyeIndex === 0) {
+          p5xr.instance.vrGlobals = { ...vrGlobals};
+        } else {
+          vrGlobals = {...p5xr.instance.vrGlobals};
+        }
+      }
       // 2D Mode should use graphics object
       if (!p5.instance._renderer.isP3D) {
         console.error('Sketch does not have 3D Renderer');
@@ -193,23 +201,26 @@ export default class p5xr {
         if (typeof userSetup === 'undefined') {
           context.scale(context._pixelDensity, context._pixelDensity);
         }
-        var callMethod = function(f) {
-          f.call(context);
-        };
+        // var callMethod = function(f) {
+        //   f.call(context);
+        // };
         if (context._renderer.isP3D) {
           self._updatexr();
         } else {
           console.error('Context does not have 3D Renderer');
         }
-        context._setProperty('frameCount', context.frameCount + 0.5);
-        context._registeredMethods.pre.forEach(callMethod);
+        
+        // context._registeredMethods.pre.forEach(callMethod);
         p5.instance._inUserDraw = true;
         try {
           userDraw();
         } finally {
           p5.instance._inUserDraw = false;
         }
-        context._registeredMethods.post.forEach(callMethod);
+        if(eyeIndex === 1) {
+          context._setProperty('frameCount', context.frameCount + 1);
+        }
+        // context._registeredMethods.post.forEach(callMethod);
       }
     };
 

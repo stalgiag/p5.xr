@@ -19,6 +19,9 @@ p5.prototype.createVRCanvas = function() {
   noLoop();
   p5xr.instance = new p5vr();
   p5xr.instance.init();
+  if(vrGlobals) {
+    p5xr.instance.vrGlobals = vrGlobals;
+  }
 };
 
 /**
