@@ -31,7 +31,7 @@ export default class p5vr extends p5xr {
     this.startSketch = function(session) {
       self.xrSession = self.xrButton.session = session;
       self.xrSession.addEventListener('end', self.onSessionEnded);
-      self.preloadOverride();
+      p5.instance._decrementPreload();
       // create p5 canvas
       createCanvas(windowWidth, windowHeight, WEBGL);
       if(self.injectedPolyfill) {
@@ -39,7 +39,6 @@ export default class p5vr extends p5xr {
       } else {
         self.onRequestSessionNoPF();
       }
-      p5.instance._decrementPreload();
     };
 
     /**

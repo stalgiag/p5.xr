@@ -42,11 +42,6 @@ export default class p5xr {
       }
     };
 
-    this.preloadOverride = function() {
-      let context = window;
-      context._setup();
-    };
-
     this._updatexr = function() {
       p5.instance._renderer.ambientLightColors.length = 0;
       p5.instance._renderer.directionalLightDirections.length = 0;
