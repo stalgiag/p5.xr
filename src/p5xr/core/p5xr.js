@@ -2,7 +2,7 @@
 import WebXRPolyfill from 'webxr-polyfill';
 import WebXRVersionShim from '../../webxr/webxr-version-shim';
 import p5vr from '../p5vr/p5vr';
-import Viewer from './viewer';
+import ViewerXR from './viewerxr';
 
 /**
  * p5vr class holds all state and methods that are specific to VR
@@ -30,7 +30,7 @@ export default class p5xr {
     this.gl = null;
     this.curClearColor = color(255, 255, 255);
     this.injectedPolyfill = false;
-    this.viewer = new Viewer();
+    this.viewer = new ViewerXR();
     if(!navigator.xr) {
       window.polyfill = new WebXRPolyfill();
       this.injectedPolyfill = polyfill.injected;

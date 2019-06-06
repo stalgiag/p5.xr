@@ -1,4 +1,4 @@
-export default class Viewer {
+export default class ViewerXR {
     constructor() {
         this._pose = null;
         this._view = null;
