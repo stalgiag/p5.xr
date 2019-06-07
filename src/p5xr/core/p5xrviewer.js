@@ -1,4 +1,4 @@
-export default class ViewerXR {
+export default class p5xrViewer {
     constructor() {
         this._pose = null;
         this._view = null;
