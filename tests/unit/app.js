@@ -6,8 +6,8 @@ suite('app', function() {
         test('p5vr is initialised', function() {
             return new Promise(function(resolve, reject) {
                 window.setup = function() {
+                    console.log()
                     createVRCanvas();
-                    console.log(window.p5xr.instance instanceof p5vr);
                     resolve();
                 };
                 window.vrGlobals = {};
