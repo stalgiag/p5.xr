@@ -104,7 +104,12 @@ export default class p5xr {
         onRequestSession: self.onXRButtonClicked,
         onEndSession: self.onSessionEnded
       });
-      document.querySelector('header').appendChild(self.xrButton.domElement);
+      let header = document.querySelector('header');
+      if (!header) {
+        header = document.createElement('header');
+        document.querySelector('body').appendChild(header);
+      }
+      header.appendChild(self.xrButton.domElement);
 
       if (navigator.xr) {
         self.sessionCheck();
