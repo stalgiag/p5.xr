@@ -18,7 +18,6 @@ module.exports = function(config) {
       'tests/js/mocha_setup.js',
       'node_modules/p5/lib/p5.js',
       'src/webxr/webxr-button.js',
-      // 'dist/p5xr.js',
       'src/app.js',
       'tests/unit/**/*.js',
     ],
@@ -42,7 +41,10 @@ module.exports = function(config) {
       transform: [
         ['babelify', 
           {
-            "presets": ["@babel/preset-env"]
+            "presets": ["@babel/preset-env"],
+            "plugins": [
+              ["@babel/transform-runtime"]
+            ]
           }
         ]
       ]
@@ -74,7 +76,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [],
+    browsers: ['ChromeHeadless'],
 
 
     // Continuous Integration mode
@@ -85,9 +87,5 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-
-    client: {
-      useIframe: false
-    }
   })
 }
