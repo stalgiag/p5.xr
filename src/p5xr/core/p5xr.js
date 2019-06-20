@@ -20,7 +20,6 @@ import p5xrViewer from './p5xrviewer';
  */
 export default class p5xr {
   constructor() {
-    p5xr.instance = this;
     let self = this;
     this.xrDevice = null;
     this.xrButton;
@@ -215,9 +214,9 @@ export default class p5xr {
     this._drawEye = function(eyeIndex) {
       if(self.isVR) {
         if(eyeIndex === 0) {
-          p5xr.instance.vrGlobals = { ...vrGlobals};
+          window.p5xr.instance.vrGlobals = { ...vrGlobals};
         } else {
-          vrGlobals = {...p5xr.instance.vrGlobals};
+          vrGlobals = {...window.p5xr.instance.vrGlobals};
         }
       }
       // 2D Mode should use graphics object
@@ -270,7 +269,6 @@ export default class p5xr {
     * 
     */
     this.onSessionEnded = function() {
-      let self = p5xr.instance;
       if(self.xrSession) {
         self.xrSession.end();
         self.xrSession = null;
@@ -281,6 +279,14 @@ export default class p5xr {
       }
       self.xrButton.session = null;
       self.gl = null;
+    };
+
+    this.remove = function() {
+      if(self.injectedPolyfill) {
+        delete navigator.xr;
+      }
+      self.xrButton.remove();
+      window.p5xr.instance = null;
     };
   }
 
