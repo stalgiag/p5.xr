@@ -95,7 +95,7 @@ export default class p5xr {
     this.init = function() {
       window._setup = self._setupxr;
       p5.instance._setup = self._setupxr;
-      this.isVR = this instanceof p5vr;
+      self.isVR = this instanceof p5vr;
       p5.instance._incrementPreload();
       self.removeLoadingElement();
       // Is WebXR available on this UA?
@@ -285,7 +285,9 @@ export default class p5xr {
       if(self.injectedPolyfill) {
         delete navigator.xr;
       }
-      self.xrButton.remove();
+      if(self.xrButton) {
+        self.xrButton.remove();
+      }
       window.p5xr.instance = null;
     };
   }
