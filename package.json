@@ -48,8 +48,10 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-sinon": "^1.0.5",
     "mocha": "*",
     "parcel-bundler": "^1.12.3",
+    "sinon": "^7.3.2",
     "watchify": "^3.11.1"
   }
 }
