@@ -67,4 +67,18 @@ suite('p5xr', function() {
       p5xr.instance.remove();
     });
   });
+
+  suite('removeLoadingElement()', function() {
+    test('removes p5 loading element from DOM', function() {
+      window.preload = function() {
+        p5xr.instance = new p5vr();
+        p5xr.instance.init();
+        let loading = document.getElementById(window._loadingScreenId);
+        assert.isNull(loading);
+      };
+      myp5.remove();
+      myp5 = new p5();
+      p5xr.instance.remove();
+    });
+  });
 });
