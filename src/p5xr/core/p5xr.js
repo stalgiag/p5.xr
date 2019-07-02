@@ -136,7 +136,11 @@ export default class p5xr {
         this.xrButton.setDevice(true);
       });
     } else {
+<<<<<<< HEAD
       navigator.xr.supportsSession('legacy-inline-ar').then(() => {
+=======
+      navigator.xr.supportsSession('immersive-ar').then(() => {
+>>>>>>> make ar work with chrome canary 77.0.3838
         console.log('AR supported without polyfill');
         // TEMPORARY HACK 4/7/19
         this.xrButton.setDevice(true);
