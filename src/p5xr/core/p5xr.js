@@ -129,14 +129,14 @@ export default class p5xr {
         return;
       }
     } else if(this.isVR) {
-      navigator.xr.supportsSessionMode('immersive-vr').then(() => {
+      navigator.xr.supportsSession('immersive-vr').then(() => {
         console.log('VR supported without polyfill');
         // Updates the button to start an XR session when clicked.
         // HACK
         this.xrButton.setDevice(true);
       });
     } else {
-      navigator.xr.supportsSessionMode('legacy-inline-ar').then(() => {
+      navigator.xr.supportsSession('legacy-inline-ar').then(() => {
         console.log('AR supported without polyfill');
         // TEMPORARY HACK 4/7/19
         this.xrButton.setDevice(true);

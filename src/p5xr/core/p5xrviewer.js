@@ -22,7 +22,7 @@ export default class p5xrViewer {
       p5.instance._renderer.uMVMatrix.set(this._pose.getViewMatrix(this._view));
       p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
     } else {
-      p5.instance._renderer.uMVMatrix.set(this._view.viewMatrix);
+      p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
       p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
     }
   }
