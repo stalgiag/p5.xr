@@ -49,7 +49,7 @@ export default class p5xr {
   
     p5.instance._renderer.pointLightPositions.length = 0;
     p5.instance._renderer.pointLightColors.length = 0;
-  };
+  }
 
   // Substitute for p5._setup() which creates a default webgl canvas
   _setupxr() {
@@ -81,7 +81,7 @@ export default class p5xr {
       }
     }
     p5.instance._setupDone = true;
-  };
+  }
 
   /**
    * Called by `createVRCanvas()` or `createARCanvas`.
@@ -112,7 +112,7 @@ export default class p5xr {
     if (navigator.xr) {
       this.sessionCheck();
     }
-  };
+  }
 
   sessionCheck() {
     if(this.injectedPolyfill) {
@@ -142,7 +142,7 @@ export default class p5xr {
         this.xrButton.setDevice(true);
       });
     }
-  };
+  }
 
   /**
    * This is the method that is attached to the event that announces
@@ -196,7 +196,7 @@ export default class p5xr {
         }
       }
     }
-  };
+  }
 
   /**
    * Runs the code that the user has in `draw()` once for each eye
@@ -239,7 +239,7 @@ export default class p5xr {
         context._setProperty('frameCount', context.frameCount + 1);
       }
     }
-  };
+  }
 
   /**
   * Called either when the user has explicitly ended the session
@@ -258,14 +258,14 @@ export default class p5xr {
     }
     this.xrButton.session = null;
     this.gl = null;
-  };
+  }
 
   printUnsupportedMessage() {
     console.warn('Your browser/hardware does not work with AR Mode currently. This is'+
         ' undergoing heavy development currently.' +
         'You may be able to fix this by enabling WebXR flags in Chrome.');
     return;
-  };
+  }
 
   remove() {
     if(this.injectedPolyfill) {
@@ -275,7 +275,7 @@ export default class p5xr {
       this.xrButton.remove();
     }
     window.p5xr.instance = null;
-  };
+  }
 
   get instance() {
     return window.p5xr.instance;

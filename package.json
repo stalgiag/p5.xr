@@ -9,7 +9,7 @@
   "scripts": {
     "build": "parcel build ./src/app.js --no-minify --out-file p5xr.js",
     "watch": "parcel watch ./src/app.js --out-file p5xr.js",
-    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "test": "karma start karma.conf.js",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json -r"
   },
   "repository": {
@@ -46,6 +46,7 @@
     "karma-browserify": "^6.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^2.0.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-sinon": "^1.0.5",

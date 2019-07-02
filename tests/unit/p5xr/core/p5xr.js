@@ -1,4 +1,4 @@
-import p5vr from "../../../../src/p5xr/p5vr/p5vr";
+import p5vr from '../../../../src/p5xr/p5vr/p5vr';
 
 suite('p5xr', function() {
   let myp5;
@@ -42,7 +42,7 @@ suite('p5xr', function() {
 
     test('p5xr.removeLoadingElement() is called', function() {
       p5xr.instance = new p5vr();
-      sinon.spy(p5xr.instance, "removeLoadingElement");
+      sinon.spy(p5xr.instance, 'removeLoadingElement');
       p5xr.instance.init();
       sinon.assert.called(p5xr.instance.removeLoadingElement);
       p5xr.instance.removeLoadingElement.restore();
@@ -60,7 +60,7 @@ suite('p5xr', function() {
 
     test('p5xr.sessionCheck() is called', function() {
       p5xr.instance = new p5vr();
-      sinon.spy(p5xr.instance, "sessionCheck");
+      sinon.spy(p5xr.instance, 'sessionCheck');
       p5xr.instance.init();
       sinon.assert.called(p5xr.instance.sessionCheck);
       p5xr.instance.sessionCheck.restore();

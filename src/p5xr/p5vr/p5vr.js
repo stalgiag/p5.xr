@@ -16,7 +16,7 @@ export default class p5vr extends p5xr {
 
   initVR() {
     this.init();
-  };
+  }
 
   /**
    * This is where the actual p5 canvas is first created, and
@@ -38,7 +38,7 @@ export default class p5vr extends p5xr {
     } else {
       this.onRequestSessionNoPF();
     }
-  };
+  }
 
   /**
    * `device.requestSession()` must be called within a user gesture event.
@@ -54,7 +54,7 @@ export default class p5vr extends p5xr {
     }
     // requestSession must be called within a user gesture event
     // like click or touch when requesting an immersive session.
-  };
+  }
 
   onRequestSessionPolyfill() {
     console.log('set context with compatible device');
@@ -75,7 +75,7 @@ export default class p5vr extends p5xr {
       // Inform the session that we're ready to begin drawing.
       this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
     });
-  };
+  }
 
   onRequestSessionNoPF() {
     console.log('set context with xrCompatible: true');
@@ -97,7 +97,7 @@ export default class p5vr extends p5xr {
         // Inform the session that we're ready to begin drawing.
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
       });
-  };
+  }
 
   /**
    * clears the background based on the current clear color (`curClearColor`)
@@ -107,5 +107,5 @@ export default class p5vr extends p5xr {
       return;
     }
     p5.instance.background(this.curClearColor);
-  };
+  }
 }
