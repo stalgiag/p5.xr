@@ -136,7 +136,7 @@ export default class p5xr {
         this.xrButton.setDevice(true);
       });
     } else {
-      navigator.xr.supportsSession('legacy-inline-ar').then(() => {
+      navigator.xr.supportsSession('immersive-ar').then(() => {
         console.log('AR supported without polyfill');
         // TEMPORARY HACK 4/7/19
         this.xrButton.setDevice(true);
