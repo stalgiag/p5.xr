@@ -31,8 +31,8 @@ export default class p5xr {
     if(!navigator.xr) {
       window.polyfill = new WebXRPolyfill();
       this.injectedPolyfill = polyfill.injected;
+      window.versionShim = new WebXRVersionShim();
     }
-    window.versionShim = new WebXRVersionShim();
   }
 
   removeLoadingElement() {
@@ -163,6 +163,8 @@ export default class p5xr {
     } else {
       this.viewer.pose = frame.getViewerPose(this.xrFrameOfRef);
     }
+    let glLayer = this.injectedPolyfill ? session.baseLayer : session.renderState.baseLayer;
+
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
     // to render with it. If not in this case we'll just leave the
@@ -172,7 +174,7 @@ export default class p5xr {
       // If we do have a valid pose, bind the WebGL layer's framebuffer,
       // which is where any content to be displayed on the XRDevice must be
       // rendered.
-      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, session.baseLayer.framebuffer);
+      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, glLayer.framebuffer);
 
       if(this.isVR) {
         this._clearVR();
@@ -181,18 +183,20 @@ export default class p5xr {
       if(this.injectedPolyfill) {
         for(let i=0; i<frame.views.length; i++) {
           this.viewer.view = frame.views[i];
-          let viewport = session.baseLayer.getViewport(this.viewer.view);
+          let viewport = glLayer.getViewport(this.viewer.view);
           this.gl.viewport(viewport.x, viewport.y,
             viewport.width, viewport.height);
           this._drawEye(i);
         }
       } else {
+        let i=0;
         for (let view of this.viewer.pose.views) {
           this.viewer.view = view;
-          let viewport = session.baseLayer.getViewport(this.viewer.view);
+          let viewport = glLayer.getViewport(this.viewer.view);
           this.gl.viewport(viewport.x, viewport.y,
             viewport.width, viewport.height);
           this._drawEye(i);
+          i++;
         }
       }
     }
