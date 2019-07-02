@@ -76,7 +76,7 @@ export default class p5ar extends p5xr {
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
     });
 
-    this.xrSession.requestReferenceSpace('local').
+    this.xrSession.requestReferenceSpace('unbounded').
       then((refSpace) => {
         this.xrFrameOfRef = refSpace;
         // Inform the session that we're ready to begin drawing.
