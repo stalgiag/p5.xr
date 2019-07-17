@@ -207,11 +207,16 @@ export default class p5xr {
    * <b>TODO: </b> optimizations!
    */
   _drawEye(eyeIndex) {
+    const context = window;
+    const userSetup = context.setup;
+    const userDraw = context.draw;
+    const userCalculate = context.calculate;
+
     if(this.isVR) {
       if(eyeIndex === 0) {
-        window.p5xr.instance.vrGlobals = { ...vrGlobals};
-      } else {
-        vrGlobals = {...window.p5xr.instance.vrGlobals};
+        if(typeof userCalculate === 'function') {
+          userCalculate();
+        }
       }
     }
     // 2D Mode should use graphics object
@@ -220,13 +225,11 @@ export default class p5xr {
       return;
     }
     
-    var context = window;
-    var userSetup = context.setup;
-    var userDraw = context.draw;
     if (typeof userDraw === 'function') {
       if (typeof userSetup === 'undefined') {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
+  
       if (context._renderer.isP3D) {
         this._updatexr();
       } else {
@@ -234,11 +237,13 @@ export default class p5xr {
       }
       
       p5.instance._inUserDraw = true;
+
       try {
         userDraw();
       } finally {
         p5.instance._inUserDraw = false;
       }
+  
       if(eyeIndex === 1) {
         context._setProperty('frameCount', context.frameCount + 1);
       }
@@ -256,7 +261,7 @@ export default class p5xr {
       this.xrSession.end();
       this.xrSession = null;
     }
-    var p5Canvi = document.getElementsByClassName('p5Canvas');
+    let p5Canvi = document.getElementsByClassName('p5Canvas');
     while(p5Canvi.length > 0) {
       p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
     }
