@@ -14,15 +14,16 @@ function setup() {
   textureMode(NORMAL);
 }
 
-function draw() {
-  pg.background(150, 150, 250);
-  pg.ellipse(pos.x, pos.y, 20);
-
+function calculate() {
   pos.x += vel.x;
   pos.y += vel.y;
 
   testBounds();
+}
 
+function draw() {
+  pg.background(150, 150, 250);
+  pg.ellipse(pos.x, pos.y, 20);
   translate(0, 0, 10);
   noStroke();
   texture(pg);
