@@ -1,35 +1,64 @@
 function getRayFromScreen(screenX, screenY) {
-  // ray origin in View space is (0, 0, 0)
   let ray = {
     origin: new p5.Vector(0, 0, 0),
     direction: new p5.Vector()
   };
-    // Normalised Device Coordinates
-  ray.direction.x = screenX;
-  ray.direction.y = screenY;
-  ray.direction.z = 1;
-  // homogeneous clip coordinates
-  ray.direction.z = -1;
 
-  // Eye (camera) coordinates
-  let uPMatrixInverse = new p5.Matrix();
-  uPMatrixInverse.invert(p5.instance._renderer.uPMatrix);
-  uPMatrixInverse.transpose(uPMatrixInverse);
-  uPMatrixInverse = uPMatrixInverse.mat4;
+  let poseMatrix = p5xr.instance.viewer.poseMatrix.copy();
+  poseMatrix.transpose(poseMatrix);
+  poseMatrix = poseMatrix.mat4;
 
-  let rayDirectionCopy = ray.direction.copy();
-  ray.direction.x = uPMatrixInverse[0] * rayDirectionCopy.x + uPMatrixInverse[1] * rayDirectionCopy.y + uPMatrixInverse[2] * rayDirectionCopy.z + uPMatrixInverse[3];
-  ray.direction.y = uPMatrixInverse[4] * rayDirectionCopy.x + uPMatrixInverse[5] * rayDirectionCopy.y + uPMatrixInverse[6] * rayDirectionCopy.z + uPMatrixInverse[7];
-  ray.direction.normalize();
+  // set origin of ray to pose position
+  ray.origin.x = poseMatrix[3];
+  ray.origin.y = poseMatrix[7];
+  ray.origin.z = poseMatrix[11];
+  
+  let initialMVMatrix = p5xr.instance.viewer.initialMVMatrix.copy();
+  initialMVMatrix.transpose(initialMVMatrix);
+  initialMVMatrix = initialMVMatrix.mat4;
+
+  
+  // transform ray origin to view space
+  let rayOriginCopy = ray.origin.copy();
+  ray.origin.x = initialMVMatrix[0] * rayOriginCopy.x + initialMVMatrix[1] * rayOriginCopy.y + initialMVMatrix[2] * rayOriginCopy.z + initialMVMatrix[3];
+  ray.origin.y = initialMVMatrix[4] * rayOriginCopy.x + initialMVMatrix[5] * rayOriginCopy.y + initialMVMatrix[6] * rayOriginCopy.z + initialMVMatrix[7];
+  ray.origin.z = initialMVMatrix[8] * rayOriginCopy.x + initialMVMatrix[9] * rayOriginCopy.y + initialMVMatrix[10] * rayOriginCopy.z + initialMVMatrix[11];
+
+  // get ray direction from left eye
+  let leftDirection = new p5.Vector(screenX, screenY, -1);
+
+  let leftPMatrixInverse = new p5.Matrix();
+  leftPMatrixInverse.invert(p5xr.instance.viewer.leftPMatrix.copy());
+  leftPMatrixInverse.transpose(leftPMatrixInverse);
+  leftPMatrixInverse = leftPMatrixInverse.mat4;
+
+  let leftDirectionCopy = leftDirection.copy();
+  leftDirection.x = leftPMatrixInverse[0] * leftDirectionCopy.x + leftPMatrixInverse[1] * leftDirectionCopy.y + leftPMatrixInverse[2] * leftDirectionCopy.z + leftPMatrixInverse[3];
+  leftDirection.y = leftPMatrixInverse[4] * leftDirectionCopy.x + leftPMatrixInverse[5] * leftDirectionCopy.y + leftPMatrixInverse[6] * leftDirectionCopy.z + leftPMatrixInverse[7];
+  leftDirection.normalize();
+
+  // get ray direction from right eye
+  let rightDirection = new p5.Vector(screenX, screenY, -1);
+  
+  let rightPMatrixInverse = new p5.Matrix();
+  rightPMatrixInverse.invert(p5xr.instance.viewer.rightPMatrix.copy());
+  rightPMatrixInverse.transpose(rightPMatrixInverse);
+  rightPMatrixInverse = rightPMatrixInverse.mat4;
+
+  let rightDirectionCopy = rightDirection.copy();
+  rightDirection.x = rightPMatrixInverse[0] * rightDirectionCopy.x + rightPMatrixInverse[1] * rightDirectionCopy.y + rightPMatrixInverse[2] * rightDirectionCopy.z + rightPMatrixInverse[3];
+  rightDirection.y = rightPMatrixInverse[4] * rightDirectionCopy.x + rightPMatrixInverse[5] * rightDirectionCopy.y + rightPMatrixInverse[6] * rightDirectionCopy.z + rightPMatrixInverse[7];
+  rightDirection.normalize();
+
+  // combine both ray directions
+  ray.direction = p5.Vector.add(leftDirection, rightDirection).normalize();
 
   return ray;
 }
 
-// TODO: check what happens when called twice (one for each eye) and screenX and screenY are offset
-
 p5.prototype.intersectsSphere = function(radius, arg2, arg3) {
   let ray;
-  if(arg3) {
+  if(arg3 !== undefined) {
     ray = getRayFromScreen(arg2, arg3);
   }
   else {
