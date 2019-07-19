@@ -77,7 +77,11 @@ p5.prototype.intersectsSphere = function(radius, arg2, arg3) {
   sphereCenter.x = uMVMatrix[3];
   sphereCenter.y = uMVMatrix[7];
   sphereCenter.z = uMVMatrix[11];
-  // TODO: scaling sphere radius
+
+  // check if sphere is in front of ray
+  if(p5.Vector.dot(p5.Vector.sub(sphereCenter, ray.origin), ray.direction) < 0) {
+    return false;
+  }
 
   let sphereToRayOrigin = p5.Vector.sub(ray.origin, sphereCenter);
   let b = 2 * p5.Vector.dot(ray.direction, sphereToRayOrigin);
