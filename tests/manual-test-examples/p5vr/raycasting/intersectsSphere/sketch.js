@@ -1,7 +1,3 @@
-let vrGlobals = {
-  counter: 0
-};
-
 let randomx=[], randomy=[];
 
 function preload() {
@@ -26,6 +22,7 @@ function draw() {
       fill('blue');
     }
     sphere(70);
+    noLoop();
     pop();
   }
 }

@@ -56,13 +56,19 @@ function getRayFromScreen(screenX, screenY) {
   return ray;
 }
 
-p5.prototype.intersectsSphere = function(radius, arg2, arg3) {
-  let ray;
-  if(arg3 !== undefined) {
-    ray = getRayFromScreen(arg2, arg3);
+p5.prototype.intersectsSphere = function() {
+  let radius = arguments[0];
+  let ray = {
+    origin: null,
+    direction: null
+  };
+  if(arguments.length !== 2 || !arguments[1].hasOwnProperty('origin')) {
+    let screenX = arguments[1] || 0, screenY = arguments[2] || 0;
+    ray = getRayFromScreen(screenX, screenY);
   }
   else {
-    ray = arg2;
+    ray.origin = arguments[1].origin.copy();
+    ray.direction = arguments[1].direction.copy();
   }
 
   if(ray === null)

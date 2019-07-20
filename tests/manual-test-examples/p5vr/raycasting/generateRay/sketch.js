@@ -1,7 +1,3 @@
-let vrGlobals = {
-  counter: 0
-};
-
 let randomx = [], randomy = [];
 
 function preload() {
