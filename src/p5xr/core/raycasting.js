@@ -112,17 +112,11 @@ p5.prototype.generateRay = function(x1, y1, z1, x2, y2, z2) {
   origin.x = uMVMatrix[0] * originCopy.x + uMVMatrix[1] * originCopy.y + uMVMatrix[2] * originCopy.z + uMVMatrix[3];
   origin.y = uMVMatrix[4] * originCopy.x + uMVMatrix[5] * originCopy.y + uMVMatrix[6] * originCopy.z + uMVMatrix[7];
   origin.z = uMVMatrix[8] * originCopy.x + uMVMatrix[9] * originCopy.y + uMVMatrix[10] * originCopy.z + uMVMatrix[11];
-    
-  let uNMatrix = p5.instance._renderer.uMVMatrix.copy();
-  uNMatrix.transpose(uNMatrix);
-  uNMatrix.invert(uNMatrix);
-  uNMatrix.transpose(uNMatrix);
-  uNMatrix = uNMatrix.mat4;
 
   let directionCopy = direction.copy();
-  direction.x = uNMatrix[0] * directionCopy.x + uNMatrix[1] * directionCopy.y + uNMatrix[2] * directionCopy.z + uNMatrix[3];
-  direction.y = uNMatrix[4] * directionCopy.x + uNMatrix[5] * directionCopy.y + uNMatrix[6] * directionCopy.z + uNMatrix[7];
-  direction.z = uNMatrix[8] * directionCopy.x + uNMatrix[9] * directionCopy.y + uNMatrix[10] * directionCopy.z + uNMatrix[11];
+  direction.x = uMVMatrix[0] * directionCopy.x + uMVMatrix[1] * directionCopy.y + uMVMatrix[2] * directionCopy.z;
+  direction.y = uMVMatrix[4] * directionCopy.x + uMVMatrix[5] * directionCopy.y + uMVMatrix[6] * directionCopy.z;
+  direction.z = uMVMatrix[8] * directionCopy.x + uMVMatrix[9] * directionCopy.y + uMVMatrix[10] * directionCopy.z;
 
   direction.normalize();
 
