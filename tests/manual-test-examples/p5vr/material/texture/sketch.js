@@ -1,6 +1,5 @@
 
 var img;
-var vid;
 var theta = 0;
 
 function preload() {
