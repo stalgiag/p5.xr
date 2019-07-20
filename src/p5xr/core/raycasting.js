@@ -102,6 +102,64 @@ p5.prototype.intersectsSphere = function() {
   return det >= 0;
 };
 
+p5.prototype.intersectsBox = function() {
+  let width = arguments[0], height, depth;
+  let ray = {
+    origin: null,
+    direction: null
+  };
+  if(arguments[arguments.length - 1].hasOwnProperty('origin')) {
+    ray.origin = arguments[arguments.length - 1].origin.copy();
+    ray.direction = arguments[arguments.length - 1].direction.copy();
+    height = arguments.length > 2 ? arguments[1] : width;
+    depth = arguments.length > 3 ? arguments[2] : height;
+  }
+  else {
+    ray = getRayFromScreen(arguments[arguments.length - 2], arguments[arguments.length - 1]);
+    height = arguments.length > 3 ? arguments[1] : width;
+    depth = arguments.length > 4 ? arguments[2] : height;
+  }
+  
+  // bounding box in view space will not be axis aligned
+  // so we will transform ray to box space by applying inverse(uMVMatrix) to origin and direction
+
+  let uMVMatrixInv = p5.instance._renderer.uMVMatrix.copy();
+  uMVMatrixInv.transpose(uMVMatrixInv);
+  uMVMatrixInv.invert(uMVMatrixInv);
+  uMVMatrixInv = uMVMatrixInv.mat4;
+
+  let rayOriginCopy = ray.origin.copy();
+  ray.origin.x = uMVMatrixInv[0] * rayOriginCopy.x + uMVMatrixInv[1] * rayOriginCopy.y + uMVMatrixInv[2] * rayOriginCopy.z + uMVMatrixInv[3];
+  ray.origin.y = uMVMatrixInv[4] * rayOriginCopy.x + uMVMatrixInv[5] * rayOriginCopy.y + uMVMatrixInv[6] * rayOriginCopy.z + uMVMatrixInv[7];
+  ray.origin.z = uMVMatrixInv[8] * rayOriginCopy.x + uMVMatrixInv[9] * rayOriginCopy.y + uMVMatrixInv[10] * rayOriginCopy.z + uMVMatrixInv[11];
+
+  let rayDirectionCopy = ray.direction.copy();
+  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x + uMVMatrixInv[1] * rayDirectionCopy.y + uMVMatrixInv[2] * rayDirectionCopy.z;
+  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x + uMVMatrixInv[5] * rayDirectionCopy.y + uMVMatrixInv[6] * rayDirectionCopy.z;
+  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x + uMVMatrixInv[9] * rayDirectionCopy.y + uMVMatrixInv[10] * rayDirectionCopy.z;
+  ray.direction.normalize();
+
+  // representing AABB (Axis aligned bounding box) with 2 extreme points
+  let min = new p5.Vector(-0.5 * width, -0.5 * height, -0.5 * depth);
+  let max = new p5.Vector(0.5 * width, 0.5 * height, 0.5 * depth);
+
+  // ray-AABB intersection algorithm
+  let t1 = (min.x - ray.origin.x) / ray.direction.x;
+  let t2 = (max.x - ray.origin.x) / ray.direction.x;
+  let t3 = (min.y - ray.origin.y) / ray.direction.y;
+  let t4 = (max.y - ray.origin.y) / ray.direction.y;
+  let t5 = (min.z - ray.origin.z) / ray.direction.z;
+  let t6 = (max.z - ray.origin.z) / ray.direction.z;
+
+  let tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+  let tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+
+  if(tmax < 0 || tmin > tmax) {
+    return false;
+  }
+  return true;
+};
+
 p5.prototype.generateRay = function(x1, y1, z1, x2, y2, z2) {
   let origin = new p5.Vector(x1, y1, z1);
   let direction = new p5.Vector(x2, y2, z2);
