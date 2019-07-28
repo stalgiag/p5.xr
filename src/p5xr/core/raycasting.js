@@ -115,9 +115,17 @@ p5.prototype.intersectsBox = function() {
     depth = arguments.length > 3 ? arguments[2] : height;
   }
   else {
-    ray = getRayFromScreen(arguments[arguments.length - 2], arguments[arguments.length - 1]);
-    height = arguments.length > 3 ? arguments[1] : width;
-    depth = arguments.length > 4 ? arguments[2] : height;
+    // if screenX, screenY is specified => width, height, depth must also be specified
+    if(arguments.length === 5) {
+      ray = getRayFromScreen(arguments[3], arguments[4]);
+      height = arguments[1];
+      depth = arguments[2];
+    }
+    else {
+      ray = getRayFromScreen(0, 0);
+      height = arguments.length > 1 ? arguments[1] : width;
+      depth = arguments.length > 2 ? arguments[2] : height;
+    }
   }
   
   // bounding box in view space will not be axis aligned
