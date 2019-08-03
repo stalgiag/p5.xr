@@ -7,7 +7,10 @@ export default class p5xrViewer {
     this.leftPMatrix = new p5.Matrix();
     this.rightPMatrix = new p5.Matrix();
 
+    this.position = new p5.Vector(0, 0, 0);
+
     this.setPosition = function(x, y, z) {
+      this.position.set(x, y, z);
       p5.instance._renderer.translate(-x, -y, -z);
     };
   }
@@ -21,6 +24,7 @@ export default class p5xrViewer {
     return this._pose;
   }
 
+  // TODO: set matrices for non polyfill
   set view(newView) {
     this._view = newView;
     if(p5xr.instance.injectedPolyfill) {
@@ -47,4 +51,15 @@ export default class p5xrViewer {
 p5.prototype.setViewerPosition = function(x, y, z) {
   let viewer = p5xr.instance.viewer;
   viewer.setPosition(x, y, z);
+};
+
+p5.prototype.sticky = function() {
+  push();
+  p5.instance._renderer.uMVMatrix.set(p5.Matrix.identity());
+  let viewerPosition = p5xr.instance.viewer.position;
+  setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
+};
+
+p5.prototype.noSticky = function() {
+  pop();
 };
