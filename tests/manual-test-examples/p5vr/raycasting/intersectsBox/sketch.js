@@ -15,7 +15,7 @@ function draw() {
   rotateZ(rotAngle);
   translate(100, 0, 0);
   fill('red');
-  if (intersectsBox(50, 0, 0)) {
+  if (intersectsBox(50)) {
     rotAngle += rotSpeed;
     fill('blue');
   }

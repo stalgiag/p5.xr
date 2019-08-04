@@ -15,7 +15,7 @@ function draw() {
   fill('red');
   translate(x, y, 0);
   let offset;
-  if(intersectsBox(60, 0, 0)) {
+  if(intersectsBox(60)) {
     translate(-x, -y, 0);
     fill('blue');
     offset = intersectsPlane(0, 0);
