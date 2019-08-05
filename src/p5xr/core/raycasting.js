@@ -33,8 +33,8 @@ function getRayFromScreen(screenX, screenY) {
   leftPMatrixInverse = leftPMatrixInverse.mat4;
 
   let leftDirectionCopy = leftDirection.copy();
-  leftDirection.x = leftPMatrixInverse[0] * leftDirectionCopy.x + leftPMatrixInverse[1] * leftDirectionCopy.y + leftPMatrixInverse[2] * leftDirectionCopy.z + leftPMatrixInverse[3];
-  leftDirection.y = leftPMatrixInverse[4] * leftDirectionCopy.x + leftPMatrixInverse[5] * leftDirectionCopy.y + leftPMatrixInverse[6] * leftDirectionCopy.z + leftPMatrixInverse[7];
+  leftDirection.x = leftPMatrixInverse[0] * leftDirectionCopy.x + leftPMatrixInverse[1] * leftDirectionCopy.y + leftPMatrixInverse[2] * leftDirectionCopy.z;
+  leftDirection.y = leftPMatrixInverse[4] * leftDirectionCopy.x + leftPMatrixInverse[5] * leftDirectionCopy.y + leftPMatrixInverse[6] * leftDirectionCopy.z;
   leftDirection.normalize();
 
   // get ray direction from right eye
@@ -46,8 +46,8 @@ function getRayFromScreen(screenX, screenY) {
   rightPMatrixInverse = rightPMatrixInverse.mat4;
 
   let rightDirectionCopy = rightDirection.copy();
-  rightDirection.x = rightPMatrixInverse[0] * rightDirectionCopy.x + rightPMatrixInverse[1] * rightDirectionCopy.y + rightPMatrixInverse[2] * rightDirectionCopy.z + rightPMatrixInverse[3];
-  rightDirection.y = rightPMatrixInverse[4] * rightDirectionCopy.x + rightPMatrixInverse[5] * rightDirectionCopy.y + rightPMatrixInverse[6] * rightDirectionCopy.z + rightPMatrixInverse[7];
+  rightDirection.x = rightPMatrixInverse[0] * rightDirectionCopy.x + rightPMatrixInverse[1] * rightDirectionCopy.y + rightPMatrixInverse[2] * rightDirectionCopy.z;
+  rightDirection.y = rightPMatrixInverse[4] * rightDirectionCopy.x + rightPMatrixInverse[5] * rightDirectionCopy.y + rightPMatrixInverse[6] * rightDirectionCopy.z;
   rightDirection.normalize();
 
   // combine both ray directions
@@ -166,6 +166,55 @@ p5.prototype.intersectsBox = function() {
     return false;
   }
   return true;
+};
+
+p5.prototype.intersectsPlane = function() {
+  let ray = {
+    origin: null,
+    direction: null
+  };
+  if(arguments[0].hasOwnProperty('origin')) {
+    ray.origin = arguments[0].origin.copy();
+    ray.direction = arguments[0].direction.copy();
+  }
+  else {
+    ray = getRayFromScreen(arguments[0], arguments[1]);
+  }
+  
+  // transforming ray to local plane space
+  // intersection point will be with respect to the plane
+
+  let uMVMatrixInv = p5.instance._renderer.uMVMatrix.copy();
+  uMVMatrixInv.transpose(uMVMatrixInv);
+  uMVMatrixInv.invert(uMVMatrixInv);
+  uMVMatrixInv = uMVMatrixInv.mat4;
+
+  let rayOriginCopy = ray.origin.copy();
+  ray.origin.x = uMVMatrixInv[0] * rayOriginCopy.x + uMVMatrixInv[1] * rayOriginCopy.y + uMVMatrixInv[2] * rayOriginCopy.z + uMVMatrixInv[3];
+  ray.origin.y = uMVMatrixInv[4] * rayOriginCopy.x + uMVMatrixInv[5] * rayOriginCopy.y + uMVMatrixInv[6] * rayOriginCopy.z + uMVMatrixInv[7];
+  ray.origin.z = uMVMatrixInv[8] * rayOriginCopy.x + uMVMatrixInv[9] * rayOriginCopy.y + uMVMatrixInv[10] * rayOriginCopy.z + uMVMatrixInv[11];
+
+  let rayDirectionCopy = ray.direction.copy();
+  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x + uMVMatrixInv[1] * rayDirectionCopy.y + uMVMatrixInv[2] * rayDirectionCopy.z;
+  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x + uMVMatrixInv[5] * rayDirectionCopy.y + uMVMatrixInv[6] * rayDirectionCopy.z;
+  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x + uMVMatrixInv[9] * rayDirectionCopy.y + uMVMatrixInv[10] * rayDirectionCopy.z;
+  ray.direction.normalize();
+  
+  // represeting plane
+  let planeNormal = new p5.Vector(0, 0, 1);
+  let planePoint = new p5.Vector(0, 0, 0);
+
+  //ray-plane intersection algorithm
+  let w = p5.Vector.sub(planePoint, ray.origin);
+  let d = Math.abs(p5.Vector.dot(ray.direction, planeNormal));
+  if(d === 0) {
+    return null;
+  }
+
+  let k = Math.abs(p5.Vector.dot(w, planeNormal) / d);
+  let intersectionPoint = p5.Vector.add(ray.origin, ray.direction.copy().setMag(k));
+
+  return createVector(intersectionPoint.x, intersectionPoint.y);
 };
 
 p5.prototype.generateRay = function(x1, y1, z1, x2, y2, z2) {
