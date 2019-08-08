@@ -27,7 +27,7 @@ function draw() {
     noLoop();
     pop();
   }
-  sticky();
+  sticky(true);
   pg.circle(windowWidth/2, windowHeight/2, 25);
   image(pg, -windowWidth/2, -windowHeight/2, windowWidth, windowHeight);
   noSticky();
