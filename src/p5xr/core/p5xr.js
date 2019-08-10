@@ -1,6 +1,3 @@
-
-import WebXRPolyfill from 'webxr-polyfill';
-import WebXRVersionShim from '../../webxr/webxr-version-shim';
 import p5vr from '../p5vr/p5vr';
 import p5xrViewer from './p5xrviewer';
 
@@ -26,13 +23,7 @@ export default class p5xr {
     this.xrFrameOfRef = null;
     this.gl = null;
     this.curClearColor = color(255, 255, 255);
-    this.injectedPolyfill = false;
     this.viewer = new p5xrViewer();
-    if(!navigator.xr) {
-      window.polyfill = new WebXRPolyfill();
-      this.injectedPolyfill = polyfill.injected;
-      window.versionShim = new WebXRVersionShim();
-    }
   }
 
   removeLoadingElement() {
@@ -115,7 +106,7 @@ export default class p5xr {
   }
 
   sessionCheck() {
-    if(this.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       if(this.isVR) {
         navigator.xr.requestDevice().then((device) => {
           device.supportsSession({ immersive: true }).then(() => {
@@ -158,12 +149,12 @@ export default class p5xr {
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
-    if(this.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       this.viewer.pose = frame.getDevicePose(this.xrFrameOfRef);
     } else {
       this.viewer.pose = frame.getViewerPose(this.xrFrameOfRef);
     }
-    let glLayer = this.injectedPolyfill ? session.baseLayer : session.renderState.baseLayer;
+    let glLayer = window.injectedPolyfill ? session.baseLayer : session.renderState.baseLayer;
 
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
@@ -180,7 +171,7 @@ export default class p5xr {
         this._clearVR();
       }
       
-      if(this.injectedPolyfill) {
+      if(window.injectedPolyfill) {
         for(let i=0; i<frame.views.length; i++) {
           this.viewer.view = frame.views[i];
           let viewport = glLayer.getViewport(this.viewer.view);
@@ -277,9 +268,6 @@ export default class p5xr {
   }
 
   remove() {
-    if(this.injectedPolyfill) {
-      delete navigator.xr;
-    }
     if(this.xrButton) {
       this.xrButton.remove();
     }
