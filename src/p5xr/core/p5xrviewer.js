@@ -9,8 +9,6 @@ export default class p5xrViewer {
 
     this.position = new p5.Vector(0, 0, 0);
 
-    this.drawOnTop = false;
-
     this.setPosition = function(x, y, z) {
       this.position.set(x, y, z);
       p5.instance._renderer.translate(-x, -y, -z);
@@ -66,7 +64,6 @@ p5.prototype.sticky = function(drawOnTop = false) {
 };
 
 p5.prototype.noSticky = function() {
-  if(p5xr.instance.viewer.drawOnTop) 
-    p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);    
+  p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);    
   pop();
 };
