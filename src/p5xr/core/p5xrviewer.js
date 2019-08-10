@@ -27,7 +27,7 @@ export default class p5xrViewer {
   // TODO: set matrices for non polyfill
   set view(newView) {
     this._view = newView;
-    if(p5xr.instance.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       p5.instance._renderer.uMVMatrix.set(this._pose.getViewMatrix(this._view));
       p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
       this.initialMVMatrix.set(p5.instance._renderer.uMVMatrix.copy());

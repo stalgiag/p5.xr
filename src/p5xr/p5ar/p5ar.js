@@ -24,7 +24,7 @@ export default class p5ar extends p5xr {
     createCanvas(1,1, WEBGL);
     this.canvas = p5.instance.canvas;
 
-    if(this.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       console.log('AR does not work with polyfilled version of p5.xr currently');
       return;
     } else {
@@ -55,7 +55,7 @@ export default class p5ar extends p5xr {
     // }, 0);
     // // HACK to get close to 'fullscreen' 4/7/19
     // this.xrButton.hide();
-    if(self.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       // STUB
     } else {
       navigator.xr.requestSession('immersive-ar').

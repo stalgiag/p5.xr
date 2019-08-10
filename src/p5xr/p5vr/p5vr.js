@@ -11,7 +11,6 @@ import p5xr from '../core/p5xr';
 export default class p5vr extends p5xr {
   constructor() {
     super();
-    this.vrGlobals = undefined;
   }
 
   initVR() {
@@ -33,7 +32,7 @@ export default class p5vr extends p5xr {
     p5.instance._decrementPreload();
     // create p5 canvas
     createCanvas(windowWidth, windowHeight, WEBGL);
-    if(this.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       this.onRequestSessionPolyfill();
     } else {
       this.onRequestSessionNoPF();
@@ -45,7 +44,7 @@ export default class p5vr extends p5xr {
    * @param {XRDevice}
    */
   onXRButtonClicked(device) {
-    if(this.injectedPolyfill) {
+    if(window.injectedPolyfill) {
       console.log('requesting session with device and immersive = true');
       device.requestSession({ immersive: true }).then(this.startSketch.bind(this));
     } else {

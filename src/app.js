@@ -1,4 +1,5 @@
-
+import WebXRPolyfill from 'webxr-polyfill';
+import WebXRVersionShim from './webxr/webxr-version-shim';
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
 import './p5xr/core/raycasting.js';
@@ -6,6 +7,19 @@ import './p5xr/core/raycasting.js';
 window.p5xr = {
   instance: null
 };
+
+function polyfillIfRequired() {
+  if(!navigator.xr) {
+    window.injectedPolyfill = true;
+    window.polyfill = new WebXRPolyfill();
+    window.versionShim = new WebXRVersionShim();
+  }
+  else {
+    window.injectedPolyfill = false;
+  }
+}
+
+polyfillIfRequired();
 
 /**
  * starts the process of creating a VR-ready canvas
