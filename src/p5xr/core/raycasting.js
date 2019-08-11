@@ -1,10 +1,12 @@
-function getRayFromScreen(screenX, screenY) {
+import p5xrViewer from './p5xrviewer';
+
+p5xrViewer.prototype.getRayFromScreen = function(screenX, screenY) {
   let ray = {
     origin: new p5.Vector(0, 0, 0),
     direction: new p5.Vector()
   };
 
-  let poseMatrix = p5xr.instance.viewer.poseMatrix.copy();
+  let poseMatrix = this.poseMatrix.copy();
   poseMatrix.transpose(poseMatrix);
   poseMatrix = poseMatrix.mat4;
 
@@ -13,7 +15,7 @@ function getRayFromScreen(screenX, screenY) {
   ray.origin.y = poseMatrix[7];
   ray.origin.z = poseMatrix[11];
   
-  let initialMVMatrix = p5xr.instance.viewer.initialMVMatrix.copy();
+  let initialMVMatrix = this.initialMVMatrix.copy();
   initialMVMatrix.transpose(initialMVMatrix);
   initialMVMatrix = initialMVMatrix.mat4;
 
@@ -28,7 +30,7 @@ function getRayFromScreen(screenX, screenY) {
   let leftDirection = new p5.Vector(screenX, screenY, -1);
 
   let leftPMatrixInverse = new p5.Matrix();
-  leftPMatrixInverse.invert(p5xr.instance.viewer.leftPMatrix.copy());
+  leftPMatrixInverse.invert(this.leftPMatrix.copy());
   leftPMatrixInverse.transpose(leftPMatrixInverse);
   leftPMatrixInverse = leftPMatrixInverse.mat4;
 
@@ -41,7 +43,7 @@ function getRayFromScreen(screenX, screenY) {
   let rightDirection = new p5.Vector(screenX, screenY, -1);
   
   let rightPMatrixInverse = new p5.Matrix();
-  rightPMatrixInverse.invert(p5xr.instance.viewer.rightPMatrix.copy());
+  rightPMatrixInverse.invert(this.rightPMatrix.copy());
   rightPMatrixInverse.transpose(rightPMatrixInverse);
   rightPMatrixInverse = rightPMatrixInverse.mat4;
 
@@ -64,7 +66,7 @@ p5.prototype.intersectsSphere = function() {
   };
   if(arguments.length !== 2 || !arguments[1].hasOwnProperty('origin')) {
     let screenX = arguments[1] || 0, screenY = arguments[2] || 0;
-    ray = getRayFromScreen(screenX, screenY);
+    ray = p5xr.instance.viewer.getRayFromScreen(screenX, screenY);
   }
   else {
     ray.origin = arguments[1].origin.copy();
@@ -117,12 +119,12 @@ p5.prototype.intersectsBox = function() {
   else {
     // if screenX, screenY is specified => width, height, depth must also be specified
     if(arguments.length === 5) {
-      ray = getRayFromScreen(arguments[3], arguments[4]);
+      ray = p5xr.instance.viewer.getRayFromScreen(arguments[3], arguments[4]);
       height = arguments[1];
       depth = arguments[2];
     }
     else {
-      ray = getRayFromScreen(0, 0);
+      ray = p5xr.instance.viewer.getRayFromScreen(0, 0);
       height = arguments.length > 1 ? arguments[1] : width;
       depth = arguments.length > 2 ? arguments[2] : height;
     }
@@ -178,7 +180,7 @@ p5.prototype.intersectsPlane = function() {
     ray.direction = arguments[0].direction.copy();
   }
   else {
-    ray = getRayFromScreen(arguments[0], arguments[1]);
+    ray = p5xr.instance.viewer.getRayFromScreen(arguments[0], arguments[1]);
   }
   
   // transforming ray to local plane space
