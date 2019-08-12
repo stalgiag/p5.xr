@@ -4,7 +4,6 @@ suite('p5xr', function() {
   let myp5;
 
   setup(function() {
-    window.vrGlobals = {};
     window.preload = function() {};
     window.setup = function() {};
     window.draw = function() {};
@@ -16,7 +15,6 @@ suite('p5xr', function() {
     window.preload = undefined;
     window.setup = undefined;
     window.draw = undefined;
-    window.vrGlobals = undefined;
   });
   
   suite('init()', function() {
