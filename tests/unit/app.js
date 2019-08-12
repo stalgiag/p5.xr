@@ -4,7 +4,6 @@ suite('app', function() {
   let myp5;
 
   suiteSetup(function() {
-    window.vrGlobals = {};
     window.setup = function() {};
     window.draw = function() {};
     myp5 = new p5();
@@ -14,7 +13,6 @@ suite('app', function() {
     myp5.remove();
     window.setup = undefined;
     window.draw = undefined;
-    window.vrGlobals = undefined;
   });
 
   suite('createVRCanvas()', function() {
