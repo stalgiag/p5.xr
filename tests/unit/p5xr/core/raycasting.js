@@ -51,10 +51,56 @@ suite('raycasting', function() {
 
     test('uMVMatrix is preserved', function() {
       let uMVMatrix = [0.9991118311882019, 0.010332025587558746, 0.04085145890712738, -0, -0.032737694680690765, 0.8007082939147949, 0.5981592535972595, 0, -0.026529904454946518, -0.5989654064178467, 0.8003354072570801, 0, -43.66838073730469, 568.6730346679688, -75.510009765625, 1];
-      myp5._renderer.uMVMatrix.set(uMVMatrix);
+      myp5._renderer.uMVMatrix.set([...uMVMatrix]);
       let intersects = intersectsSphere(70);
       assert.deepEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix);
     });
   });
 
+  suite('intersectsBox()', function() {
+    test('parameters : width, [height], [depth]', function() {
+      let intersects = intersectsBox(50);
+      assert.isTrue(intersects);
+      intersects = intersectsBox(50, 50);
+      assert.isTrue(intersects);
+      intersects = intersectsBox(50, 50, 50);
+      assert.isTrue(intersects);
+    });
+
+    test('parameters : width, height, depth, screenX, screenY', function() {
+      let intersects = intersectsBox(50, 50, 50, 0, 0);
+      assert.isTrue(intersects);
+    });
+
+    test('parameters : width, [height], [depth], rayObject and detects true intersection', function() {
+      let ray = {
+        origin: new p5.Vector(-379.7965087890625, 356.3955993652344, -370.9411315917969),
+        direction: new p5.Vector(0.9012790193414948, -0.4332300690047571, 0.002799393678459774)
+      };
+      myp5._renderer.uMVMatrix.set([0.9810172915458679, 0.09549812227487564, 0.1687755137681961, -0, -0.13770757615566254, 0.9558517932891846, 0.2595842778682709, 0, -0.13653458654880524, -0.27789831161499023, 0.950857937335968, 0, -39.58851623535156, 146.8292694091797, -383.3383483886719, 1]);
+      let intersects = intersectsBox(70, ray);
+      assert.isTrue(intersects);
+      intersects = intersectsBox(70, 70, ray);
+      assert.isTrue(intersects);
+      intersects = intersectsBox(70, 70, 70, ray);
+      assert.isTrue(intersects);
+    });
+
+    test('detection of ray, box not intersecting', function() {
+      let ray = {
+        origin: new p5.Vector(-246.22828674316406, 90.79129028320312, -547.61376953125),
+        direction: new p5.Vector(-0.9928132290940235, 0.0643936832001089, 0.10087291856500656)
+      };
+      myp5._renderer.uMVMatrix.set([0.9990965127944946, -0.018277179449796677, -0.03836707025766373, 0, 0.04172855615615845, 0.5929256677627563, 0.8041753172874451, -0, 0.008050763048231602, -0.8050497174263, 0.593152642250061, 0, -338.5563049316406, 150.32810974121094, -465.5549621582031, 1]);
+      let intersects = intersectsBox(70, ray);
+      assert.isFalse(intersects);
+    });
+
+    test('uMVMatrix is preserved', function() {
+      let uMVMatrix = [0.9991118311882019, 0.010332025587558746, 0.04085145890712738, -0, -0.032737694680690765, 0.8007082939147949, 0.5981592535972595, 0, -0.026529904454946518, -0.5989654064178467, 0.8003354072570801, 0, -43.66838073730469, 568.6730346679688, -75.510009765625, 1];
+      myp5._renderer.uMVMatrix.set([...uMVMatrix]);
+      let intersects = intersectsBox(70);
+      assert.deepEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix);
+    });
+  });
 });
