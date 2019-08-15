@@ -1,5 +1,5 @@
 # p5.xr
-This library is currently at a pre-alpha stage. Alpha release is currently projected for early fall. This library is a wrapper for WebXR that allows you to render anything that can be rendered in p5 WEBGL mode in VR or AR. The WebXR API is unstable right now and only certain hardware with certain versions of Chrome are known to work. Extensive documentation and examples are coming with Alpha release.
+This library is currently at a pre-alpha stage. Alpha release is currently projected for early fall. This library is a wrapper for WebXR that allows you to render anything that can be rendered in p5 WEBGL mode in VR or AR. The WebXR API is unstable right now and only certain hardware with certain versions of Chrome (>v75) are known to work. Extensive documentation and examples are coming with Alpha release.
 
 ## Setting up for VR
 Your phone will need an accelerometer/gyrometer and you should have the most recent version of Chrome installed.
