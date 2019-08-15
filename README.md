@@ -1,10 +1,28 @@
 # p5.xr
 
 ## STATUS
-This is at a pre-pre-alpha stage. Alpha release is currently projected for summer. The WebXR API is very unstable right now and development is in a minor limbo while waiting for that work to solidify. For simple sketches, mobile VR works relatively well in Chrome when served locally (ie use something like https://www.npmjs.com/package/http-server on shared wifi with your phone). Once WebXR stabilizes a bit and the non-polyfill spec is more predictable, this will work in more scenarios such as with the p5 online editor.
+This is at a pre-alpha stage. Alpha release is currently projected for early fall. The WebXR API is unstable right now and only certain hardware with certain versions of Chrome are known to work.
+
+## Setting up for VR
+Your phone will need an accelerometer/gyrometer and you should have the most recent version of Chrome installed.
+
+1. On your phone enter `chrome://flags` into the URL bar.
+2. Type `webxr` into the search bar
+3. Set everything here to 'Enabled'
+4. Try one of these examples
+    - [Basic VR Example](https://editor.p5js.org/stalgiag/present/7RUbTWiOg) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/7RUbTWiOg)
+    - [Raycasting Example](https://editor.p5js.org/stalgiag/present/xijXG0FOc) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/xijXG0FOc)
+    - [2D in VR Example](https://editor.p5js.org/stalgiag/present/TOBzS6UP1) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/TOBzS6UP1)
+    
+## Setting up for AR
+
+1. Your phone must have Android 8.0 currently (ARKit and iOS support coming)
+2. Install ARCore in the Play Store
+3. Complete Steps 1 - 3 in the `Setting up for VR` section
+4. Try and example:
+  - [Basic AR Example (no anchors, floating may occur)[https://editor.p5js.org/stalgiag/present/1wzwzI2uG]
 
 ## BUILDING
-As stated above, this is currently not guaranteed to work. All of the manual examples work well on a Samsung Galaxy S7 in Chrome. Much more in the way of testing, stabilization, optimization, and features to come.
 
 to build package:
 - `npm install`
