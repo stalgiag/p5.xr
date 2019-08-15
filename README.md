@@ -2,10 +2,11 @@
 This library is currently at a pre-alpha stage. Alpha release is currently projected for early fall. This library is a wrapper for WebXR that allows you to render anything that can be rendered in p5 WEBGL mode in VR or AR. The WebXR API is unstable right now and only certain hardware with certain versions of Chrome (>v75) are known to work. Extensive documentation and examples are coming with Alpha release.
 
 ## Setting up for VR
-Your phone will need an accelerometer/gyrometer and you should have the most recent version of Chrome installed.
+Your phone will need an accelerometer/gyrometer and you should have the most recent version of Chrome or Firefox installed.
 
 <img src = 'https://user-images.githubusercontent.com/10382506/63109079-54a98800-bf56-11e9-8c17-341817f7489c.jpg' alt = 'Several red spheres with a single blue sphere in the center, double drawn in VR goggles view' height = '200' />
 
+(If using Firefox, skip straight to 4)
 1. On your phone enter `chrome://flags` into the URL bar.
 2. Type `webxr` into the search bar
 3. Set everything here to 'Enabled'
