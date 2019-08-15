@@ -26,6 +26,10 @@ Your phone will need an accelerometer/gyrometer and you should have the most rec
 3. Complete Steps 1 - 3 in the `Setting up for VR` section
 4. Try and example:
     - [Basic AR Example (no anchors, floating may occur)](https://editor.p5js.org/stalgiag/present/1wzwzI2uG)
+    
+## DOCS
+
+COMING SOON!
 
 ## BUILDING
 
@@ -35,5 +39,3 @@ to build package:
 
 to build docs:
 - `npm run docs`
-
-you may need to enable the WebXR flag in your browser by going to `chrome://flags/#webxr` in your url bar
