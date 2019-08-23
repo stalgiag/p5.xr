@@ -44,33 +44,7 @@ export default class p5xr {
 
   // Substitute for p5._setup() which creates a default webgl canvas
   _setupxr() {
-    let context = window;
-    p5.instance.createCanvas(
-      p5.instance._defaultCanvasSize.width,
-      p5.instance._defaultCanvasSize.height,
-      'webgl'
-    );
-    if (typeof context.preload === 'function') {
-      for (let f in p5.instance._preloadMethods) {
-        context[f] = p5.instance._preloadMethods[f][f];
-        if (context[f] && p5.instance) {
-          context[f] = context[f].bind(p5.instance);
-        }
-      }
-    }
-
-    if (typeof context.setup === 'function') {
-      context.setup();
-    }
-
-    let canvases = document.getElementsByTagName('canvas');
-    for (let i = 0; i < canvases.length; i++) {
-      let k = canvases[i];
-      if (k.dataset.hidden === 'true') {
-        k.style.visibility = '';
-        delete k.dataset.hidden;
-      }
-    }
+    createCanvas(windowWidth, windowHeight, WEBGL);
     p5.instance._setupDone = true;
   }
 
@@ -83,10 +57,9 @@ export default class p5xr {
    * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
    */  
   init() {
-    window._setup = this._setupxr;
-    p5.instance._setup = this._setupxr;
-    this.isVR = this instanceof p5vr;
     p5.instance._incrementPreload();
+    this._setupxr();
+    this.isVR = this instanceof p5vr;
     this.removeLoadingElement();
     // Is WebXR available on this UA?
     this.xrButton = new XRDeviceButton({
