@@ -9,10 +9,6 @@ import p5xr from '../core/p5xr';
  */
 
 export default class p5vr extends p5xr {
-  constructor() {
-    super();
-  }
-
   initVR() {
     this.init();
   }
@@ -29,9 +25,6 @@ export default class p5vr extends p5xr {
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', this.onSessionEnded.bind(this));
-    p5.instance._decrementPreload();
-    // create p5 canvas
-    createCanvas(windowWidth, windowHeight, WEBGL);
     if(window.injectedPolyfill) {
       this.onRequestSessionPolyfill();
     } else {
