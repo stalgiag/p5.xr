@@ -25,6 +25,9 @@ export default class p5vr extends p5xr {
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', this.onSessionEnded.bind(this));
+    if (typeof window.setup === 'function') {
+      window.setup();
+    }
     if(window.injectedPolyfill) {
       this.onRequestSessionPolyfill();
     } else {

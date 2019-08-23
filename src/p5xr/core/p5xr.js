@@ -45,11 +45,6 @@ export default class p5xr {
   // Substitute for p5._setup() which creates a default webgl canvas
   _setupxr() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    let context = window;
-
-    if (typeof context.setup === 'function') {
-      context.setup();
-    }
     p5.instance._setupDone = true;
   }
 
