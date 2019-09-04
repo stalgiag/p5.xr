@@ -39,6 +39,7 @@
     "browserify": "^16.5.0",
     "chai": "*",
     "docdash": "^1.1.1",
+    "docsify-cli": "^4.3.0",
     "eslint": "^5.16.0",
     "jsdoc": "^3.6.3",
     "jsdoc-export-default-interop": "^0.3.1",

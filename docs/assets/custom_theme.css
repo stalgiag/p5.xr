@@ -1,0 +1,44 @@
+:root {
+
+
+
+    --mono-hue        :50;
+    --mono-saturation : 98%;
+
+
+    --mono-base       : hsl(var(--mono-hue), var(--mono-saturation), 60%); /* #808080 */
+
+
+    --base-background-color: var(--mono-base);
+    --theme-color:black;
+
+    --cover-background-color                           : var(--mono-base);
+    --cover-border-color                               : var(--theme-color);
+    --cover-border-width: 5px;
+    --cover-border-inset                               : 10px;
+    --cover-color: var(--mono-base);
+    --cover-heading-color                              : black;
+    --cover-margin: 50px;
+
+    --link-color                        : rgb(48, 48, 213);
+    --link-color--hover                 : rgb(48, 48, 213);
+
+    --sidebar-background                          : var(--theme-color);
+    --sidebar-border-color                        : var(--theme-color);
+    --sidebar-border-width                        : 5px;
+    --sidebar-padding                             : 0 5px;
+
+    --sidebar-nav-margin                          : 0.5rem 0 0;
+
+    --sidebar-name-color                          : var(--mono-tint3);
+
+    --sidebar-toggle-icon-color :black;
+    --sidebar-toggle-width : 50px;
+    --sidebar-width: 12rem;
+
+    --sidebar-toggle-icon-height                  : 25px;
+    --sidebar-toggle-icon-stroke-width            : 5px;
+    --sidebar-toggle-icon-width                   : 36px;
+    --sidebar-toggle-offset-top                   : calc(100vh - (var(--sidebar-toggle-height)));
+
+}
