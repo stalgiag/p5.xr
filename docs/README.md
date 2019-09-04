@@ -1,40 +1,24 @@
-# p5.xr
-This library is currently at a pre-alpha stage. Alpha release is currently projected for early fall. This library is a wrapper for WebXR that allows you to render anything that can be rendered in p5 WEBGL mode in VR or AR. The WebXR API is unstable right now and only certain hardware with certain versions of Chrome (>v75) are known to work. Extensive documentation and examples are coming with Alpha release.
+## p5xr
 
-## Setting up for VR
-Your phone will need an accelerometer/gyrometer and you should have the most recent version of Chrome or Firefox installed.
+In culpa reprehenderit duis amet sunt id sunt velit laboris nostrud. Proident incididunt labore aliquip commodo dolor excepteur ullamco non aliqua sit Lorem irure. Culpa consectetur aliqua irure eiusmod ut magna nisi sint magna exercitation et ex. Non deserunt duis mollit esse est sit est.
 
-<img src = 'https://user-images.githubusercontent.com/10382506/63109079-54a98800-bf56-11e9-8c17-341817f7489c.jpg' alt = 'Several red spheres with a single blue sphere in the center, double drawn in VR goggles view' height = '200' />
+## What it is
 
-(If using Firefox, skip straight to 4)
-1. On your phone enter `chrome://flags` into the URL bar.
-2. Type `webxr` into the search bar
-3. Set everything here to 'Enabled'
-4. Try one of these examples
-    - [Basic VR Example](https://editor.p5js.org/stalgiag/present/7RUbTWiOg) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/7RUbTWiOg)
-    - [Raycasting Example](https://editor.p5js.org/stalgiag/present/xijXG0FOc) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/xijXG0FOc)
-    - [2D in VR Example](https://editor.p5js.org/stalgiag/present/TOBzS6UP1) ---- [Editor Link](https://editor.p5js.org/stalgiag/sketches/TOBzS6UP1)
-    
-## Setting up for AR
-
-<img src = 'https://user-images.githubusercontent.com/10382506/63109012-2fb51500-bf56-11e9-9f81-d74d14845b9c.jpg' alt = 'A floating box with a backdrop that is people working in the Frank-Ratchye Insitute for Creative Inquiry' height = '400' />
+Fugiat dolore ad laboris consectetur. Anim eiusmod do sint commodo commodo veniam elit do officia id aliqua id dolor. Consequat excepteur culpa incididunt sit et excepteur laboris ea commodo id commodo. Est exercitation irure quis minim ea in enim amet ullamco aliqua qui commodo.
 
 
-1. Your phone must have Android 8.0 currently (ARKit and iOS support coming)
-2. Install ARCore in the Play Store
-3. Complete Steps 1 - 3 in the `Setting up for VR` section
-4. Try and example:
-    - [Basic AR Example (no anchors, floating may occur)](https://editor.p5js.org/stalgiag/present/1wzwzI2uG)
-    
-## DOCS
+## Features
 
-COMING SOON!
+Qui laboris ea ex culpa irure duis irure nulla commodo Lorem enim enim incididunt. Nostrud eiusmod irure irure amet excepteur Lorem. Deserunt est dolore pariatur sint deserunt. Ipsum dolore mollit qui enim aute ad irure ut irure do excepteur excepteur veniam elit. Reprehenderit reprehenderit occaecat id mollit do do labore anim culpa ad sint.
 
-## BUILDING
+## Examples
 
-to build package:
-- `npm install`
-- `npm run build`
+Veniam consequat ipsum quis ea ea nulla nisi nulla esse sint occaecat nisi sunt cupidatat. Ad laborum officia nulla reprehenderit ad laboris non dolor mollit. Amet fugiat nisi veniam Lorem dolore mollit consectetur ea Lorem dolor ea nulla labore est. Pariatur elit qui officia ut. Commodo labore exercitation ad magna officia cillum ex consectetur. Non nulla quis officia exercitation pariatur.
 
-to build docs:
-- `npm run docs`
+## Donate
+
+Amet ex labore enim magna excepteur ex exercitation consectetur consequat ea fugiat ea. Anim irure anim occaecat ad sunt eu mollit adipisicing sunt ex exercitation. Pariatur cupidatat quis veniam pariatur dolore laborum elit nulla dolore aliqua esse non ipsum. Et nostrud veniam magna proident id velit fugiat. Eu commodo dolore elit fugiat irure tempor voluptate tempor sit nulla velit tempor est. Velit ut proident ut adipisicing ut incididunt sit.
+
+## Community
+
+Ut sint excepteur fugiat enim consectetur consequat duis. Nisi Lorem adipisicing irure commodo pariatur irure commodo dolor reprehenderit adipisicing fugiat. Dolor veniam fugiat commodo id cillum et. Irure amet officia enim cillum id nostrud aute labore. Incididunt laboris dolore sit culpa elit culpa sunt. Velit ipsum nulla labore dolore ut irure tempor enim.
