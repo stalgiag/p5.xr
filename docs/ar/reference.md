@@ -1,0 +1,6 @@
+```
+function preload() {
+    createARCanvas();
+}
+```
+
