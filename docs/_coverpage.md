@@ -1,3 +1,3 @@
 # p5<small>xr</small>
 
-[Getting Started](#p5xr)
+[Getting Started](#what-is-it)

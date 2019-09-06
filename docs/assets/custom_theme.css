@@ -12,7 +12,7 @@
     --base-background-color: var(--mono-base);
     --theme-color:black;
 
-    --link-color                        : rgb(48, 48, 213);
+    --link-color                        : rgb(44, 201, 151);
     --link-color--hover                 : rgb(48, 48, 213);
 
     --sidebar-background                          : var(--theme-color);
