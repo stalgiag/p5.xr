@@ -1,3 +1,13 @@
+@font-face {
+    font-family: kaerukaeru;
+    src: url("./kaerukaeru-regular.otf")
+}
+
+@font-face {
+    font-family: sporting-grotesk;
+    src: url("./sporting-grotesk.otf")
+}
+
 :root {
 
     --mono-hue: 50;
@@ -15,11 +25,17 @@
     --sidebar-background: var(--mono-base);
     --sidebar-border-color: var(--theme-color);
     --sidebar-border-width: 5px;
-    --sidebar-padding: 0 15px;
+    --sidebar-padding: 0 5px;
 
-    --sidebar-nav-margin: 0.1rem 0 0;
+    --sidebar-nav-margin: 0rem 0 0;
 
-    --sidebar-name-color: var(--link-color);
+    --sidebar-name-color: var(--mono-base);
+    --sidebar-name-font-family                    : kaerukaeru;
+    --sidebar-name-font-size                      : 4rem;
+    --sidebar-name-font-weight                    : normal;
+    --sidebar-name-margin                         : 1.5rem 0 0;
+    --sidebar-name-padding                        : -0;
+ 
 
     --sidebar-toggle-icon-color: black;
     --sidebar-toggle-width: 50px;
@@ -39,6 +55,16 @@
     --cover-margin: 0 auto;
     --cover-max-width: 40em;
     --cover-text-align: center;
+
+    /* Headings */
+    --heading-h2-border-color           : black;
+    --heading-h2-border-style           : solid;
+    --heading-h2-border-width           : 1px;
+    --heading-h2-padding                : 10px;
+    --heading-h2-color                  : black;
+    --heading-h2-font-family            : sporting-grotesk;
+    --heading-h2-font-size              : var(--font-size-xl);
+    --heading-h2-font-weight            : ;
 
     /* Background */
     --cover-background-blend-mode: ;
@@ -127,4 +153,15 @@
 .sidebar-toggle {
     left: 0.75rem;
     top: -0.1rem;
+}
+
+.sidebar .app-name {
+    border-radius: 10px;
+    background-color: black;
+}
+
+
+
+.marquee3k__copy {
+    padding-right: 2px;
 }
