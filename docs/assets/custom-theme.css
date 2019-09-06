@@ -87,15 +87,15 @@
     --cover-border-width: 5px;
 
     /* Buttons */
-    --cover-button-background: ;
-    --cover-button-background--hover: ;
-    --cover-button-border: 1px solid var(--theme-color);
-    --cover-button-border--hover: ;
+    --cover-button-background: transparent;
+    --cover-button-background--hover: black;
+    --cover-button-border: 1px solid var(--theme-color);;
+    --cover-button-border--hover: 1px solid black;
     --cover-button-border-radius: var(--border-radius-m);
     --cover-button-box-shadow: ;
     --cover-button-box-shadow--hover: ;
-    --cover-button-color: var(--theme-color);
-    --cover-button-color--hover: ;
+    --cover-button-color: black;
+    --cover-button-color--hover: var(--mono-base);
     --cover-button-padding: 0.5em 2rem;
     --cover-button-text-decoration: none;
     --cover-button-text-decoration--hover: ;

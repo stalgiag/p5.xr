@@ -3,3 +3,4 @@
 ![3D Stipled Primitives](./assets/placeholder-logo.png)
 
 [Getting Started](#what-is-it)
+[Download](#download)
