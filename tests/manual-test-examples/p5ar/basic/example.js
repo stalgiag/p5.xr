@@ -2,16 +2,17 @@ function setup() {
   createARCanvas();
 }
 
-let counter = 0;
+let rot = 0;
+let rotSpeed = 0.1;
+
 
 function draw() {
-  // TEMPORARY HACK
-  if(counter < 2) {counter++; return;}
-  translate(0, 0, 100);
+  rot += rotSpeed;
+  translate(0, 0, 10);
   fill(100,240,100);
   stroke(200, 0, 200);
   strokeWeight(0.1);
-  rotateX(frameCount * 0.02);
-  rotateY(frameCount * 0.02);
-  box(20);
+  rotateX(rot);
+  rotateY(rot);
+  box(2);
 }

@@ -122,10 +122,11 @@ export default class p5xr {
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
+    let viewer = null;
     if(window.injectedPolyfill) {
       this.viewer.pose = frame.getDevicePose(this.xrFrameOfRef);
     } else {
-      this.viewer.pose = frame.getViewerPose(this.xrFrameOfRef);
+      viewer = frame.getViewerPose(this.xrFrameOfRef);
     }
     let glLayer = window.injectedPolyfill ? session.baseLayer : session.renderState.baseLayer;
 
@@ -134,7 +135,8 @@ export default class p5xr {
     // to render with it. If not in this case we'll just leave the
     // framebuffer cleared, so tracking loss means the scene will simply
     // dissapear.
-    if (this.viewer.pose) {
+    if(viewer) {
+      this.viewer.pose = frame.getViewerPose(this.xrFrameOfRef);
       // If we do have a valid pose, bind the WebGL layer's framebuffer,
       // which is where any content to be displayed on the XRDevice must be
       // rendered.
