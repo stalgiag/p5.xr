@@ -1,14 +1,14 @@
-name: Tests
+name: tests
 on: [push, pull_request]
-
-jobs:
-  build:
-    name: Run Tests
-    runs-on: ubuntu-latest
+  jobs:
+    test:
+      name: set up node
+      runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    name: npm install, test
       - run: npm install
       - run: npm test
