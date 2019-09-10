@@ -64,7 +64,8 @@ export default class p5xr {
     // Is WebXR available on this UA?
     this.xrButton = new XRDeviceButton({
       onRequestSession: this.onXRButtonClicked.bind(this),
-      onEndSession: this.onSessionEnded.bind(this)
+      onEndSession: this.onSessionEnded.bind(this),
+      textEnterXRTitle: this.isVR ? 'ENTER VR' : 'ENTER AR'
     });
     let header = document.querySelector('header');
     if (!header) {
