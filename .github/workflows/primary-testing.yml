@@ -1,14 +1,15 @@
-name: tests
-on: [push, pull_request]
-  jobs:
-    build:
-      name: set up node
-      runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      name: npm install, test
-        - run: npm ci
-        - run: npm run test
+name: test
+
+on: 
+  push:
+    jobs:
+      test:
+        name: test
+        runs-on: ubuntu-latest
+        steps:
+          uses: actions/checkout@master
+          uses: actions/setup-node@v1
+            with:
+              node-version: '10.x'
+          run: npm ci
+          run: npm run test
