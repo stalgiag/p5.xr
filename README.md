@@ -1,4 +1,4 @@
-https://github.com/stalgiag/p5.xr/workflows/test/badge.svg
+![](https://github.com/stalgiag/p5.xr/workflows/test/badge.svg)
 
 # p5.xr
 
