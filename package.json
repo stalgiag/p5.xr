@@ -43,7 +43,11 @@
     "docdash": "^1.1.1",
     "docsify-cli": "^4.3.0",
     "eslint": "^5.16.0",
+<<<<<<< HEAD
     "http-server": "^0.11.1",
+=======
+    "jsartoolkit5": "0.0.4",
+>>>>>>> First attempt at marker based AR
     "jsdoc": "^3.6.3",
     "jsdoc-export-default-interop": "^0.3.1",
     "karma": "^4.2.0",
