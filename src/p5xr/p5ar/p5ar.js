@@ -18,10 +18,6 @@ export default class p5ar extends p5xr {
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', self.onSessionEnded);
-    // create p5 canvas
-    // this._preloadOverride();
-    // HACK TO GET RENDERING CONTEXT 4/7/19
-    createCanvas(1,1, WEBGL);
     this.canvas = p5.instance.canvas;
 
     if(window.injectedPolyfill) {
@@ -44,17 +40,7 @@ export default class p5ar extends p5xr {
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
         navigator.msGetUserMedia);
-    // AR currently uses a different canvas. 
-    let outputCanvas = document.createElement('canvas');
-    document.querySelector('header').appendChild(outputCanvas);
-    let ctx = outputCanvas.getContext('xrpresent');
-    // // HACK to get close to 'fullscreen' 4/7/19
-    // outputCanvas.style.width = window.innerWidth + 'px';
-    // setTimeout(function() {
-    //   outputCanvas.style.height = window.innerHeight + 'px';
-    // }, 0);
-    // // HACK to get close to 'fullscreen' 4/7/19
-    // this.xrButton.hide();
+
     if(window.injectedPolyfill) {
       // STUB
     } else {
