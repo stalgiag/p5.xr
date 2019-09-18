@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "vedhant",
+      "name": "Vedhant Agarwal",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/32607479?v=4",
+      "profile": "https://github.com/vedhant",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "p5.xr",
+  "projectOwner": "stalgiag",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
