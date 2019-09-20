@@ -1,3 +1,4 @@
+
 let rotSpeed = 0.015;
 
 let arController;
@@ -5,7 +6,7 @@ let arController;
 let markerId;
 
 window.onload = function() {
-  arController = new ARController(windowWidth, windowHeight, 'camera_para.dat');
+  arController = new ARController(480, 640, 'camera_para.dat');
   arController.onload = function() {
     
     // arController.debugSetup();
@@ -14,18 +15,23 @@ window.onload = function() {
       markerId = uId;
       readyForDetection = true;
       detectTest = arController.trackPatternMarkerId(0, 1);
+      
+
       console.log(detectTest);
       // arController.debugSetup();
       
-      var camera_mat = arController.getCameraMatrix();
-      // p5.instance._renderer.uProjMatrix = camera_mat;
-      console.log(camera_mat);
+      // var camera_mat = arController.getCameraMatrix();
+      // console.log(camera_mat);
+
+      // yet another non-working approach
+      // addListener();
     });
   };
 };
 
 function setup() {
   createARCanvasMarker();
+  defaultCam = new p5.Camera();
 }
 
 let capture;
@@ -33,7 +39,7 @@ let readyForDetection = false;
 
 
 function createARCanvasMarker() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(480, 640, WEBGL);
   capture = createCapture({
     audio: false,
     video: {
@@ -43,7 +49,7 @@ function createARCanvasMarker() {
     }
   }
   );
-  capture.size(640, 480);
+  capture.size(480, 640);
   capture.hide();
   
   detectedMat = new p5.Matrix();
@@ -54,11 +60,28 @@ let transMat = new Float64Array(12);
 let currentMat = new Float64Array(16);
 let targetMat = new Float64Array(16);
 let rot = new Float64Array(3);
+let defaultCam;
 
 function draw() {
   background(0);
-  // sticky
-
+  // p5.instance._renderer.uMVMatrix.set(
+  //   defaultCam.cameraMatrix.mat4[0],
+  //   defaultCam.cameraMatrix.mat4[1],
+  //   defaultCam.cameraMatrix.mat4[2],
+  //   defaultCam.cameraMatrix.mat4[3],
+  //   defaultCam.cameraMatrix.mat4[4],
+  //   defaultCam.cameraMatrix.mat4[5],
+  //   defaultCam.cameraMatrix.mat4[6],
+  //   defaultCam.cameraMatrix.mat4[7],
+  //   defaultCam.cameraMatrix.mat4[8],
+  //   defaultCam.cameraMatrix.mat4[9],
+  //   defaultCam.cameraMatrix.mat4[10],
+  //   defaultCam.cameraMatrix.mat4[11],
+  //   defaultCam.cameraMatrix.mat4[12],
+  //   defaultCam.cameraMatrix.mat4[13],
+  //   defaultCam.cameraMatrix.mat4[14],
+  //   defaultCam.cameraMatrix.mat4[15]
+  // );
 
   fill(100,100,250);
 
@@ -67,35 +90,81 @@ function draw() {
     arController.process(capture.elt);
 
     arController.getTransMatSquare(0, 1, transMat);
-    arController.transMatToGLMat(transMat, currentMat, 1);
+    arController.transMatToGLMat(detectTest.matrix, currentMat, 100);
     // copyMarkerMatrix(transMat, currentMat);
 
+    
+    // p5.instance._renderer.uMVMatrix = superTemp;
 
     // currentMat = arController.getTransformationMatrix();
-
+    let pCurMat = p5.Matrix.identity().set(
+      currentMat[0],
+      currentMat[1],
+      currentMat[2],
+      currentMat[3],
+      currentMat[4],
+      currentMat[5],
+      currentMat[6],
+      currentMat[7],
+      currentMat[8],
+      currentMat[9],
+      currentMat[10],
+      currentMat[11],
+      currentMat[12],
+      currentMat[13],
+      currentMat[14],
+      currentMat[15]
+    );
+    
+    let superTemp = pCurMat.copy().mult(p5.instance._renderer.uMVMatrix);
+    let fin = p5.Matrix.identity().transpose(superTemp);
+    
 
     // to be continued 
     // not sure if the projMat is correct (or if this is even the correct prop)
     // p5.instance._renderer.uProjMatrix = arController.getCameraMatrix();
-      
+    
     drawVideoFeed();
-
+    
+    if(detectTest.inCurrent) {
+      applyMatrix(
+        superTemp.mat4[0],
+        superTemp.mat4[1],
+        superTemp.mat4[2],
+        superTemp.mat4[3],
+        superTemp.mat4[4],
+        superTemp.mat4[5],
+        superTemp.mat4[6],
+        superTemp.mat4[7],
+        superTemp.mat4[8],
+        superTemp.mat4[9],
+        superTemp.mat4[10],
+        superTemp.mat4[11],
+        superTemp.mat4[12],
+        superTemp.mat4[13],
+        superTemp.mat4[14],
+        superTemp.mat4[15]
+      );
+      box(100);
+    }
+    // translate(width/2, height/2, 0);
+    // }
     // TESTING TRANSLATE AND ROTATE
     // translate(0,0,-200);
     // rotateY(50);
     // TESTING TRANSLATE AND ROTATE
 
     // This isn't correct yet, scaling done in transMatToGLMat is a magical #
-    invert(targetMat, currentMat);
+    // invert(targetMat, currentMat);
 
-    getRotation(rot, targetMat);
-    rotateY(rot[1]);
-    rotateX(rot[0]);
-    rotateZ(rot[2]);
+    // getRotation(rot, targetMat);
+    // rotateY(rot[1]);
+    // rotateX(rot[0]);
+    // rotateZ(rot[2]);
 
     
-    getTranslation(trans, currentMat);
-    translate(trans[0], 0, 0);
+    // getTranslation(trans, currentMat);
+    // translate(trans[0], 0, 0);
 
     // x index = 12
     // y index = 13
@@ -103,13 +172,97 @@ function draw() {
     // translate(currentMat[12], currentMat[13], currentMat[14]);
 
 
-    box(100);
     // arController.debugDraw();
   }
 
   
   // rot += rotSpeed;
   // rotateY(rot);
+}
+
+function addListener() {
+  // listen to the event
+  arController.addEventListener('getMarker', function(event) {
+    onMarkerFound(event);
+  }
+  );
+}
+
+let modelViewMatrix = p5.Matrix.identity();
+
+function onMarkerFound(event) {
+  // console.log(event);
+  // honor his.parameters.minConfidence
+  // if(event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return;
+  // if(event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return;
+
+  // updateWithModelViewMatrix(modelViewMatrix);
+  if(detectTest.inCurrent) {
+    modelViewMatrix.set(event.data.matrixGL_RH);
+    console.log(modelViewMatrix);
+  }
+}
+
+function updateWithModelViewMatrix(modelViewMatrix) {
+
+  // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+  // var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix);
+  // tmpMatrix.multiply(modelViewMatrix);
+
+  // modelViewMatrix.copy(tmpMatrix);
+
+  // change markerObject3D.matrix based on parameters.changeMatrixMode
+  // if(this.parameters.changeMatrixMode === 'modelViewMatrix') {
+  if(true) {
+    // if (this.parameters.smooth) {
+    if(false) {
+      // var sum,
+      //   i, j,
+      //   averages, // average values for matrix over last smoothCount
+      //   exceedsAverageTolerance = 0;
+
+      // this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
+
+      // if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+      //   markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+      // } else {
+      //   this.smoothMatrices.shift(); // remove oldest entry
+      //   averages = [];
+
+      //   for (i in modelViewMatrix.elements) { // loop over entries in matrix
+      //     sum = 0;
+      //     for (j in this.smoothMatrices) { // calculate average for this entry
+      //       sum += this.smoothMatrices[j][i];
+      //     }
+      //     averages[i] = sum / this.parameters.smoothCount;
+      //     // check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+      //     if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+      //       exceedsAverageTolerance++;
+      //     }
+      //   }
+				
+      //   // if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+      //   if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+      //     // then update matrix values to average, otherwise, don't render to minimize jitter
+      //     for (i in modelViewMatrix.elements) {
+      //       modelViewMatrix.elements[i] = averages[i];
+      //     }
+      //     markerObject3D.matrix.copy(modelViewMatrix);
+      //     renderReqd = true; // render required in animation loop
+      //   }
+    }
+    return modelViewMatrix;
+  } else {
+    // markerObject3D.matrix.copy(modelViewMatrix);
+    return modelViewMatrix;
+  }
+  // else if(this.parameters.changeMatrixMode === 'cameraTransformMatrix') {
+  //   markerObject3D.matrix.getInverse(modelViewMatrix);
+  // }else {
+  //   console.assert(false);
+  // }
+
+  
 }
 
 let trans = new Float64Array(3);
