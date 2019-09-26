@@ -160,7 +160,7 @@ function draw() {
       t.mat4[11],
       t.mat4[12],
       t.mat4[13],
-      t.mat4[14],
+      -t.mat4[14],
       t.mat4[15]
     );
 
@@ -342,6 +342,16 @@ function updateWithModelViewMatrix(modelViewMatrix) {
   //   console.assert(false);
   // }
 
+  
+}
+
+// let smoothingMats = new Array[16][16];
+
+function addToSmoothingMats() {
+
+}
+
+function getSmoothedMat() {
   
 }
 
