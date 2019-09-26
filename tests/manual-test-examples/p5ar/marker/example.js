@@ -6,7 +6,7 @@ let arController;
 let markerId;
 
 window.onload = function() {
-  arController = new ARController(480, 640, 'camera_para.dat');
+  arController = new ARController(640, 480, 'camera_para.dat');
   arController.onload = function() {
     
     // arController.debugSetup();
@@ -24,7 +24,7 @@ window.onload = function() {
       // console.log(camera_mat);
 
       // yet another non-working approach
-      // addListener();
+      addListener();
     });
   };
 };
@@ -32,6 +32,7 @@ window.onload = function() {
 function setup() {
   createARCanvasMarker();
   defaultCam = new p5.Camera();
+  glRH = p5.Matrix.identity();
 }
 
 let capture;
@@ -39,17 +40,9 @@ let readyForDetection = false;
 
 
 function createARCanvasMarker() {
-  createCanvas(480, 640, WEBGL);
-  capture = createCapture({
-    audio: false,
-    video: {
-      facingMode: {
-        exact: 'environment'
-      }
-    }
-  }
-  );
-  capture.size(480, 640);
+  createCanvas(640, 480, WEBGL);
+  capture = createCapture(VIDEO);
+  capture.size(640, 480);
   capture.hide();
   
   detectedMat = new p5.Matrix();
@@ -90,8 +83,10 @@ function draw() {
     arController.process(capture.elt);
 
     arController.getTransMatSquare(0, 1, transMat);
-    arController.transMatToGLMat(detectTest.matrix, currentMat, 100);
-    // copyMarkerMatrix(transMat, currentMat);
+    arController.transMatToGLMat(transMat, currentMat, 100);
+
+    // invert(currentMat, currentMat);
+    // copyMarkerMatrix(transMat, currentMat)
 
     
     // p5.instance._renderer.uMVMatrix = superTemp;
@@ -115,9 +110,32 @@ function draw() {
       currentMat[14],
       currentMat[15]
     );
+
+    // let glRH;
+
+    // let glRh = p5.Matrix.identity().set(
+    //   detectTest.transformGL_RH[0],
+    //   detectTest.transformGL_RH[1],
+    //   detectTest.transformGL_RH[2],
+    //   detectTest.transformGL_RH[3],
+    //   detectTest.transformGL_RH[4],
+    //   detectTest.transformGL_RH[5],
+    //   detectTest.transformGL_RH[6],
+    //   detectTest.transformGL_RH[7],
+    //   detectTest.transformGL_RH[8],
+    //   detectTest.transformGL_RH[9],
+    //   detectTest.transformGL_RH[10],
+    //   detectTest.transformGL_RH[11],
+    //   detectTest.transformGL_RH[12],
+    //   detectTest.transformGL_RH[13],
+    //   detectTest.transformGL_RH[14],
+    //   detectTest.transformGL_RH[15]
+    // );
     
     let superTemp = pCurMat.copy().mult(p5.instance._renderer.uMVMatrix);
-    let fin = p5.Matrix.identity().transpose(superTemp);
+
+    let t = superTemp.copy();
+    // let transposed = p5.Matrix.identity().transpose(superTemp);
     
 
     // to be continued 
@@ -126,27 +144,68 @@ function draw() {
     
     drawVideoFeed();
     
-    if(detectTest.inCurrent) {
-      applyMatrix(
-        superTemp.mat4[0],
-        superTemp.mat4[1],
-        superTemp.mat4[2],
-        superTemp.mat4[3],
-        superTemp.mat4[4],
-        superTemp.mat4[5],
-        superTemp.mat4[6],
-        superTemp.mat4[7],
-        superTemp.mat4[8],
-        superTemp.mat4[9],
-        superTemp.mat4[10],
-        superTemp.mat4[11],
-        superTemp.mat4[12],
-        superTemp.mat4[13],
-        superTemp.mat4[14],
-        superTemp.mat4[15]
-      );
-      box(100);
-    }
+    // if(detectTest.inCurrent) {
+    applyMatrix(
+      t.mat4[0],
+      t.mat4[1],
+      t.mat4[2],
+      t.mat4[3],
+      t.mat4[4],
+      t.mat4[5],
+      t.mat4[6],
+      t.mat4[7],
+      t.mat4[8],
+      t.mat4[9],
+      t.mat4[10],
+      t.mat4[11],
+      t.mat4[12],
+      t.mat4[13],
+      t.mat4[14],
+      t.mat4[15]
+    );
+
+    // applyMatrix(
+    //   rh.mat4[0],
+    //   rh.mat4[1],
+    //   rh.mat4[2],
+    //   rh.mat4[3],
+    //   rh.mat4[4],
+    //   rh.mat4[5],
+    //   rh.mat4[6],
+    //   rh.mat4[7],
+    //   rh.mat4[8],
+    //   rh.mat4[9],
+    //   rh.mat4[10],
+    //   rh.mat4[11],
+    //   rh.mat4[12],
+    //   rh.mat4[13],
+    //   rh.mat4[14],
+    //   rh.mat4[15]
+    // );
+      
+    // p5.instance._renderer.uPMatrix.set(arController.getCameraMatrix());
+    // let pMat = arController.getCameraMatrix();
+    // p5.instance._renderer.uPMatrix.set(
+    //   pMat[0],
+    //   pMat[1],
+    //   pMat[2],
+    //   pMat[3],
+    //   pMat[4],
+    //   pMat[5],
+    //   pMat[6],
+    //   pMat[7],
+    //   pMat[8],
+    //   pMat[9],
+    //   pMat[10],
+    //   pMat[11],
+    //   pMat[12],
+    //   pMat[13],
+    //   pMat[14],
+    //   pMat[15]
+    // );
+
+    box(100);
+    // }
     // translate(width/2, height/2, 0);
     // }
     // TESTING TRANSLATE AND ROTATE
@@ -189,18 +248,39 @@ function addListener() {
 }
 
 let modelViewMatrix = p5.Matrix.identity();
-
+let glRH;
 function onMarkerFound(event) {
   // console.log(event);
+  if(detectTest.inCurrent) {
+    console.log(event);
+    glRH = p5.Matrix.identity().set(
+      event.data.matrixGL_RH[0],
+      event.data.matrixGL_RH[1],
+      event.data.matrixGL_RH[2],
+      event.data.matrixGL_RH[3],
+      event.data.matrixGL_RH[4],
+      event.data.matrixGL_RH[5],
+      event.data.matrixGL_RH[6],
+      event.data.matrixGL_RH[7],
+      event.data.matrixGL_RH[8],
+      event.data.matrixGL_RH[9],
+      event.data.matrixGL_RH[10],
+      event.data.matrixGL_RH[11],
+      event.data.matrixGL_RH[12],
+      event.data.matrixGL_RH[13],
+      event.data.matrixGL_RH[14],
+      event.data.matrixGL_RH[15]
+    )
+  }
   // honor his.parameters.minConfidence
   // if(event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return;
   // if(event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return;
 
   // updateWithModelViewMatrix(modelViewMatrix);
-  if(detectTest.inCurrent) {
-    modelViewMatrix.set(event.data.matrixGL_RH);
-    console.log(modelViewMatrix);
-  }
+  // if(detectTest.inCurrent) {
+  //   modelViewMatrix.set(event.data.matrixGL_RH);
+  //   console.log(modelViewMatrix);
+  // }
 }
 
 function updateWithModelViewMatrix(modelViewMatrix) {
@@ -333,6 +413,44 @@ function getScaling(out, mat) {
   out[1] = Math.hypot(m21, m22, m23);
   out[2] = Math.hypot(m31, m32, m33);
   return out;
+}
+
+function transpose(out, a) {
+  // If we are transposing ourselves we can skip a few steps but have to cache some values
+  if (out === a) {
+    let a01 = a[1], a02 = a[2], a03 = a[3];
+    let a12 = a[6], a13 = a[7];
+    let a23 = a[11];
+    out[1] = a[4];
+    out[2] = a[8];
+    out[3] = a[12];
+    out[4] = a01;
+    out[6] = a[9];
+    out[7] = a[13];
+    out[8] = a02;
+    out[9] = a12;
+    out[11] = a[14];
+    out[12] = a03;
+    out[13] = a13;
+    out[14] = a23;
+  } else {
+    out[0] = a[0];
+    out[1] = a[4];
+    out[2] = a[8];
+    out[3] = a[12];
+    out[4] = a[1];
+    out[5] = a[5];
+    out[6] = a[9];
+    out[7] = a[13];
+    out[8] = a[2];
+    out[9] = a[6];
+    out[10] = a[10];
+    out[11] = a[14];
+    out[12] = a[3];
+    out[13] = a[7];
+    out[14] = a[11];
+    out[15] = a[15];
+  }
 }
 
 // Another attempt to get the matrix correct
