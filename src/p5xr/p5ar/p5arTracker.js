@@ -15,7 +15,7 @@ export default class p5arTracker extends p5ar {
   }
     
   initializeMarkerTracking() {
-    this.arController = new ARController(640, 480, 'camera_para.dat');
+    this.arController = new ARController(360, 640, 'camera_para.dat');
     this.arController.onload = this.arControllerLoaded.bind(this);
   }
 
@@ -36,9 +36,16 @@ export default class p5arTracker extends p5ar {
     
   startMarkerSketch() {
     // p5.instance.decrementPreload();
-    createCanvas(640, 480, WEBGL);
-    this.capture = createCapture(VIDEO);
-    this.capture.size(640, 480);
+    createCanvas(360, 640, WEBGL);
+    this.capture = createCapture({
+      audio: false,
+      video: {
+        facingMode: {
+          exact: 'environment'
+        }
+      }
+    });
+    this.capture.size(360, 640);
     this.capture.hide();
     this.initializeMarkerTracking();
   }
@@ -67,8 +74,8 @@ export default class p5arTracker extends p5ar {
     this.arController.transMatToGLMat(marker.transMat, marker.currentMat, 100);
 
     let pCurMat = p5.Matrix.identity().set(
-      marker.currentMat[0],
-      marker.currentMat[1],
+      -marker.currentMat[0],
+      -marker.currentMat[1],
       marker.currentMat[2],
       marker.currentMat[3],
       marker.currentMat[4],
@@ -85,10 +92,7 @@ export default class p5arTracker extends p5ar {
       marker.currentMat[15]
     );
 
-    let normalized = pCurMat.copy().mult(p5.instance._renderer.uMVMatrix);
-
-    let res = normalized.copy();
-    return res;
+    return pCurMat.mult(p5.instance._renderer.uMVMatrix);
   }
 
   getSmoothTrackerMatrix(id) {
