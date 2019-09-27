@@ -5,7 +5,6 @@ import p5xr from '../core/p5xr';
 export default class p5arTracker extends p5ar {
   constructor() {
     super();
-    // let self = p5xr.instance;
     this.trackingOptions = {
       smoothingAmount: 15,
       smoothTolerance : .05,
@@ -23,7 +22,6 @@ export default class p5arTracker extends p5ar {
   arControllerLoaded() {
     this.arController.loadMarker('./patt.hiro', (uId) => {
       console.log('marker loading successful, UID = ' + uId);
-      // markerId = uId;
       this.readyForDetection = true;
       this.markers.push({
         id: uId,
@@ -33,12 +31,11 @@ export default class p5arTracker extends p5ar {
         averageMat : p5.Matrix.identity(),
         tracker: this.arController.trackPatternMarkerId(uId, 1)
       });
-      // detectTest = arController.trackPatternMarkerId(0, 1);
     });
   }
     
   startMarkerSketch() {
-    // p5.instance.decerementPreload();
+    // p5.instance.decrementPreload();
     createCanvas(640, 480, WEBGL);
     this.capture = createCapture(VIDEO);
     this.capture.size(640, 480);
@@ -61,10 +58,11 @@ export default class p5arTracker extends p5ar {
   }
 
   getTrackerMatrix(id) {
-    if(!this.readyForDetection) {return;}
+    if(!this.readyForDetection) {return p5.Matrix.identity();}
 
     const marker = this.getMarkerById(id);
-    if(!marker) {return;}
+    if(!marker) {return p5.Matrix.identity();}
+
     this.arController.getTransMatSquare(id, 1, marker.transMat);
     this.arController.transMatToGLMat(marker.transMat, marker.currentMat, 100);
 
@@ -94,10 +92,10 @@ export default class p5arTracker extends p5ar {
   }
 
   getSmoothTrackerMatrix(id) {
-    if(!this.readyForDetection) {return;}
+    if(!this.readyForDetection) {return p5.Matrix.identity();}
 
     const marker = this.getMarkerById(id);
-    if(!marker) {return;}
+    if(!marker) {return p5.Matrix.identity();}
 
     const cur = this.getTrackerMatrix(id);
     this.addToSmoothingMats(cur, id);
