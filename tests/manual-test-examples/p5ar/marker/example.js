@@ -143,25 +143,30 @@ function draw() {
     // p5.instance._renderer.uProjMatrix = arController.getCameraMatrix();
     
     drawVideoFeed();
+
+    if(detectTest.inCurrent) {
+      addToSmoothingMats(t.mat4);
+    }
+    let finfin = getSmoothedMat();
     
     // if(detectTest.inCurrent) {
     applyMatrix(
-      t.mat4[0],
-      t.mat4[1],
-      t.mat4[2],
-      t.mat4[3],
-      t.mat4[4],
-      t.mat4[5],
-      t.mat4[6],
-      t.mat4[7],
-      t.mat4[8],
-      t.mat4[9],
-      t.mat4[10],
-      t.mat4[11],
-      t.mat4[12],
-      t.mat4[13],
-      -t.mat4[14],
-      t.mat4[15]
+      finfin[0],
+      finfin[1],
+      finfin[2],
+      finfin[3],
+      finfin[4],
+      finfin[5],
+      finfin[6],
+      finfin[7],
+      finfin[8],
+      finfin[9],
+      finfin[10],
+      finfin[11],
+      finfin[12],
+      finfin[13],
+      -finfin[14],
+      finfin[15]
     );
 
     // applyMatrix(
@@ -270,7 +275,7 @@ function onMarkerFound(event) {
       event.data.matrixGL_RH[13],
       event.data.matrixGL_RH[14],
       event.data.matrixGL_RH[15]
-    )
+    );
   }
   // honor his.parameters.minConfidence
   // if(event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return;
@@ -345,14 +350,45 @@ function updateWithModelViewMatrix(modelViewMatrix) {
   
 }
 
-// let smoothingMats = new Array[16][16];
+let smoothingAmount = 15;
+let smoothingMats = new Array(smoothingAmount);
+let averageMat = new Array(16);
+let smoothTolerance = .05;
+let maxToleranceExceed = 10;
 
-function addToSmoothingMats() {
+function addToSmoothingMats(_newMat) {
 
+  if(averageMat[averageMat.length-1]) {
+    let exceedsAverageTolerance = 0;
+    for(let i=0; i<averageMat.length; i++) {
+      if (Math.abs(averageMat[i] - _newMat[i]) >= smoothTolerance) {
+        exceedsAverageTolerance++;
+      }
+    }
+    if(exceedsAverageTolerance > maxToleranceExceed) {
+      console.log('CHANGE TOO RAPID');
+      return;
+    }
+  }
+
+  smoothingMats.push(_newMat.slice());
+  smoothingMats.shift();
+
+  // if we don't have a full set of smoothing mats
+  if(!smoothingMats[0]) {return;}
+
+  for(let i=0; i<smoothingMats[0].length; i++) {
+    let avg = 0;
+    for(let j=0; j<smoothingMats.length; j++) {
+      avg += smoothingMats[j][i];
+    }
+    avg /= smoothingMats.length;
+    averageMat[i] = avg;
+  }
 }
 
 function getSmoothedMat() {
-  
+  return averageMat.slice();
 }
 
 let trans = new Float64Array(3);
