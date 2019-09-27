@@ -1,4 +1,5 @@
 import p5xr from '../core/p5xr';
+import * as constants from '../core/constants.js';
 
 export default class p5ar extends p5xr {
   constructor() {
@@ -6,7 +7,12 @@ export default class p5ar extends p5xr {
     // let self = p5xr.instance;
     let xrButton;
     this.canvas = null;
+    
   }
+
+  //* ********************************************************//
+  //* *********ARCORE and ARKIT BASED AR BELOW****************//
+  //* ********************************************************//
 
   /**
      * This is where the actual p5 canvas is first created, and
