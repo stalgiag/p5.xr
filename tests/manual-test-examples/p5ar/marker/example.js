@@ -14,7 +14,9 @@ function draw() {
   }
   showVideoFeed();
 
-  let markerMat = getSmoothTrackerMatrix(0);
+  // let markerMat = getSmoothTrackerMatrix(0);
+  let markerMat = getTrackerMatrix(0);
+
   applyMatrix(
     markerMat.mat4[0],
     markerMat.mat4[1],
@@ -33,5 +35,7 @@ function draw() {
     -markerMat.mat4[14],
     markerMat.mat4[15]
   );
-  box(100);
+
+  box(50);
+  // console.log(rot);
 }
