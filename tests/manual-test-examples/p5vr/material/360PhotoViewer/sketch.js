@@ -1,15 +1,16 @@
+
 let tex;
 
 function preload() {
-  tex = loadImage('../../../assets/equirectangular.png');
+  tex = loadImage('../../../assets/equirectangular_hd.jpg');
   createVRCanvas();
+  noStroke();
   setVRBackgroundColor(200, 0, 150);
 }
 
 function draw() {
-  rotateX(90);
-  noStroke();
+  rotateX(PI);
   texture(tex);
-  translate(-25, 0, -25);
-  sphere(100);
+  scale(-1, 1, 1);
+  sphere(500, 60, 40);
 }

@@ -8,7 +8,7 @@ function preload() {
   setVRBackgroundColor(50, 50, 50);
 }
 function setup() {
-  smooth();
+  // smooth();
   noStroke();
 }
 function draw() {
