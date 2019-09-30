@@ -34,6 +34,9 @@ export default class p5xrViewer {
     } else {
       p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
       p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
+      p5.instance._renderer._curCamera.cameraMatrix.set(
+        p5.Matrix.identity().mult(this._view.transform.inverse.matrix)
+      );
     }
     if(newView.eye === 'left') {
       this.leftPMatrix.set(p5.instance._renderer.uPMatrix.copy());
@@ -64,6 +67,6 @@ p5.prototype.sticky = function(drawOnTop = false) {
 };
 
 p5.prototype.noSticky = function() {
-  p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);    
+  p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);
   pop();
 };
