@@ -126,9 +126,31 @@ export default class p5arTracker extends p5ar {
     );
 
     pCurMat.mult(p5.instance._renderer.uMVMatrix);
-    pCurMat.mat4[14] *= -1;
     pCurMat.apply(this.correctionMat);
+    this.makeRH(pCurMat);
     return pCurMat;
+  }
+
+  makeRH(mat) {
+    // y
+    // does not work :-(
+    // mat.mat4[1] *= -1;
+    // mat.mat4[5] *= -1;
+    // mat.mat4[9] *= -1;
+    // mat.mat4[13] *= -1;
+    // z
+    mat.mat4[2] *= -1;
+    mat.mat4[6] *= -1;
+    mat.mat4[10] *= -1;
+    mat.mat4[14] *= -1;
+  
+    // 0 0 0 1
+    mat.mat4[3] = 0;
+    mat.mat4[7] = 0;
+    mat.mat4[11] = 0;
+    mat.mat4[15] = 1;
+      
+    return mat;
   }
 
   getSmoothTrackerMatrix(id) {
