@@ -17,7 +17,6 @@ module.exports = function(config) {
     files: [
       'tests/js/mocha_setup.js',
       'node_modules/p5/lib/p5.js',
-      'src/webxr/webxr-button.js',
       'src/app.js',
       'tests/unit/**/*.js',
     ],
