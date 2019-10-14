@@ -30,7 +30,7 @@ export default class p5xrButton {
   constructor(options) {
     options = options || {};
   
-    options.color = options.color || 'rgb(80,168,252)';
+    options.color = options.color || 'rgb(237, 34, 93)';
     options.background = options.background || false;
     options.disabledOpacity = options.disabledOpacity || 0.5;
     options.height = options.height || 55;
