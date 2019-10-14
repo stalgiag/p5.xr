@@ -1,5 +1,6 @@
 import p5vr from '../p5vr/p5vr';
-import p5xrViewer from './p5xrviewer';
+import p5xrViewer from './p5xrViewer';
+import p5xrButton from './p5xrButton';
 
 /**
  * p5vr class holds all state and methods that are specific to VR
@@ -62,7 +63,7 @@ export default class p5xr {
     this.isVR = this instanceof p5vr;
     this.removeLoadingElement();
     // Is WebXR available on this UA?
-    this.xrButton = new XRDeviceButton({
+    this.xrButton = new p5xrButton({
       onRequestSession: this.onXRButtonClicked.bind(this),
       onEndSession: this.onSessionEnded.bind(this),
       textEnterXRTitle: this.isVR ? 'ENTER VR' : 'ENTER AR'
@@ -96,14 +97,14 @@ export default class p5xr {
     } else if(this.isVR) {
       navigator.xr.supportsSession('immersive-vr').then(() => {
         console.log('VR supported without polyfill');
-        // Updates the button to start an XR session when clicked.
-        // HACK
         this.xrButton.setDevice(true);
+      }).catch((e) => {
+        console.log(e.message);
+        console.log('This device does not support immersive VR sessions.');
       });
     } else {
       navigator.xr.supportsSession('immersive-ar').then(() => {
         console.log('AR supported without polyfill');
-        // TEMPORARY HACK 4/7/19
         this.xrButton.setDevice(true);
       });
     }

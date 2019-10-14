@@ -1,4 +1,4 @@
-import p5xrViewer from './p5xrviewer';
+import p5xrViewer from './p5xrViewer';
 
 p5xrViewer.prototype.getRayFromScreen = function(screenX, screenY) {
   let ray = {
@@ -22,9 +22,21 @@ p5xrViewer.prototype.getRayFromScreen = function(screenX, screenY) {
   
   // transform ray origin to view space
   let rayOriginCopy = ray.origin.copy();
-  ray.origin.x = initialMVMatrix[0] * rayOriginCopy.x + initialMVMatrix[1] * rayOriginCopy.y + initialMVMatrix[2] * rayOriginCopy.z + initialMVMatrix[3];
-  ray.origin.y = initialMVMatrix[4] * rayOriginCopy.x + initialMVMatrix[5] * rayOriginCopy.y + initialMVMatrix[6] * rayOriginCopy.z + initialMVMatrix[7];
-  ray.origin.z = initialMVMatrix[8] * rayOriginCopy.x + initialMVMatrix[9] * rayOriginCopy.y + initialMVMatrix[10] * rayOriginCopy.z + initialMVMatrix[11];
+  ray.origin.x =
+    initialMVMatrix[0] * rayOriginCopy.x +
+    initialMVMatrix[1] * rayOriginCopy.y +
+    initialMVMatrix[2] * rayOriginCopy.z +
+    initialMVMatrix[3];
+  ray.origin.y =
+    initialMVMatrix[4] * rayOriginCopy.x +
+    initialMVMatrix[5] * rayOriginCopy.y +
+    initialMVMatrix[6] * rayOriginCopy.z +
+    initialMVMatrix[7];
+  ray.origin.z =
+    initialMVMatrix[8] * rayOriginCopy.x +
+    initialMVMatrix[9] * rayOriginCopy.y +
+    initialMVMatrix[10] * rayOriginCopy.z +
+    initialMVMatrix[11];
 
   // get ray direction from left eye
   let leftDirection = new p5.Vector(screenX, screenY, -1);
@@ -56,7 +68,7 @@ p5xrViewer.prototype.getRayFromScreen = function(screenX, screenY) {
   ray.direction = p5.Vector.add(leftDirection, rightDirection).normalize();
 
   return ray;
-}
+};
 
 p5.prototype.intersectsSphere = function() {
   let radius = arguments[0];
@@ -116,18 +128,16 @@ p5.prototype.intersectsBox = function() {
     height = arguments.length > 2 ? arguments[1] : width;
     depth = arguments.length > 3 ? arguments[2] : height;
   }
-  else {
+  else if (arguments.length === 5) {
     // if screenX, screenY is specified => width, height, depth must also be specified
-    if(arguments.length === 5) {
-      ray = p5xr.instance.viewer.getRayFromScreen(arguments[3], arguments[4]);
-      height = arguments[1];
-      depth = arguments[2];
-    }
-    else {
-      ray = p5xr.instance.viewer.getRayFromScreen(0, 0);
-      height = arguments.length > 1 ? arguments[1] : width;
-      depth = arguments.length > 2 ? arguments[2] : height;
-    }
+    ray = p5xr.instance.viewer.getRayFromScreen(arguments[3], arguments[4]);
+    height = arguments[1];
+    depth = arguments[2];
+  }
+  else {
+    ray = p5xr.instance.viewer.getRayFromScreen(0, 0);
+    height = arguments.length > 1 ? arguments[1] : width;
+    depth = arguments.length > 2 ? arguments[2] : height;
   }
   
   // bounding box in view space will not be axis aligned
@@ -139,9 +149,21 @@ p5.prototype.intersectsBox = function() {
   uMVMatrixInv = uMVMatrixInv.mat4;
 
   let rayOriginCopy = ray.origin.copy();
-  ray.origin.x = uMVMatrixInv[0] * rayOriginCopy.x + uMVMatrixInv[1] * rayOriginCopy.y + uMVMatrixInv[2] * rayOriginCopy.z + uMVMatrixInv[3];
-  ray.origin.y = uMVMatrixInv[4] * rayOriginCopy.x + uMVMatrixInv[5] * rayOriginCopy.y + uMVMatrixInv[6] * rayOriginCopy.z + uMVMatrixInv[7];
-  ray.origin.z = uMVMatrixInv[8] * rayOriginCopy.x + uMVMatrixInv[9] * rayOriginCopy.y + uMVMatrixInv[10] * rayOriginCopy.z + uMVMatrixInv[11];
+  ray.origin.x =
+    uMVMatrixInv[0] * rayOriginCopy.x +
+    uMVMatrixInv[1] * rayOriginCopy.y +
+    uMVMatrixInv[2] * rayOriginCopy.z +
+    uMVMatrixInv[3];
+  ray.origin.y =
+    uMVMatrixInv[4] * rayOriginCopy.x +
+    uMVMatrixInv[5] * rayOriginCopy.y +
+    uMVMatrixInv[6] * rayOriginCopy.z +
+    uMVMatrixInv[7];
+  ray.origin.z =
+    uMVMatrixInv[8] * rayOriginCopy.x +
+    uMVMatrixInv[9] * rayOriginCopy.y +
+    uMVMatrixInv[10] * rayOriginCopy.z +
+    uMVMatrixInv[11];
 
   let rayDirectionCopy = ray.direction.copy();
   ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x + uMVMatrixInv[1] * rayDirectionCopy.y + uMVMatrixInv[2] * rayDirectionCopy.z;
@@ -206,7 +228,7 @@ p5.prototype.intersectsPlane = function() {
   let planeNormal = new p5.Vector(0, 0, 1);
   let planePoint = new p5.Vector(0, 0, 0);
 
-  //ray-plane intersection algorithm
+  // ray-plane intersection algorithm
   let w = p5.Vector.sub(planePoint, ray.origin);
   let d = Math.abs(p5.Vector.dot(ray.direction, planeNormal));
   if(d === 0) {

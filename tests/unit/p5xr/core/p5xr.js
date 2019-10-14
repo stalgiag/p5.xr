@@ -1,4 +1,5 @@
 import p5vr from '../../../../src/p5xr/p5vr/p5vr';
+import p5xrButton from '../../../../src/p5xr/core/p5xrButton';
 
 suite('p5xr', function() {
   let myp5;
@@ -50,7 +51,7 @@ suite('p5xr', function() {
     test('xrButton is set and added in DOM', function() {
       p5xr.instance = new p5vr();
       p5xr.instance.init();
-      assert.instanceOf(p5xr.instance.xrButton, XRDeviceButton);
+      assert.instanceOf(p5xr.instance.xrButton, p5xrButton);
       let button = document.querySelector('header button');
       assert.equal(button.tagName, 'BUTTON');
       p5xr.instance.remove();
