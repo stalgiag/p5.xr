@@ -70,7 +70,14 @@ export default class p5arTracker extends p5ar {
   startMarkerSketch() {
     // p5.instance.decrementPreload();
     createCanvas(windowWidth, windowHeight, WEBGL);
-    this.capture = createCapture(VIDEO);
+    this.capture = createCapture({
+      audio: false,
+      video: {
+        facingMode: {
+          exact: 'environment'
+        }
+      }
+    });
     this.capture.size(width, height);
     this.capture.hide();
     this.initializeMarkerTracking();
