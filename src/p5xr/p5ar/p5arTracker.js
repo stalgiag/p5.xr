@@ -3,24 +3,28 @@ import * as constants from '../core/constants.js';
 import p5xr from '../core/p5xr';
 
 export default class p5arTracker extends p5ar {
-  constructor() {
+  constructor(patt) {
     super();
     this.trackingOptions = {
       smoothingAmount: 15,
       smoothTolerance : .05,
       maxToleranceExceed : 10
     };
+    this.patt = patt;
     this.markers = [];
     this.readyForDetection = false;
+    this.correctionMat = p5.Matrix.identity();
+    this.makeRotationY(this.correctionMat);
+    this.makeRotationZ(this.correctionMat);
   }
     
   initializeMarkerTracking() {
-    this.arController = new ARController(360, 640, 'camera_para.dat');
+    this.arController = new ARController(width, height, 'camera_para.dat');
     this.arController.onload = this.arControllerLoaded.bind(this);
   }
 
   arControllerLoaded() {
-    this.arController.loadMarker('./patt.hiro', (uId) => {
+    this.arController.loadMarker(this.patt, (uId) => {
       console.log('marker loading successful, UID = ' + uId);
       this.readyForDetection = true;
       this.markers.push({
@@ -32,11 +36,40 @@ export default class p5arTracker extends p5ar {
         tracker: this.arController.trackPatternMarkerId(uId, 1)
       });
     });
+    // not working :-(
+    // this.getProjectionMatrix();
+  }
+
+  getProjectionMatrix() {
+    
+    let temp = this.arController.getCameraMatrix();
+    this.projectionMatrix = p5.Matrix.identity().set(
+      temp[0],
+      temp[1],
+      temp[2],
+      temp[3],
+      temp[4],
+      temp[5],
+      temp[6],
+      temp[7],
+      temp[8],
+      temp[9],
+      temp[10],
+      temp[11],
+      temp[12],
+      temp[13],
+      temp[14],
+      temp[15]
+    );
+    this.projectionMatrix.mult(p5.instance._renderer.uPMatrix);
+    this.projectionMatrix.apply(this.correctionMat);
+    
+    p5.instance._renderer.uPMatrix = this.projectionMatrix;
   }
     
   startMarkerSketch() {
     // p5.instance.decrementPreload();
-    createCanvas(360, 640, WEBGL);
+    createCanvas(windowWidth, windowHeight, WEBGL);
     this.capture = createCapture({
       audio: false,
       video: {
@@ -45,7 +78,7 @@ export default class p5arTracker extends p5ar {
         }
       }
     });
-    this.capture.size(360, 640);
+    this.capture.size(width, height);
     this.capture.hide();
     this.initializeMarkerTracking();
   }
@@ -74,8 +107,8 @@ export default class p5arTracker extends p5ar {
     this.arController.transMatToGLMat(marker.transMat, marker.currentMat, 100);
 
     let pCurMat = p5.Matrix.identity().set(
-      -marker.currentMat[0],
-      -marker.currentMat[1],
+      marker.currentMat[0],
+      marker.currentMat[1],
       marker.currentMat[2],
       marker.currentMat[3],
       marker.currentMat[4],
@@ -92,7 +125,10 @@ export default class p5arTracker extends p5ar {
       marker.currentMat[15]
     );
 
-    return pCurMat.mult(p5.instance._renderer.uMVMatrix);
+    pCurMat.mult(p5.instance._renderer.uMVMatrix);
+    pCurMat.mat4[14] *= -1;
+    pCurMat.apply(this.correctionMat);
+    return pCurMat;
   }
 
   getSmoothTrackerMatrix(id) {
@@ -142,5 +178,27 @@ export default class p5arTracker extends p5ar {
       avg /= marker.smoothingMats.length;
       marker.averageMat.mat4[i] = avg;
     }
+  }
+
+  makeRotationY(mat) {
+    const theta = Math.PI;
+    const c = Math.cos(theta);
+    const s = Math.sin(theta);
+    mat.mat4[0] = c;
+    mat.mat4[2] = s;
+    mat.mat4[8] = -s;
+    mat.mat4[10] = c;
+    return mat;
+  }
+
+  makeRotationZ(mat) {
+    const theta = Math.PI;
+    const c = Math.cos(theta);
+    const s = Math.sin(theta);
+    mat.mat4[0] = c;
+    mat.mat4[1] = -s;
+    mat.mat4[4] = s;
+    mat.mat4[5] = c;
+    return mat;
   }
 }

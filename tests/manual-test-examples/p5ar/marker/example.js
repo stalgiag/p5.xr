@@ -1,6 +1,6 @@
 
 function setup() {
-  createARCanvas(MARKER);
+  createARCanvas(MARKER, 'pattern-p5js.patt');
 }
 
 function draw() {
@@ -14,8 +14,8 @@ function draw() {
   }
   showVideoFeed();
 
-  // let markerMat = getSmoothTrackerMatrix(0);
-  let markerMat = getTrackerMatrix(0);
+  let markerMat = getSmoothTrackerMatrix(0);
+  // let markerMat = getTrackerMatrix(0);
 
   applyMatrix(
     markerMat.mat4[0],
@@ -32,10 +32,10 @@ function draw() {
     markerMat.mat4[11],
     markerMat.mat4[12],
     markerMat.mat4[13],
-    -markerMat.mat4[14],
+    markerMat.mat4[14],
     markerMat.mat4[15]
   );
 
-  box(50);
+  box(100);
   // console.log(rot);
 }

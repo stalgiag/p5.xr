@@ -52,10 +52,14 @@ p5.prototype.createVRCanvas = function() {
  * via a button click gesture
  * @method createARCanvas
  */
-p5.prototype.createARCanvas = function(mode) {
+p5.prototype.createARCanvas = function(mode, patt) {
   if(mode === constants.MARKER) {
-    p5xr.instance = new p5arTracker();
-    p5xr.instance.startMarkerSketch();
+    if(typeof patt === 'undefined') {
+      throw new Error('Cannot start a marker-based AR session without a .patt file.')
+    } else {
+      p5xr.instance = new p5arTracker(patt);
+      p5xr.instance.startMarkerSketch();
+    }
   } else {
     noLoop();
     p5xr.instance = new p5ar();
