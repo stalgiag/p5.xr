@@ -1,10 +1,11 @@
+import './../jsartoolkit/artoolkit.api.js';
 import WebXRPolyfill from 'webxr-polyfill';
 import WebXRVersionShim from './webxr/webxr-version-shim';
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
 import p5arTracker from '../src/p5xr/p5ar/p5arTracker.js';
-import './p5xr/core/raycasting.js';
 import * as constants from '../src/p5xr/core/constants.js';
+import './p5xr/core/raycasting.js';
 
 window.p5xr = {
   instance: null

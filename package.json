@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "parcel build ./src/app.js --no-minify --no-source-maps --out-file p5xr.js",
+    "build:min": "parcel build ./src/app.js --no-source-maps --out-file p5xr.min.js",
     "watch": "parcel watch ./src/app.js --no-source-maps --out-file  p5xr.js",
     "test": "karma start karma.conf.js",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json -r",
