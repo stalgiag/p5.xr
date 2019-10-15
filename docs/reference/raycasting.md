@@ -8,7 +8,7 @@ generateRay();
 
 | Parameters        | Returns          |
 | ------------- |:-------------:
-| (Number __markerIndex__)  | None
+| (Number __x1__, Number __y1__, Number __z1__, Number __x1__, Number __y2__, Number __z2__)  | RayObject __{origin: p5.Vector, direction: p5.Vector}__
 
 ***
 
@@ -22,7 +22,7 @@ intersectsSphere();
 
 | Parameters        | Returns          |
 | ------------- |:-------------:
-| (Number __markerIndex__)  | None
+| Number radius, [rayObject ray] | Boolean
 
 ***
 
@@ -36,7 +36,7 @@ intersectsPlane();
 
 | Parameters        | Returns          |
 | ------------- |:-------------:
-| (Number __markerIndex__)  | None
+| [RayObject ray]  | p5.Vector
 
 ***
 
@@ -50,6 +50,20 @@ intersectsBox();
 
 | Parameters        | Returns          |
 | ------------- |:-------------:
-| (Number __markerIndex__)  | None
+| (Number width, [Number height], [Number depth], [RayObject ray])  | Boolean
+
+***
+
+## getRayFromScreen()
+`createARCanvas()` is the one essential line in any AR sketch.
+It should always be placed inside of `setup()`.
+
+```
+getRayFromScreen();
+```
+
+| Parameters        | Returns          |
+| ------------- |:-------------:
+| (Number screenX, Number screenY)  | RayObject
 
 ***

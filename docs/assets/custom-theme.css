@@ -17,6 +17,7 @@
     --mono-base: hsl(var(--mono-hue), var(--mono-saturation), 60%);
 
     --base-background-color: var(--mono-base);
+    --base-color           : var(--mono-shade3);
     --theme-color: black;
 
     --link-color: rgb(1, 181, 148);
@@ -53,8 +54,6 @@
 
 }
 
-/* Cover
-============================================================================= */
 :root {
     --cover-color: var(--mono-base);
     --cover-margin: 0 auto;
@@ -66,7 +65,7 @@
     --heading-h2-border-style           : solid;
     --heading-h2-border-width           : 1.5px;
     --heading-h2-padding                : 15px;
-    --heading-h2-margin                 : 1em -1em 1em -2em;
+    --heading-h2-margin                 : 1em -1em 1em -1em;
     --heading-h2-color                  : black;
     --heading-h2-font-family            : sporting-grotesk;
     --heading-h2-font-size              : var(--font-size-xl);
@@ -76,7 +75,8 @@
     --heading-h3-border-color           : black;
     --heading-h3-border-style           : ;
     --heading-h3-border-width           : 0;
-    --heading-h3-padding                : 5px;
+    --heading-h3-padding                : 0;
+    --heading-h3-margin                :  0px 0 0 -20px;
     --heading-h3-background-color       : black;
     --heading-h3-color                  :black;
     --heading-h3-font-family            : ;
@@ -150,6 +150,19 @@
     --cover-link-text-decoration--hover: ;
     --cover-link-text-decoration-color: ;
     --cover-link-text-decoration-color--hover: ;
+
+    /* Tables */
+    --table-body-border-color           : ;
+    --table-body-border-width           : ;
+    --table-cell-border-color           : ;
+    --table-cell-border-width           : ;
+    --table-cell-padding                : 0.75em 0.5em;
+    --table-head-background             : rgba(0, 0, 0, 0.1);
+    --table-head-border-color           : var(--table-cell-border-color);
+    --table-head-border-width           : ;
+    --table-head-font-weight            : var(--strong-font-weight);
+    --table-row-even-background         : ;
+    --table-row-odd-background          : var(--mono-tint3);
 }
 
 /* Plugin: Copy Code
