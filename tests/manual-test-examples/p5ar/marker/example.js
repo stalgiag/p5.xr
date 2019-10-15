@@ -1,17 +1,27 @@
 let markerIndex;
+let capture;
 
 function setup() {
   createARCanvas(MARKER);
   addMarker('pattern-p5js.patt', (index) => {
     markerIndex = index;
   });
+  capture = createCapture({
+    audio: false,
+    video: {
+      facingMode: {
+        exact: 'environment'
+      }
+    }
+  });
+  capture.hide();
 }
 
 function draw() {
   background(0);
-  detectMarkers();
+  detectMarkers(capture);
 
-  showVideoFeed();
+  showVideoFeed(capture);
 
   let markerMat = getSmoothTrackerMatrix(0);
   // let markerMat = getTrackerMatrix(0);
@@ -34,6 +44,7 @@ function draw() {
     markerMat.mat4[14],
     markerMat.mat4[15]
   );
+  
 
   box(100);
 }

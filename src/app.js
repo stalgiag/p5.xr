@@ -79,11 +79,12 @@ p5.prototype.setVRBackgroundColor = function(r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
 };
 
-p5.prototype.detectMarkers = function() {
+p5.prototype.detectMarkers = function(cap) {
   if(!p5xr.instance.readyForDetection) {return;}
-  // currently only works with p5.MediaElement
-  // TODO add conditions and checks to operate with other types
-  p5xr.instance.arController.process(p5xr.instance.capture.elt);
+  if(typeof cap.elt === 'undefined') {
+    console.error('Can only use detectMarkers() on p5.MediaElement');
+  }
+  p5xr.instance.arController.process(cap.elt);
 };
 
 p5.prototype.getTrackerMatrix = function(id) {
@@ -94,12 +95,12 @@ p5.prototype.getSmoothTrackerMatrix = function(id) {
   return p5xr.instance.getSmoothTrackerMatrix(id);
 };
 
-p5.prototype.showVideoFeed = function() {
+p5.prototype.showVideoFeed = function(cap) {
   push();
   this._renderer.GL.disable(this._renderer.GL.DEPTH_TEST);
   this._renderer.GL.depthMask(false);
   
-  texture(p5xr.instance.capture);
+  texture(cap);
   rect(-width/2, -height/2, width, height);
 
   this._renderer.GL.enable(this._renderer.GL.DEPTH_TEST);
