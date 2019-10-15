@@ -49,6 +49,8 @@
     /* Horizontal Rule */
     --hr-border            : 2px solid black;
 
+    --base-font-size       : 1.15rem;
+
 }
 
 /* Cover
@@ -64,6 +66,7 @@
     --heading-h2-border-style           : solid;
     --heading-h2-border-width           : 1.5px;
     --heading-h2-padding                : 15px;
+    --heading-h2-margin                 : 1em -1em 1em -2em;
     --heading-h2-color                  : black;
     --heading-h2-font-family            : sporting-grotesk;
     --heading-h2-font-size              : var(--font-size-xl);
@@ -159,6 +162,7 @@
 /* Sidebar
 ============================================================================= */
 :root {
+
 --sidebar-nav-strong-border-color             : var(--mono-tint2);
 --sidebar-nav-strong-border-width             : 0;
 --sidebar-nav-strong-color                    : black;
@@ -264,9 +268,13 @@ hr {
     height: 99vh
 }
 
+h2 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .sidebar-toggle {
     left: 0.75rem;
-    top: -0.1rem;
+    top: -0.01rem;
 }
 
 .sidebar .app-name {

@@ -1,4 +1,4 @@
-<img src="../assets/xr-tear.png" alt="drawing" style="max-width:30%; margin-left:35%; margin-bottom: -50px"/>
+<img src="../assets/xr-tear.png" alt="drawing" style="max-width:30%; margin-left:35%; margin-bottom: -30px"/>
 
 ## What is it?
 

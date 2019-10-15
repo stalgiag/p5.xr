@@ -11,8 +11,8 @@
 - __REFERENCE__
   - [VR](reference/vr.md)
   - [AR](reference/ar.md)
-  - [Viewer](reference/viewer.md)
   - [Raycasting](reference/raycasting.md)
+  - [Utilities](reference/utilities.md)
 ***
 - __CONTRIBUTING__
 ***

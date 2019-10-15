@@ -44,7 +44,7 @@ function draw() {
     markerMat.mat4[14],
     markerMat.mat4[15]
   );
-  
+  rotateX(frameCount * 0.02);
 
   box(100);
 }
