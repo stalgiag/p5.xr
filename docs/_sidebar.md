@@ -1,22 +1,19 @@
 <!-- docs/_sidebar.md -->
-
-- Introduction
+- __GENERAL__
   - [General Info](README.md)
-
-- Virtual Reality
-
-  - [Quick start](vr/quick-start.md)
-  - [Device and Browser Support](vr/device-support.md)
-  - [Reference](vr/reference.md)
-  - [Examples](vr/examples.md)
-
-- Augmented Reality
-
-  - [Quick start](ar/quick-start.md)
-  - [Device and Browser Support](ar/device-support.md)
-  - [Reference](ar/reference.md)
-  - [Examples](ar/examples.md)
-
-- Contributing
-
-- FAQ
+  - [Community]()
+  - [Why?]()
+***
+- __QUICK START__
+  - [Device and Browser Support]()
+  - [Examples]()
+***
+- __REFERENCE__
+  - [VR]()
+  - [AR]()
+  - [Viewer]()
+  - [Raycasting]()
+***
+- __CONTRIBUTING__
+***
+- __FAQ__
