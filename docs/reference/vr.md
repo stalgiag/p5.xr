@@ -5,7 +5,7 @@ It should always be placed inside of `preload()`. The browser places limitations
 2. Running all of the hardware checks to see if your hardware/browser combo can support VR.
 3. Adding a button to the window, that will start your sketch and enter VR when pressed.
 
-```
+```js
 function preload() {
     createVRCanvas();
 }
@@ -22,7 +22,7 @@ Unlike a standard p5 sketch, while in VR mode p5.xr runs [draw()](https://p5js.o
 
 All code inside of [`calculate()`](#calculate) is run once per frame, before the rendering of the first eye.
 
-```
+```js
 function calculate() {
     // code that you want to run once each frame.
 }
@@ -31,7 +31,7 @@ function calculate() {
 
 ## setVRBackgroundColor()
 Working with VR is different than working in 2D. With VR you want to clear the background every frame to avoid motion sickness. `setVRBackgroundColor()` sets the color that will be used to clear the background after rendering each eye.
-```
+```js
 setVRBackgroundColor(200, 0, 150);
 ```
 

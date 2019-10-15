@@ -15,5 +15,8 @@
   - [Utilities](reference/utilities.md)
 ***
 - __CONTRIBUTING__
+    - [How To Help](contributing/contributing.md)
 ***
-- __FAQ__
+- __HELP__
+    - [Common Questions](help/faq.md)
+    - [Support](help/support.md)

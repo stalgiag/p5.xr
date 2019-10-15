@@ -1,8 +1,7 @@
 ## generateRay()
-`createARCanvas()` is the one essential line in any AR sketch.
-It should always be placed inside of `setup()`.
+`generateRay()` takes an origin location (x, y, z) and a target location (x, y, z) and returns an Object with an origin and a direction. This object is useful for using with many of the other raycasting functions.
 
-```
+```js
 generateRay();
 ```
 
@@ -13,10 +12,11 @@ generateRay();
 ***
 
 ## intersectsSphere()
-`createARCanvas()` is the one essential line in any AR sketch.
-It should always be placed inside of `setup()`.
+`intersectsSphere()` checks for a ray hit with a sphere of the specified radius at the current model transform location.
 
-```
+You can optionally pass in a rayObject made with [`generateRay()`](#generateray). If you don't pass in this argument, [`getRayFromScreen(0, 0)`](#getRayFromScreen) is used to create the ray used for hit detection.
+
+```js
 intersectsSphere();
 ```
 
@@ -27,10 +27,11 @@ intersectsSphere();
 ***
 
 ## intersectsPlane()
-`createARCanvas()` is the one essential line in any AR sketch.
-It should always be placed inside of `setup()`.
+`intersectsPlane` checks for a ray hit with a plane at the current model transform. If a hit is detected, a p5.Vector is returned with the offset location of the hit relative to the plane.
 
-```
+You can optionally pass in a rayObject made with [`generateRay()`](#generateray). If you don't pass in this argument, [`getRayFromScreen(0, 0)`](#getRayFromScreen) is used to create the ray used for hit detection.
+
+```js
 intersectsPlane();
 ```
 
@@ -41,10 +42,12 @@ intersectsPlane();
 ***
 
 ## intersectsBox()
-`createARCanvas()` is the one essential line in any AR sketch.
-It should always be placed inside of `setup()`.
+`intersectsBox()` checks for a ray hit with a box of the specified size at the current model transform location.
 
-```
+You can optionally pass in a rayObject made with [`generateRay()`](#generateray). If you don't pass in this argument, [`getRayFromScreen(0, 0)`](#getRayFromScreen) is used to create the ray used for hit detection.
+
+
+```js
 intersectsBox();
 ```
 
@@ -55,10 +58,9 @@ intersectsBox();
 ***
 
 ## getRayFromScreen()
-`createARCanvas()` is the one essential line in any AR sketch.
-It should always be placed inside of `setup()`.
+`getRayFromScreen()` takes an x and y screen coordinate and uses this to generate a ray object which can be used for hit detection in the raycasting functions.
 
-```
+```js
 getRayFromScreen();
 ```
 
