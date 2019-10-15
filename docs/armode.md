@@ -1,1 +1,0 @@
-# Augment Reality Mode

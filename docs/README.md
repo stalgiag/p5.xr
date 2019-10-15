@@ -14,17 +14,8 @@ p5.xr sketches can be run with [p5's online editor.](https://editor.p5js.org/) A
 
 - __Augmented Reality__
   - Make sketches that use Augmented Reality with any device that supports ARCore.
-  - Set anchors and detects planes in your environment --- <small><em>Coming Soon</em></small>
   - Use marker-based AR on any mobile device
+  - Set anchors and detects planes in your environment --- <small><em>Coming Soon</em></small>
 
 - __Raycasting__
   - Do some simple raycasting for gaze-based interaction in both AR and VR
-
-## Community
-
-There are many ways to help out! These include:
-
-- Making example sketches that can be featured on this page
-- Filing bugs on the Github repo
-- Contributing code. No matter your level, help is always welcome. Check out the Contributing page for more info.
-- Donating. I make this project in my spare time, donations help me make time to work on improving this library.

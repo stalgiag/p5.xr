@@ -1,5 +1,3 @@
-## Foundation
-
 ### createVRCanvas()
 `createVRCanvas()` is the one essential line in any VR sketch.
 It should always be placed inside of `preload()`. The browser places limitations on how VR is entered into. By placing `createVRCanvas()` inside of `preload()` you are doing three things:
@@ -43,28 +41,3 @@ setVRBackgroundColor(200, 0, 150);
 
 ***
 
-## Viewer
-### setViewerPosition()
-Moves the viewer to a specific position within world-space.
-
-```
-setViewerPosition();
-```
-
-## Raycasting
-
-```
-generateRay();
-```
-
-```
-intersectsSphere();
-```
-
-```
-intersectsPlane();
-```
-
-```
-intersectsBox();
-```

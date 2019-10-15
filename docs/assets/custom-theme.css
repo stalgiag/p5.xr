@@ -46,6 +46,9 @@
     --sidebar-toggle-icon-width: 36px;
     --sidebar-toggle-offset-top: calc(100vh - (var(--sidebar-toggle-height)));
 
+    /* Horizontal Rule */
+    --hr-border            : 2px solid black;
+
 }
 
 /* Cover
@@ -252,6 +255,9 @@
 --sidebar-nav-pagelink-transition                   : var(--sidebar-nav-link-transition)
 }
 
+hr {
+    margin: 1em 0 0 0;
+}
 
 .sidebar {
     right:99.3%;

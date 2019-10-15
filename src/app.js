@@ -81,7 +81,7 @@ p5.prototype.setVRBackgroundColor = function(r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
 };
 
-p5.prototype.processForMarker = function(input) {
+p5.prototype.detectMarker = function() {
   if(!p5xr.instance.readyForDetection) {return;}
   // currently only works with p5.MediaElement
   // TODO add conditions and checks to operate with other types

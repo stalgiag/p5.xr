@@ -1,3 +1,4 @@
+let markerIndex;
 
 function setup() {
   createARCanvas(MARKER, 'pattern-p5js.patt');
@@ -5,7 +6,7 @@ function setup() {
 
 function draw() {
   background(0);
-  processForMarker();
+  detectMarker();
 
   if(isMarkerVisible(0)) {
     fill(0, 200, 0);
@@ -37,5 +38,4 @@ function draw() {
   );
 
   box(100);
-  // console.log(rot);
 }
