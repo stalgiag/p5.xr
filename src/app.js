@@ -119,3 +119,11 @@ p5.prototype.getMarkerById = function(id) {
 p5.prototype.addMarker = function(patt, callback) {
   return p5xr.instance.addMarker(patt, callback);
 };
+
+p5.prototype.surroundTexture = function(tex) {
+  push();
+  texture(tex);
+  scale(-1, 1, 1);
+  sphere(500, 60, 40);
+  pop();
+};

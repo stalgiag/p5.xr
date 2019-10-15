@@ -10,7 +10,5 @@ function preload() {
 
 function draw() {
   rotateX(PI);
-  texture(tex);
-  scale(-1, 1, 1);
-  sphere(500, 60, 40);
+  surroundTexture(tex);
 }

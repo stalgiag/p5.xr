@@ -11,9 +11,7 @@ function preload() {
 
 function draw() {
   rotateX(PI);
-  texture(vid);
-  scale(-1, 1, 1);
-  sphere(500, 60, 40);
+  surroundTexture(vid);
 }
 
 function playVideo() {
