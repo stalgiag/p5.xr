@@ -141,6 +141,16 @@
     --cover-heading-font-size-max: ;
     --cover-heading-font-weight: normal;
 
+    /* Notice */
+    --notice-background                 : var(--mono-tint2);
+    --notice-border-color               : rgb(255, 66, 32);
+    --notice-border-radius              : var(--border-radius-m);
+    --notice-border-style               : solid;
+    --notice-border-width               : ;
+    --notice-color                      : rgb(255, 66, 32);
+    --notice-font-family                : ;
+    --notice-padding                    : 1em 1.5em;
+
     /* Links */
     --cover-link-border-bottom: ;
     --cover-link-border-bottom--hover: ;

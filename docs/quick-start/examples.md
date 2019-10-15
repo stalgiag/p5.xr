@@ -1,5 +1,7 @@
-### VR Examples
+!> **[Make sure you check device support and setup before trying out these examples!](#device-support)**
 
-### ARCore Example
+## VR
 
-### AR Marker Examples
+## ARCore
+
+## AR Marker

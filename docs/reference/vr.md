@@ -41,3 +41,15 @@ setVRBackgroundColor(200, 0, 150);
 
 ***
 
+## surroundTexture()
+`surroundTexture()` is useful for 360 photo. It essentially creates a very large sphere with inverted scale that surrounds the viewer.
+```js
+surroundTexture(myTexture);
+```
+
+| Parameters        | Returns          |
+| ------------- |:-------------:
+| p5.MediaElement or p5.Graphics or p5.Image __texture__ | None
+
+***
+
