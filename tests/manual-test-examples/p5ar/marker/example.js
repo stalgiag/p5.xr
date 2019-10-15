@@ -1,18 +1,16 @@
 let markerIndex;
 
 function setup() {
-  createARCanvas(MARKER, 'pattern-p5js.patt');
+  createARCanvas(MARKER);
+  addMarker('pattern-p5js.patt', (index) => {
+    markerIndex = index;
+  });
 }
 
 function draw() {
   background(0);
-  detectMarker();
+  detectMarkers();
 
-  if(isMarkerVisible(0)) {
-    fill(0, 200, 0);
-  } else {
-    fill(200, 0, 0);
-  }
   showVideoFeed();
 
   let markerMat = getSmoothTrackerMatrix(0);

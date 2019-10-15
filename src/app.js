@@ -53,18 +53,16 @@ p5.prototype.createVRCanvas = function() {
  * via a button click gesture
  * @method createARCanvas
  */
-p5.prototype.createARCanvas = function(mode, patt) {
+p5.prototype.createARCanvas = function(mode) {
   if(mode === constants.MARKER) {
-    if(typeof patt === 'undefined') {
-      throw new Error('Cannot start a marker-based AR session without a .patt file.')
-    } else {
-      p5xr.instance = new p5arTracker(patt);
-      p5xr.instance.startMarkerSketch();
-    }
-  } else {
+    p5xr.instance = new p5arTracker();
+    p5xr.instance.startMarkerSketch();
+  } else if (mode === constants.ARCORE) {
     noLoop();
     p5xr.instance = new p5ar();
     p5xr.instance.init();
+  } else {
+    throw new Error('Cannot start AR without a MODE argument (either MARKER or ARCORE)');
   }
 };
 
@@ -81,7 +79,7 @@ p5.prototype.setVRBackgroundColor = function(r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
 };
 
-p5.prototype.detectMarker = function() {
+p5.prototype.detectMarkers = function() {
   if(!p5xr.instance.readyForDetection) {return;}
   // currently only works with p5.MediaElement
   // TODO add conditions and checks to operate with other types
@@ -115,4 +113,8 @@ p5.prototype.isMarkerVisible = function(id) {
 
 p5.prototype.getMarkerById = function(id) {
   return p5xr.instance.getMarkerById(id);
+};
+
+p5.prototype.addMarker = function(patt, callback) {
+  return p5xr.instance.addMarker(patt, callback);
 };

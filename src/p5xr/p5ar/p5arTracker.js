@@ -3,28 +3,22 @@ import * as constants from '../core/constants.js';
 import p5xr from '../core/p5xr';
 
 export default class p5arTracker extends p5ar {
-  constructor(patt) {
+  constructor() {
     super();
     this.trackingOptions = {
       smoothingAmount: 15,
       smoothTolerance : .05,
       maxToleranceExceed : 10
     };
-    this.patt = patt;
     this.markers = [];
     this.readyForDetection = false;
     this.correctionMat = p5.Matrix.identity();
     this.makeRotationY(this.correctionMat);
     this.makeRotationZ(this.correctionMat);
   }
-    
-  initializeMarkerTracking() {
-    this.arController = new ARController(width, height, 'camera_para.dat');
-    this.arController.onload = this.arControllerLoaded.bind(this);
-  }
 
-  arControllerLoaded() {
-    this.arController.loadMarker(this.patt, (uId) => {
+  loadMarker(patt, callback) {
+    this.arController.loadMarker(patt, (uId) => {
       console.log('marker loading successful, UID = ' + uId);
       this.readyForDetection = true;
       this.markers.push({
@@ -35,6 +29,9 @@ export default class p5arTracker extends p5ar {
         averageMat : p5.Matrix.identity(),
         tracker: this.arController.trackPatternMarkerId(uId, 1)
       });
+      if(typeof callback === 'function') {
+        callback(uId);
+      }
     });
     // not working :-(
     // this.getProjectionMatrix();
@@ -80,7 +77,16 @@ export default class p5arTracker extends p5ar {
     });
     this.capture.size(width, height);
     this.capture.hide();
-    this.initializeMarkerTracking();
+  }
+
+  addMarker(patt, callback) {
+    // TODO :: return id
+    if(!this.readyForDetection) {
+      this.arController = new ARController(width, height, 'camera_para.dat');
+      this.arController.onload = this.loadMarker.bind(this, patt, callback);
+    } else {
+      this.loadMarker(patt, callback);
+    }
   }
 
 
