@@ -33,7 +33,7 @@ export default class p5xrButton {
     options.color = options.color || 'rgb(237, 34, 93)';
     options.background = options.background || false;
     options.disabledOpacity = options.disabledOpacity || 0.5;
-    options.height = options.height || 55;
+    options.height = options.height || 150;
     options.corners = options.corners || 'square';
     options.cssprefix = options.cssprefix || 'webvr-ui';
   
@@ -50,7 +50,7 @@ export default class p5xrButton {
     
     this.device = null;
     this.session = null;
-    this.logoScale = 0.8;
+    this.logoScale = 1.2;
     this._WEBXR_UI_CSS_INJECTED = {};
   
     // Pass in your own domElement if you really dont want to use ours
@@ -229,8 +229,9 @@ export default class p5xrButton {
           height: ${height}px;
           min-width: ${fontSize * 9.6}px;
           display: inline-block;
-          position: relative;
-
+          position: absolute;
+          top: 5%;
+          left: 20%;
           cursor: pointer;
       }
 
