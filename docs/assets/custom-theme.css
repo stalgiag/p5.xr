@@ -80,7 +80,7 @@
     --heading-h3-background-color       : black;
     --heading-h3-color                  :black;
     --heading-h3-font-family            : ;
-    --heading-h3-font-size              : var(--font-size-xl);
+    --heading-h3-font-size              : var(--font-size-l);
     --heading-h3-font-weight            : bold;
 
     /* Background */
