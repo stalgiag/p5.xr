@@ -17,6 +17,7 @@
     --mono-base: hsl(var(--mono-hue), var(--mono-saturation), 60%);
 
     --base-background-color: var(--mono-base);
+    --base-color           : var(--mono-shade3);
     --theme-color: black;
 
     --link-color: rgb(1, 181, 148);
@@ -27,7 +28,7 @@
     --sidebar-border-width: 5px;
     --sidebar-padding: 0 5px;
 
-    --sidebar-nav-margin: 0rem 0 0;
+    /* --sidebar-nav-margin: 0rem 0 5rem; */
 
     --sidebar-name-color: var(--mono-base);
     --sidebar-name-font-family                    : kaerukaeru;
@@ -46,10 +47,13 @@
     --sidebar-toggle-icon-width: 36px;
     --sidebar-toggle-offset-top: calc(100vh - (var(--sidebar-toggle-height)));
 
+    /* Horizontal Rule */
+    --hr-border            : 2px solid black;
+
+    --base-font-size       : 1.15rem;
+
 }
 
-/* Cover
-============================================================================= */
 :root {
     --cover-color: var(--mono-base);
     --cover-margin: 0 auto;
@@ -59,12 +63,25 @@
     /* Headings */
     --heading-h2-border-color           : black;
     --heading-h2-border-style           : solid;
-    --heading-h2-border-width           : 1px;
-    --heading-h2-padding                : 10px;
+    --heading-h2-border-width           : 1.5px;
+    --heading-h2-padding                : 15px;
+    --heading-h2-margin                 : 1em -1em 1em -1em;
     --heading-h2-color                  : black;
     --heading-h2-font-family            : sporting-grotesk;
     --heading-h2-font-size              : var(--font-size-xl);
     --heading-h2-font-weight            : ;
+
+    /* Headings */
+    --heading-h3-border-color           : black;
+    --heading-h3-border-style           : ;
+    --heading-h3-border-width           : 0;
+    --heading-h3-padding                : 0;
+    --heading-h3-margin                :  0px 0 0 -20px;
+    --heading-h3-background-color       : black;
+    --heading-h3-color                  :black;
+    --heading-h3-font-family            : ;
+    --heading-h3-font-size              : var(--font-size-xl);
+    --heading-h3-font-weight            : bold;
 
     /* Background */
     --cover-background-blend-mode: ;
@@ -124,6 +141,16 @@
     --cover-heading-font-size-max: ;
     --cover-heading-font-weight: normal;
 
+    /* Notice */
+    --notice-background                 : var(--mono-tint2);
+    --notice-border-color               : rgb(255, 66, 32);
+    --notice-border-radius              : var(--border-radius-m);
+    --notice-border-style               : solid;
+    --notice-border-width               : ;
+    --notice-color                      : rgb(255, 66, 32);
+    --notice-font-family                : ;
+    --notice-padding                    : 1em 1.5em;
+
     /* Links */
     --cover-link-border-bottom: ;
     --cover-link-border-bottom--hover: ;
@@ -133,34 +160,150 @@
     --cover-link-text-decoration--hover: ;
     --cover-link-text-decoration-color: ;
     --cover-link-text-decoration-color--hover: ;
+
+    /* Tables */
+    --table-body-border-color           : ;
+    --table-body-border-width           : ;
+    --table-cell-border-color           : ;
+    --table-cell-border-width           : ;
+    --table-cell-padding                : 0.75em 0.5em;
+    --table-head-background             : rgba(0, 0, 0, 0.1);
+    --table-head-border-color           : var(--table-cell-border-color);
+    --table-head-border-width           : ;
+    --table-head-font-weight            : var(--strong-font-weight);
+    --table-row-even-background         : ;
+    --table-row-odd-background          : var(--mono-tint3);
 }
 
 /* Plugin: Copy Code
 ============================================================================= */
 :root {
-    --copycode-background: var(--mono-tint2);
-    --copycode-color: var(--mono-shade2);
+    /* --copycode-background: var(--mono-tint2);
+    --copycode-color: var(--mono-shade2); */
 }
 
 /* Sidebar
 ============================================================================= */
+:root {
+
+--sidebar-nav-strong-border-color             : var(--mono-tint2);
+--sidebar-nav-strong-border-width             : 0;
+--sidebar-nav-strong-color                    : black;
+--sidebar-nav-strong-font-size                : 1.5em;
+--sidebar-nav-strong-font-weight              : var(--strong-font-weight);
+--sidebar-nav-strong-margin                   : 1.5em 0 0.5em;
+--sidebar-nav-strong-padding                  : 0.25em 0.0em;
+--sidebar-nav-strong-text-transform           : ;
+
+/* Nav Container */
+--sidebar-nav-background                      : ;
+--sidebar-nav-indent                          : 1.5em;
+--sidebar-nav-margin                          : 1.5rem 0 0;
+--sidebar-nav-padding                         : 0.5em 1.5em;
+
+/* Nav Links */
+--sidebar-nav-link-background-color           : ;
+--sidebar-nav-link-background-color--active   : black;
+--sidebar-nav-link-background-color--hover    : black;
+--sidebar-nav-link-background-image           : ;
+--sidebar-nav-link-background-image--active   : ;
+--sidebar-nav-link-background-image--hover    : ;
+--sidebar-nav-link-background-position        : ;
+--sidebar-nav-link-background-position--active: ;
+--sidebar-nav-link-background-position--hover : ;
+--sidebar-nav-link-background-repeat          : ;
+--sidebar-nav-link-background-size            : ;
+--sidebar-nav-link-background-size--active    : ;
+--sidebar-nav-link-background-size--hover     : ;
+--sidebar-nav-link-border-color               : black;
+--sidebar-nav-link-border-color--active       : ;
+--sidebar-nav-link-border-color--hover        : ;
+--sidebar-nav-link-border-radius              : 10px;
+--sidebar-nav-link-border-style               : solid;
+--sidebar-nav-link-border-style--active       : ;
+--sidebar-nav-link-border-style--hover        : ;
+--sidebar-nav-link-border-width               : 2px;
+--sidebar-nav-link-border-width--active       : ;
+--sidebar-nav-link-border-width--hover        : ;
+--sidebar-nav-link-color                      : black;
+--sidebar-nav-link-color--active              : var(--mono-base);
+--sidebar-nav-link-color--hover               : ;
+--sidebar-nav-link-font-weight                : normal;
+--sidebar-nav-link-font-weight--active        : ;
+--sidebar-nav-link-font-weight--hover         : ;
+--sidebar-nav-link-margin                     : 0.35em;
+--sidebar-nav-link-padding                    : 2.55em 2.5em 2em 2em;
+--sidebar-nav-link-text-decoration            : ;
+--sidebar-nav-link-text-decoration--active    : ;
+--sidebar-nav-link-text-decoration--hover     : ;
+--sidebar-nav-link-text-decoration-color      : ;
+--sidebar-nav-link-transition                 : all var(--duration-fast) ease-in-out;
+
+/* Nav Links - Pseudo Content */
+--sidebar-nav-link-before-content             : ;
+--sidebar-nav-link-before-content--active     : ;
+--sidebar-nav-link-before-content-l1: ;
+--sidebar-nav-link-before-content-l1--active  : ;
+--sidebar-nav-link-before-content-l2          : ' ';
+--sidebar-nav-link-before-content-l2--active  : '👁️  👁️';
+--sidebar-nav-link-before-content-l3          : ' ';
+--sidebar-nav-link-before-content-l3--active  : '👁️  👁️';
+--sidebar-nav-link-before-content-l4          : ' ';
+--sidebar-nav-link-before-content-l4--active  : ' ';
+
+/* Nav Links - Pseudo Style */
+--sidebar-nav-link-before-color               : ;
+--sidebar-nav-link-before-color--active       : ;
+--sidebar-nav-link-before-color-l1            : ;
+--sidebar-nav-link-before-color-l1--active    : ;
+--sidebar-nav-link-before-color-l2            : ;
+--sidebar-nav-link-before-color-l2--active    : ;
+--sidebar-nav-link-before-color-l3            : ;
+--sidebar-nav-link-before-color-l3--active    : ;
+--sidebar-nav-link-before-color-l4            : ;
+--sidebar-nav-link-before-color-l4--active    : ;
+--sidebar-nav-link-before-margin              : 2em .35em 2em 0;
+--sidebar-nav-link-before-margin-l1           : 2em .35em 2em 0;
+--sidebar-nav-link-before-margin-l2           : 0.35em .35em 0.35em 0;
+--sidebar-nav-link-before-margin-l3           : .35em .35em 0.35em 0;
+--sidebar-nav-link-before-margin-l4           : 2.35em .35em 0.35em 0;
+
+/* Nav Page Links */
+--sidebar-nav-pagelink-background-image             : ;
+--sidebar-nav-pagelink-background-image--active     : ;
+--sidebar-nav-pagelink-background-image--collapse   : ;
+--sidebar-nav-pagelink-background-image--loaded     : ;
+--sidebar-nav-pagelink-background-position          : ;
+--sidebar-nav-pagelink-background-position--active  :  ;
+--sidebar-nav-pagelink-background-position--collapse: ;
+--sidebar-nav-pagelink-background-position--loaded  : ;
+--sidebar-nav-pagelink-background-size              : ;
+--sidebar-nav-pagelink-padding                      : 0 0px;
+--sidebar-nav-pagelink-transition                   : var(--sidebar-nav-link-transition)
+}
+
+hr {
+    margin: 1em 0 0 0;
+}
 
 .sidebar {
     right:99.3%;
     height: 99vh
 }
 
+h2 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .sidebar-toggle {
     left: 0.75rem;
-    top: -0.1rem;
+    top: -0.01rem;
 }
 
 .sidebar .app-name {
     border-radius: 10px;
     background-color: black;
 }
-
-
 
 .marquee3k__copy {
     padding-right: 2px;

@@ -1,18 +1,27 @@
+let markerIndex;
+let capture;
 
 function setup() {
-  createARCanvas(MARKER, 'pattern-p5js.patt');
+  createARCanvas(MARKER);
+  addMarker('pattern-p5js.patt', (index) => {
+    markerIndex = index;
+  });
+  capture = createCapture({
+    audio: false,
+    video: {
+      facingMode: {
+        exact: 'environment'
+      }
+    }
+  });
+  capture.hide();
 }
 
 function draw() {
   background(0);
-  processForMarker();
+  detectMarkers(capture);
 
-  if(isMarkerVisible(0)) {
-    fill(0, 200, 0);
-  } else {
-    fill(200, 0, 0);
-  }
-  showVideoFeed();
+  showVideoFeed(capture);
 
   let markerMat = getSmoothTrackerMatrix(0);
   // let markerMat = getTrackerMatrix(0);
@@ -35,7 +44,7 @@ function draw() {
     markerMat.mat4[14],
     markerMat.mat4[15]
   );
+  rotateX(frameCount * 0.02);
 
   box(100);
-  // console.log(rot);
 }
