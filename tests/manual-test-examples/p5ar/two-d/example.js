@@ -6,7 +6,7 @@ let pg;
 let counter = 0, elapsed = 0;
 
 function setup() {
-  createARCanvas();
+  createARCanvas(ARCORE);
   pg = createGraphics(400, 400);
   noStroke();
 

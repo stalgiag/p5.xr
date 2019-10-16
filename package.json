@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/stalgiag/p5.xr#readme",
   "dependencies": {
-    "p5": "^0.9.0",
     "webxr-polyfill": "^1.0.13"
   },
   "devDependencies": {
@@ -58,6 +57,7 @@
     "karma-sinon": "^1.0.5",
     "mocha": "^6.2.0",
     "openssl": "^1.1.0",
+    "p5": "^0.10.2",
     "parcel-bundler": "^1.12.3",
     "sinon": "^7.4.1",
     "watchify": "^3.11.1"

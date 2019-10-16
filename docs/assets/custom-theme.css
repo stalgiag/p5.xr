@@ -223,8 +223,8 @@
 --sidebar-nav-link-border-style--active       : ;
 --sidebar-nav-link-border-style--hover        : ;
 --sidebar-nav-link-border-width               : 2px;
---sidebar-nav-link-border-width--active       : ;
---sidebar-nav-link-border-width--hover        : ;
+--sidebar-nav-link-border-width--active       : 2px;
+--sidebar-nav-link-border-width--hover        : 2px;
 --sidebar-nav-link-color                      : black;
 --sidebar-nav-link-color--active              : var(--mono-base);
 --sidebar-nav-link-color--hover               : ;
@@ -232,8 +232,8 @@
 --sidebar-nav-link-font-weight--active        : ;
 --sidebar-nav-link-font-weight--hover         : ;
 --sidebar-nav-link-margin                     : 0.35em;
---sidebar-nav-link-padding                    : 2.55em 2.5em 2em 2em;
 --sidebar-nav-link-text-decoration            : ;
+--sidebar-nav-link-padding                    : 2.55em 2.5em 2em 2em;
 --sidebar-nav-link-text-decoration--active    : ;
 --sidebar-nav-link-text-decoration--hover     : ;
 --sidebar-nav-link-text-decoration-color      : ;

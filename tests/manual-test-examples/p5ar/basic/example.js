@@ -1,5 +1,5 @@
 function setup() {
-  createARCanvas();
+  createARCanvas(ARCORE);
 }
 
 let rot = 0;

@@ -35,12 +35,32 @@ export default class p5xr {
   }
 
   _updatexr() {
-    p5.instance._renderer.ambientLightColors.length = 0;
-    p5.instance._renderer.directionalLightDirections.length = 0;
-    p5.instance._renderer.directionalLightColors.length = 0;
-  
-    p5.instance._renderer.pointLightPositions.length = 0;
-    p5.instance._renderer.pointLightColors.length = 0;
+
+    let renderer = p5.instance._renderer;
+    // reset light data for new frame.
+
+    renderer.ambientLightColors.length = 0;
+    renderer.specularColors = [1, 1, 1];
+
+    renderer.directionalLightDirections.length = 0;
+    renderer.directionalLightDiffuseColors.length = 0;
+    renderer.directionalLightSpecularColors.length = 0;
+
+    renderer.pointLightPositions.length = 0;
+    renderer.pointLightDiffuseColors.length = 0;
+    renderer.pointLightSpecularColors.length = 0;
+
+    renderer.spotLightPositions.length = 0;
+    renderer.spotLightDirections.length = 0;
+    renderer.spotLightDiffuseColors.length = 0;
+    renderer.spotLightSpecularColors.length = 0;
+    renderer.spotLightAngle.length = 0;
+    renderer.spotLightConc.length = 0;
+
+    renderer._enableLighting = false;
+
+    // reset tint value for new frame
+    renderer._tint = [255, 255, 255, 255];
   }
 
   // Substitute for p5._setup() which creates a default webgl canvas
