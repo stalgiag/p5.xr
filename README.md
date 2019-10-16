@@ -1,9 +1,7 @@
 ![](https://github.com/stalgiag/p5.xr/workflows/test/badge.svg)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
-<img src="https://github.com/stalgiag/p5.xr/raw/master/docs/assets/xr-tear.png" alt="drawing" style="max-width:30%; margin-left:35%; margin-bottom: -30px"/>
-
-# p5.xr Website
+# [p5.XR WEBSITE HERE](stalgiag.github.io/p5.xr/)
 
 ## What is it?
 
