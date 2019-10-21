@@ -1,6 +1,11 @@
+const docsify = window.Docsify;
+const toggle = () => docsify.dom.body.classList.toggle('close');
+
 window.onload = () => {
   addMarqueeClass('app-name');
+  addMobileSidebarCallback();
 };
+
 
 function addMarqueeClass(elementClass) {
   const el = document.getElementsByClassName(elementClass)[0];
@@ -14,4 +19,14 @@ function addMarqueeClass(elementClass) {
 
 function addClass(el, classNameToAdd) {
   el.className += ' ' + classNameToAdd;
+}
+
+function addMobileSidebarCallback() {
+  for(const link of docsify.dom.findAll('.sidebar-nav ul a')) {
+    link.onclick = () => {
+      if(docsify.dom.body.classList.contains('close') && docsify.util.isMobile) {
+        toggle();
+      }
+    };
+  }
 }
