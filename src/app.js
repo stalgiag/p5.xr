@@ -1,5 +1,5 @@
 import './../jsartoolkit/artoolkit.api.js';
-import WebXRPolyfill from 'webxr-polyfill';
+import WebXRPolyfill from './webxr/webxr-polyfill-2019.module.js';
 import WebXRVersionShim from './webxr/webxr-version-shim';
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
@@ -20,7 +20,7 @@ function polyfillIfRequired() {
   if(!navigator.xr) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
-    window.versionShim = new WebXRVersionShim();
+    // window.versionShim = new WebXRVersionShim();
   }
   else {
     window.injectedPolyfill = false;

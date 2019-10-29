@@ -103,11 +103,10 @@ export default class p5xr {
   sessionCheck() {
     if(window.injectedPolyfill) {
       if(this.isVR) {
-        navigator.xr.requestDevice().then((device) => {
-          device.supportsSession({ immersive: true }).then(() => {
-            console.log('VR supported with polyfill');
-            this.xrButton.setDevice(device);
-          });
+        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+          this.xrButton.enabled = supported;
+          this.xrButton.setDevice(true);
+          console.log('VR supported with polyfill');
         });
       } else {
         // AR with polyfill is unsupported currently
@@ -144,13 +143,8 @@ export default class p5xr {
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
-    let viewer = null;
-    if(window.injectedPolyfill) {
-      this.viewer.pose = frame.getDevicePose(this.xrFrameOfRef);
-    } else {
-      viewer = frame.getViewerPose(this.xrFrameOfRef);
-    }
-    let glLayer = window.injectedPolyfill ? session.baseLayer : session.renderState.baseLayer;
+    let viewer = frame.getViewerPose(this.xrFrameOfRef);
+    let glLayer = session.renderState.baseLayer;
 
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
@@ -168,25 +162,21 @@ export default class p5xr {
         this._clearVR();
       }
       
-      if(window.injectedPolyfill) {
-        for(let i=0; i<frame.views.length; i++) {
-          this.viewer.view = frame.views[i];
-          let viewport = glLayer.getViewport(this.viewer.view);
-          this.gl.viewport(viewport.x, viewport.y,
-            viewport.width, viewport.height);
-          this._drawEye(i);
-        }
-      } else {
-        let i=0;
-        for (let view of this.viewer.pose.views) {
-          this.viewer.view = view;
-          let viewport = glLayer.getViewport(this.viewer.view);
-          this.gl.viewport(viewport.x, viewport.y,
-            viewport.width, viewport.height);
-          this._drawEye(i);
-          i++;
-        }
+
+      let i=0;
+      for (let view of this.viewer.pose.views) {
+        this.viewer.view = view;
+        let viewport = glLayer.getViewport(this.viewer.view);
+        this.gl.viewport(viewport.x, viewport.y,
+          viewport.width, viewport.height);
+        p5.instance._renderer._viewport[0] = viewport.x;
+        p5.instance._renderer._viewport[1] = viewport.y;
+        p5.instance._renderer._viewport[2] = viewport.width;
+        p5.instance._renderer._viewport[3] = viewport.height;
+        this._drawEye(i);
+        i++;
       }
+      
     }
   }
 

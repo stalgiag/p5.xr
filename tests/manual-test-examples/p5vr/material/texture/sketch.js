@@ -5,8 +5,13 @@ var theta = 0;
 function preload() {
   img = loadImage('../../../assets/UV_Grid_Sm.jpg');
   createVRCanvas();
-  setVRBackgroundColor(50, 50, 50);
+  setVRBackgroundColor(100, 50, 200);
 }
+
+function calculate() {
+  theta += 0.05;
+}
+
 function setup() {
   // smooth();
   noStroke();
@@ -48,5 +53,4 @@ function draw() {
   // box(45);
   box();
   pop();
-  theta += 0.05;
 }

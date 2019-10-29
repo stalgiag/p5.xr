@@ -27,17 +27,12 @@ export default class p5xrViewer {
   // TODO: set matrices for non polyfill
   set view(newView) {
     this._view = newView;
-    if(window.injectedPolyfill) {
-      p5.instance._renderer.uMVMatrix.set(this._pose.getViewMatrix(this._view));
-      p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
-      this.initialMVMatrix.set(p5.instance._renderer.uMVMatrix.copy());
-    } else {
-      p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
-      p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
-      p5.instance._renderer._curCamera.cameraMatrix.set(
-        p5.Matrix.identity().mult(this._view.transform.inverse.matrix)
-      );
-    }
+    p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
+    p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
+    p5.instance._renderer._curCamera.cameraMatrix.set(
+      p5.Matrix.identity().mult(this._view.transform.inverse.matrix)
+    );
+    
     if(newView.eye === 'left') {
       this.leftPMatrix.set(p5.instance._renderer.uPMatrix.copy());
     }
