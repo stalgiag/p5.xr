@@ -30,7 +30,7 @@ export default class p5ar extends p5xr {
       console.log('AR does not work with polyfilled version of p5.xr currently');
       return;
     } else {
-      this.onRequestSessionNoPF();
+      this.onRequestSession();
     }
     p5.instance._decrementPreload();
   }
@@ -59,7 +59,7 @@ export default class p5ar extends p5xr {
     }
   }
 
-  onRequestSessionNoPF() {
+  onRequestSession() {
     console.log('set context with xrCompatible: true');
     this.gl = this.canvas.getContext('webgl', {
       xrCompatible: true

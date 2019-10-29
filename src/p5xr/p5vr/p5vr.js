@@ -28,7 +28,7 @@ export default class p5vr extends p5xr {
     if (typeof window.setup === 'function') {
       window.setup();
     }
-    this.onRequestSessionNoPF();
+    this.onRequestSession();
   }
 
   /**
@@ -42,31 +42,10 @@ export default class p5vr extends p5xr {
     // like click or touch when requesting an immersive session.
   }
 
-  onRequestSessionPolyfill() {
-    console.log('set context with compatible device');
-    ;
-    // get a copy of the same gl that p5 is using
-    this.gl = canvas.getContext('webgl', {
-      compatibleXRDevice: this.xrSession.device
-    });
-    // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
-    // sessions baseLayer. This allows any content rendered to the layer to
-    // be displayed on the XRDevice;
-    
-    this.xrSession.baseLayer = new XRWebGLLayer(this.xrSession, this.gl);
-    // Get a frame of reference, which is required for querying poses. In
-    // this case an 'eye-level' frame of reference means that all poses will
-    // be relative to the location where the XRDevice was first detected.
-    this.xrSession.requestReferenceSpace('bounded-floor').then((frameOfRef) => {
-      this.xrFrameOfRef = frameOfRef;
-      // Inform the session that we're ready to begin drawing.
-      this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
-    });
-  }
-
-  onRequestSessionNoPF() {
+  onRequestSession() {
     console.log('set context with xrCompatible: true');
-    this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR')
+    this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
+    p5.instance._renderer._curCamera.cameraType = 'custom';
     this.gl = canvas.getContext('webgl', {
       xrCompatible: true
     });

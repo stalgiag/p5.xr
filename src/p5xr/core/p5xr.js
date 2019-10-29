@@ -101,25 +101,16 @@ export default class p5xr {
   }
 
   sessionCheck() {
-    if(window.injectedPolyfill) {
-      if(this.isVR) {
-        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-          this.xrButton.enabled = supported;
+    if(this.isVR) {
+      navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+        if(supported) {
+          console.log('VR supported without polyfill');
           this.xrButton.setDevice(true);
-          console.log('VR supported with polyfill');
-        });
-      } else {
-        // AR with polyfill is unsupported currently
-        this.printUnsupportedMessage();
-        return;
-      }
-    } else if(this.isVR) {
-      navigator.xr.supportsSession('immersive-vr').then(() => {
-        console.log('VR supported without polyfill');
-        this.xrButton.setDevice(true);
+        } else {
+          console.log('This device does not support immersive VR sessions.');
+        }
       }).catch((e) => {
         console.log(e.message);
-        console.log('This device does not support immersive VR sessions.');
       });
     } else {
       navigator.xr.supportsSession('immersive-ar').then(() => {

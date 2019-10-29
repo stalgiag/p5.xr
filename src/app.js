@@ -17,7 +17,7 @@ for (const k in constants) {
 }
 
 function polyfillIfRequired() {
-  if(!navigator.xr) {
+  if(!navigator.xr || !navigator.xr.isSessionSupported) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
     // window.versionShim = new WebXRVersionShim();
