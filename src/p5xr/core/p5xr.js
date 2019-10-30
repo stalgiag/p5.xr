@@ -36,7 +36,7 @@ export default class p5xr {
 
   _updatexr() {
 
-    let renderer = p5.instance._renderer;
+    const renderer = p5.instance._renderer;
     // reset light data for new frame.
 
     renderer.ambientLightColors.length = 0;
@@ -128,14 +128,14 @@ export default class p5xr {
    * @param frame {XRFrame}
    */
   onXRFrame(t, frame) {
-    let session = this.xrSession = frame.session;
+    const session = this.xrSession = frame.session;
     if(session === null || this.gl === null) {return;}
     // Inform the session that we're ready for the next frame.
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
-    let viewer = frame.getViewerPose(this.xrFrameOfRef);
-    let glLayer = session.renderState.baseLayer;
+    const viewer = frame.getViewerPose(this.xrFrameOfRef);
+    const glLayer = session.renderState.baseLayer;
 
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
@@ -155,25 +155,29 @@ export default class p5xr {
       
 
       let i=0;
-      for (let view of this.viewer.pose.views) {
+      for (const view of this.viewer.pose.views) {
         this.viewer.view = view;
-        let viewport = glLayer.getViewport(this.viewer.view);
+
+        const viewport = glLayer.getViewport(this.viewer.view);
         this.gl.viewport(viewport.x, viewport.y,
           viewport.width, viewport.height);
-        p5.instance._renderer._viewport[0] = viewport.x;
-        p5.instance._renderer._viewport[1] = viewport.y;
-        p5.instance._renderer._viewport[2] = viewport.width;
-        p5.instance._renderer._viewport[3] = viewport.height;
+        _updateViewport(viewport);
+  
         this._drawEye(i);
         i++;
       }
-      
     }
+  }
+
+  _updateViewport(viewport) {
+    p5.instance._renderer._viewport[0] = viewport.x;
+    p5.instance._renderer._viewport[1] = viewport.y;
+    p5.instance._renderer._viewport[2] = viewport.width;
+    p5.instance._renderer._viewport[3] = viewport.height;
   }
 
   /**
    * Runs the code that the user has in `draw()` once for each eye
-   * <b>TODO: </b> optimizations!
    */
   _drawEye(eyeIndex) {
     const context = window;
@@ -199,11 +203,7 @@ export default class p5xr {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
   
-      if (context._renderer.isP3D) {
-        this._updatexr();
-      } else {
-        console.error('Context does not have 3D Renderer');
-      }
+      this._updatexr();
       
       p5.instance._inUserDraw = true;
 

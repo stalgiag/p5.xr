@@ -20,7 +20,6 @@ function polyfillIfRequired() {
   if(!navigator.xr || !navigator.xr.isSessionSupported) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
-    // window.versionShim = new WebXRVersionShim();
   }
   else {
     window.injectedPolyfill = false;
