@@ -1,6 +1,5 @@
 import './../jsartoolkit/artoolkit.api.js';
 import WebXRPolyfill from 'webxr-polyfill';
-import WebXRVersionShim from './webxr/webxr-version-shim';
 import p5vr from '../src/p5xr/p5vr/p5vr.js';
 import p5ar from '../src/p5xr/p5ar/p5ar.js';
 import p5arTracker from '../src/p5xr/p5ar/p5arTracker.js';
@@ -17,10 +16,9 @@ for (const k in constants) {
 }
 
 function polyfillIfRequired() {
-  if(!navigator.xr) {
+  if(!('xr' in window.navigator)) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
-    window.versionShim = new WebXRVersionShim();
   }
   else {
     window.injectedPolyfill = false;

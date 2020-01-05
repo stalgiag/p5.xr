@@ -4,8 +4,8 @@ let p;
 let rot = 0;
 
 function preload() {
-  tex = loadImage('second-equi.jpg');
-  p = loadImage('p5-logo.png');
+  tex = loadImage('../../../assets/equirectangular_hd.jpg');
+  p = loadImage('../../../assets/UV_Grid_SM.jpg');
   createVRCanvas();
   setVRBackgroundColor(200, 0, 150);
 }
@@ -24,7 +24,6 @@ function draw() {
   surroundTexture(tex);
   translate(0, 0, 35);
   rotateY(rot);
-  scale(1, 1, -1);
   texture(p);
   sphere(10);
 }

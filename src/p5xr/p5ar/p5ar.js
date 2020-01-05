@@ -4,8 +4,6 @@ import * as constants from '../core/constants.js';
 export default class p5ar extends p5xr {
   constructor() {
     super();
-    // let self = p5xr.instance;
-    let xrButton;
     this.canvas = null;
     
   }
@@ -26,12 +24,8 @@ export default class p5ar extends p5xr {
     this.xrSession.addEventListener('end', self.onSessionEnded);
     this.canvas = p5.instance.canvas;
 
-    if(window.injectedPolyfill) {
-      console.log('AR does not work with polyfilled version of p5.xr currently');
-      return;
-    } else {
-      this.onRequestSessionNoPF();
-    }
+    this.onRequestSession();
+
     p5.instance._decrementPreload();
   }
 
@@ -41,26 +35,26 @@ export default class p5ar extends p5xr {
    * @param {XRDevice}
    */
   onXRButtonClicked(device) {
+    if(window.injectedPolyfill) {
+      console.log('ARCORE mode is not supported with a polyfill. Try using a more recent browser version');
+      return;
+    }
     // Normalize the various vendor prefixed versions of getUserMedia.
     navigator.getUserMedia = (navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
         navigator.msGetUserMedia);
 
-    if(window.injectedPolyfill) {
-      // STUB
-    } else {
-      navigator.xr.requestSession('immersive-ar').
-        then((session) => {
-          this.startSketch(session);
-        }, (error) => {
-          console.log(error + ' unable to request an immersive-ar session.');
-        });
-    }
+    navigator.xr.requestSession('immersive-ar').
+      then((session) => {
+        this.startSketch(session);
+      }, (error) => {
+        console.log(error + ' unable to request an immersive-ar session.');
+      });
+    
   }
 
-  onRequestSessionNoPF() {
-    console.log('set context with xrCompatible: true');
+  onRequestSession() {
     this.gl = this.canvas.getContext('webgl', {
       xrCompatible: true
     });
