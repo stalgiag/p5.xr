@@ -24,7 +24,7 @@ This example shows you how sticky(), and intersectsSphere() work.
 ### [View](https://editor.p5js.org/stalgiag/present/5nKLHbLC_)
 ### [Edit](https://editor.p5js.org/stalgiag/sketches/5nKLHbLC_)
 
-## ARCore
+<!-- ## ARCore
 
 ### __ARCore Example__
 This examples shows the Conway's Game Of Life Example By Dan Shiffman in AR. Note this may run slowly on older phones.
@@ -36,4 +36,4 @@ This examples shows the Conway's Game Of Life Example By Dan Shiffman in AR. Not
 
 ### __AR Marker Example__
 This example shows how MARKER-based AR works. Show an image of the p5 patt to your phone and a box will anchor to it.
- -- _COMING SOON!_
+ -- _COMING SOON!_ -->

@@ -113,7 +113,7 @@ export default class p5xr {
         console.log(e.message);
       });
     } else {
-      navigator.xr.supportsSession('immersive-ar').then(() => {
+      navigator.xr.isSessionSupported('immersive-ar').then(() => {
         console.log('AR supported without polyfill');
         this.xrButton.setDevice(true);
       });

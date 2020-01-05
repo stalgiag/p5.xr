@@ -122,6 +122,6 @@ p5.prototype.surroundTexture = function(tex) {
   push();
   texture(tex);
   scale(-1, 1, 1);
-  sphere(500, 60, 40);
+  sphere(300, 60, 40);
   pop();
 };

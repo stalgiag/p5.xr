@@ -10,7 +10,7 @@
 ***
 - __REFERENCE__
   - [VR](reference/vr.md)
-  - [AR](reference/ar.md)
+  <!-- - [AR](reference/ar.md) -->
   - [Raycasting](reference/raycasting.md)
   - [Utilities](reference/utilities.md)
 ***
