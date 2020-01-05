@@ -33,7 +33,7 @@ export default class p5xrButton {
     options.color = options.color || 'rgb(237, 34, 93)';
     options.background = options.background || false;
     options.disabledOpacity = options.disabledOpacity || 0.5;
-    options.height = options.height || 150;
+    options.height = options.height || window.innerWidth / 5;
     options.corners = options.corners || 'square';
     options.cssprefix = options.cssprefix || 'webvr-ui';
   
@@ -231,7 +231,7 @@ export default class p5xrButton {
           display: inline-block;
           position: absolute;
           top: 5%;
-          left: 20%;
+          left: 15%;
           cursor: pointer;
       }
 

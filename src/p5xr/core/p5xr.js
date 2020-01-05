@@ -161,7 +161,7 @@ export default class p5xr {
         const viewport = glLayer.getViewport(this.viewer.view);
         this.gl.viewport(viewport.x, viewport.y,
           viewport.width, viewport.height);
-        _updateViewport(viewport);
+        this._updateViewport(viewport);
   
         this._drawEye(i);
         i++;
