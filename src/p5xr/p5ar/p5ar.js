@@ -23,9 +23,8 @@ export default class p5ar extends p5xr {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', self.onSessionEnded);
     this.canvas = p5.instance.canvas;
-
+    p5.instance._renderer._curCamera.cameraType = 'custom';
     this.onRequestSession();
-
     p5.instance._decrementPreload();
   }
 
@@ -62,7 +61,7 @@ export default class p5ar extends p5xr {
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
     });
 
-    this.xrSession.requestReferenceSpace('unbounded').
+    this.xrSession.requestReferenceSpace('local').
       then((refSpace) => {
         this.xrFrameOfRef = refSpace;
         // Inform the session that we're ready to begin drawing.

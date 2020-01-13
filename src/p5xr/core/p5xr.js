@@ -191,6 +191,9 @@ export default class p5xr {
           userCalculate();
         }
       }
+    } else {
+      // Scale is much smaller in AR
+      scale(0.01);
     }
     // 2D Mode should use graphics object
     if (!p5.instance._renderer.isP3D) {
