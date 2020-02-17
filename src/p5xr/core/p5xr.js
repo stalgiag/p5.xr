@@ -21,7 +21,10 @@ export default class p5xr {
     this.xrButton;
     this.isVR;
     this.xrSession = null;
-    this.xrFrameOfRef = null;
+    this.xrRefSpace = null;
+    this.xrViewerSpace = null;
+    this.xrHitTestSource = null;
+    this.frame = null;
     this.gl = null;
     this.curClearColor = color(255, 255, 255);
     this.viewer = new p5xrViewer();
@@ -134,16 +137,16 @@ export default class p5xr {
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
-    const viewer = frame.getViewerPose(this.xrFrameOfRef);
+    const viewer = frame.getViewerPose(this.xrRefSpace);
     const glLayer = session.renderState.baseLayer;
-
+    this.frame = frame;
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
     // to render with it. If not in this case we'll just leave the
     // framebuffer cleared, so tracking loss means the scene will simply
     // dissapear.
     if(viewer) {
-      this.viewer.pose = frame.getViewerPose(this.xrFrameOfRef);
+      this.viewer.pose = frame.getViewerPose(this.xrRefSpace);
       // If we do have a valid pose, bind the WebGL layer's framebuffer,
       // which is where any content to be displayed on the XRDevice must be
       // rendered.
@@ -229,6 +232,8 @@ export default class p5xr {
   * 
   */
   onSessionEnded() {
+    this.xrHitTestSource.cancel();
+    this.xrHitTestSource = null;
     if(this.xrSession) {
       this.xrSession.end();
       this.xrSession = null;

@@ -125,3 +125,10 @@ p5.prototype.surroundTexture = function(tex) {
   sphere(300, 60, 40);
   pop();
 };
+
+p5.prototype.createAnchor = function() {
+  if(p5xr.instance.isVR) {
+    return;
+  }
+  return p5xr.instance.createAnchor();
+};

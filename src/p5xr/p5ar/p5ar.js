@@ -21,11 +21,34 @@ export default class p5ar extends p5xr {
      */
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
-    this.xrSession.addEventListener('end', self.onSessionEnded);
+    this.xrSession.addEventListener('end', this.onSessionEnded);
+    this.xrSession.addEventListener('select', this.onSelect);
     this.canvas = p5.instance.canvas;
     p5.instance._renderer._curCamera.cameraType = 'custom';
     this.onRequestSession();
     p5.instance._decrementPreload();
+  }
+
+  onSelect(event) {
+    const context = window;
+    const userMousePressed = context.mousePressed;
+    if(typeof userMousePressed == 'function') {
+      try {
+        userMousePressed();
+      } catch {
+        print("ERROR CALLING MOUSEPRESSED()");
+      }
+    }
+  }
+
+  createAnchor() {
+    if (this.xrHitTestSource && this.viewer.pose && this.frame) {
+      let hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
+      if (hitTestResults.length > 0) {
+        let pose = hitTestResults[0].getPose(this.xrRefSpace);
+        return pose;
+      }
+    }
   }
 
 
@@ -61,9 +84,16 @@ export default class p5ar extends p5xr {
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
     });
 
+    this.xrSession.requestReferenceSpace('viewer').then((refSpace) => {
+      this.xrViewerSpace = refSpace;
+      this.xrSession.requestHitTestSource({ space: this.xrViewerSpace }).then((hitTestSource) => {
+        this.xrHitTestSource = hitTestSource;
+      });
+    });
+
     this.xrSession.requestReferenceSpace('local').
       then((refSpace) => {
-        this.xrFrameOfRef = refSpace;
+        this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
       });

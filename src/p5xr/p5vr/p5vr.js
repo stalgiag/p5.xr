@@ -56,7 +56,7 @@ export default class p5vr extends p5xr {
     // be relative to the location where the XRDevice was first detected.
     this.xrSession.requestReferenceSpace('local').
       then((refSpace) => {
-        this.xrFrameOfRef = refSpace;
+        this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
       });
