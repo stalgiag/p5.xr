@@ -1,13 +1,13 @@
-import './../jsartoolkit/artoolkit.api.js';
+import '../jsartoolkit/artoolkit.api.js';
 import WebXRPolyfill from 'webxr-polyfill';
-import p5vr from '../src/p5xr/p5vr/p5vr.js';
-import p5ar from '../src/p5xr/p5ar/p5ar.js';
-import p5arTracker from '../src/p5xr/p5ar/p5arTracker.js';
-import * as constants from '../src/p5xr/core/constants.js';
+import p5vr from './p5xr/p5vr/p5vr.js';
+import p5ar from './p5xr/p5ar/p5ar.js';
+import ARMarkerTracker from './p5xr/p5ar/ARMarkerTracker.js';
+import * as constants from './p5xr/core/constants.js';
 import './p5xr/core/raycasting.js';
 
 window.p5xr = {
-  instance: null
+  instance: null,
 };
 
 // attach constants to p5
@@ -16,11 +16,10 @@ for (const k in constants) {
 }
 
 function polyfillIfRequired() {
-  if(!('xr' in window.navigator)) {
+  if (!('xr' in window.navigator)) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
-  }
-  else {
+  } else {
     window.injectedPolyfill = false;
   }
 }
@@ -36,7 +35,7 @@ polyfillIfRequired();
  * via a button click gesture
  * @method createVRCanvas
  */
-p5.prototype.createVRCanvas = function() {
+p5.prototype.createVRCanvas = function () {
   noLoop();
   p5xr.instance = new p5vr();
   p5xr.instance.initVR();
@@ -51,9 +50,9 @@ p5.prototype.createVRCanvas = function() {
  * via a button click gesture
  * @method createARCanvas
  */
-p5.prototype.createARCanvas = function(mode) {
-  if(mode === constants.MARKER) {
-    p5xr.instance = new p5arTracker();
+p5.prototype.createARCanvas = function (mode) {
+  if (mode === constants.MARKER) {
+    p5xr.instance = new ARMarkerTracker();
     p5xr.instance.startMarkerSketch();
   } else if (mode === constants.ARCORE) {
     noLoop();
@@ -73,55 +72,62 @@ p5.prototype.createARCanvas = function(mode) {
  * @param  {Number} g green value of background
  * @param  {Number} b blue value of background
  */
-p5.prototype.setVRBackgroundColor = function(r, g, b) {
+p5.prototype.setVRBackgroundColor = function (r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
 };
 
-p5.prototype.detectMarkers = function(cap) {
-  if(!p5xr.instance.readyForDetection) {return;}
-  if(typeof cap.elt === 'undefined') {
+p5.prototype.detectMarkers = function (cap) {
+  if (!p5xr.instance.readyForDetection) { return; }
+  if (typeof cap.elt === 'undefined') {
     console.error('Can only use detectMarkers() on p5.MediaElement');
   }
   p5xr.instance.arController.process(cap.elt);
 };
 
-p5.prototype.getTrackerMatrix = function(id) {
+p5.prototype.getTrackerMatrix = function (id) {
   return p5xr.instance.getTrackerMatrix(id);
 };
 
-p5.prototype.getSmoothTrackerMatrix = function(id) {
+p5.prototype.getSmoothTrackerMatrix = function (id) {
   return p5xr.instance.getSmoothTrackerMatrix(id);
 };
 
-p5.prototype.showVideoFeed = function(cap) {
+p5.prototype.showVideoFeed = function (cap) {
   push();
   this._renderer.GL.disable(this._renderer.GL.DEPTH_TEST);
   this._renderer.GL.depthMask(false);
-  
+
   texture(cap);
-  rect(-width/2, -height/2, width, height);
+  rect(-width / 2, -height / 2, width, height);
 
   this._renderer.GL.enable(this._renderer.GL.DEPTH_TEST);
   this._renderer.GL.depthMask(true);
   pop();
 };
 
-p5.prototype.isMarkerVisible = function(id) {
+p5.prototype.isMarkerVisible = function (id) {
   return p5xr.instance.isMarkerVisible(id);
 };
 
-p5.prototype.getMarkerById = function(id) {
+p5.prototype.getMarkerById = function (id) {
   return p5xr.instance.getMarkerById(id);
 };
 
-p5.prototype.addMarker = function(patt, callback) {
+p5.prototype.addMarker = function (patt, callback) {
   return p5xr.instance.addMarker(patt, callback);
 };
 
-p5.prototype.surroundTexture = function(tex) {
+p5.prototype.surroundTexture = function (tex) {
   push();
   texture(tex);
   scale(-1, 1, 1);
   sphere(300, 60, 40);
   pop();
+};
+
+p5.prototype.createAnchor = function () {
+  if (p5xr.instance.isVR) {
+    return;
+  }
+  return p5xr.instance.createAnchor();
 };
