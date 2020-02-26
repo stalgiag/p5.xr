@@ -7,15 +7,13 @@ function setup() {
 
 
 function draw() {
-  if(anchor) {
+  if (anchor) {
     push();
     anchor.transform();
     box(50);
     pop();
   }
 }
-
-let debug = false;
 
 function mousePressed() {
   anchor = createAnchor();
