@@ -9,7 +9,7 @@ function setup() {
 function draw() {
   if(anchor) {
     push();
-    translate(anchor.transform.position.x * 100, anchor.transform.position.y * 100, anchor.transform.position.z * 100);
+    anchor.transform();
     box(50);
     pop();
   }

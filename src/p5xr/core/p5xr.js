@@ -10,7 +10,7 @@ import p5xrButton from './p5xrButton';
  *
  * @property vrDevice  {XRDevice} the current VR compatible device
  * @property vrSession  {XRSession} the current VR session
- * @property vrFrameOfRef  {XRFrameOfReference} the current VR frame of reference 
+ * @property vrFrameOfRef  {XRFrameOfReference} the current VR frame of reference
  * (starting point for transform, default eye-level)
  * @property gl  {WebGLRenderingContext} points to p5.RendererGL.GL (the WebGL Rendering Context)
  * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
@@ -31,14 +31,13 @@ export default class p5xr {
   }
 
   removeLoadingElement() {
-    let loadingScreen = document.getElementById(window._loadingScreenId);
+    const loadingScreen = document.getElementById(window._loadingScreenId);
     if (loadingScreen) {
       loadingScreen.parentNode.removeChild(loadingScreen);
     }
   }
 
   _updatexr() {
-
     const renderer = p5.instance._renderer;
     // reset light data for new frame.
 
@@ -79,7 +78,7 @@ export default class p5xr {
    * Checks if the device supports an immersive session.
    * Then binds the device to the button. <br>
    * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
-   */  
+   */
   init() {
     p5.instance._incrementPreload();
     this._setupxr();
@@ -89,7 +88,7 @@ export default class p5xr {
     this.xrButton = new p5xrButton({
       onRequestSession: this.onXRButtonClicked.bind(this),
       onEndSession: this.onSessionEnded.bind(this),
-      textEnterXRTitle: this.isVR ? 'ENTER VR' : 'ENTER AR'
+      textEnterXRTitle: this.isVR ? 'ENTER VR' : 'ENTER AR',
     });
     let header = document.querySelector('header');
     if (!header) {
@@ -104,9 +103,9 @@ export default class p5xr {
   }
 
   sessionCheck() {
-    if(this.isVR) {
+    if (this.isVR) {
       navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-        if(supported) {
+        if (supported) {
           console.log('VR supported without polyfill');
           this.xrButton.setDevice(true);
         } else {
@@ -132,7 +131,7 @@ export default class p5xr {
    */
   onXRFrame(t, frame) {
     const session = this.xrSession = frame.session;
-    if(session === null || this.gl === null) {return;}
+    if (session === null || this.gl === null) { return; }
     // Inform the session that we're ready for the next frame.
     session.requestAnimationFrame(this.onXRFrame.bind(this));
     // Get the XRDevice pose relative to the Frame of Reference we created
@@ -145,19 +144,19 @@ export default class p5xr {
     // to render with it. If not in this case we'll just leave the
     // framebuffer cleared, so tracking loss means the scene will simply
     // dissapear.
-    if(viewer) {
+    if (viewer) {
       this.viewer.pose = frame.getViewerPose(this.xrRefSpace);
       // If we do have a valid pose, bind the WebGL layer's framebuffer,
       // which is where any content to be displayed on the XRDevice must be
       // rendered.
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, glLayer.framebuffer);
 
-      if(this.isVR) {
+      if (this.isVR) {
         this._clearVR();
       }
-      
 
-      let i=0;
+
+      let i = 0;
       for (const view of this.viewer.pose.views) {
         this.viewer.view = view;
 
@@ -165,7 +164,7 @@ export default class p5xr {
         this.gl.viewport(viewport.x, viewport.y,
           viewport.width, viewport.height);
         this._updateViewport(viewport);
-  
+
         this._drawEye(i);
         i++;
       }
@@ -188,9 +187,9 @@ export default class p5xr {
     const userDraw = context.draw;
     const userCalculate = context.calculate;
 
-    if(this.isVR) {
-      if(eyeIndex === 0) {
-        if(typeof userCalculate === 'function') {
+    if (this.isVR) {
+      if (eyeIndex === 0) {
+        if (typeof userCalculate === 'function') {
           userCalculate();
         }
       }
@@ -203,14 +202,14 @@ export default class p5xr {
       console.error('Sketch does not have 3D Renderer');
       return;
     }
-    
+
     if (typeof userDraw === 'function') {
       if (typeof userSetup === 'undefined') {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
-  
+
       this._updatexr();
-      
+
       p5.instance._inUserDraw = true;
 
       try {
@@ -218,8 +217,8 @@ export default class p5xr {
       } finally {
         p5.instance._inUserDraw = false;
       }
-  
-      if(eyeIndex === 1) {
+
+      if (eyeIndex === 1) {
         context._setProperty('frameCount', context.frameCount + 1);
       }
     }
@@ -229,17 +228,17 @@ export default class p5xr {
   * Called either when the user has explicitly ended the session
   *  or when the UA has ended the session for any reason.
   * The xrSession is ended and discarded. p5 is reset with `remove()`
-  * 
+  *
   */
   onSessionEnded() {
     this.xrHitTestSource.cancel();
     this.xrHitTestSource = null;
-    if(this.xrSession) {
+    if (this.xrSession) {
       this.xrSession.end();
       this.xrSession = null;
     }
-    let p5Canvi = document.getElementsByClassName('p5Canvas');
-    while(p5Canvi.length > 0) {
+    const p5Canvi = document.getElementsByClassName('p5Canvas');
+    while (p5Canvi.length > 0) {
       p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
     }
     this.xrButton.session = null;
@@ -247,14 +246,13 @@ export default class p5xr {
   }
 
   printUnsupportedMessage() {
-    console.warn('Your browser/hardware does not work with AR Mode currently. This is'+
-        ' undergoing heavy development currently.' +
-        'You may be able to fix this by enabling WebXR flags in Chrome.');
-    return;
+    console.warn('Your browser/hardware does not work with AR Mode currently. This is'
+        + ' undergoing heavy development currently.'
+        + 'You may be able to fix this by enabling WebXR flags in Chrome.');
   }
 
   remove() {
-    if(this.xrButton) {
+    if (this.xrButton) {
       this.xrButton.remove();
     }
     window.p5xr.instance = null;

@@ -1,5 +1,6 @@
 import p5xr from '../core/p5xr';
 import * as constants from '../core/constants.js';
+import ARAnchor from './ARAnchor';
 
 export default class p5ar extends p5xr {
   constructor() {
@@ -33,11 +34,7 @@ export default class p5ar extends p5xr {
     const context = window;
     const userMousePressed = context.mousePressed;
     if(typeof userMousePressed == 'function') {
-      try {
         userMousePressed();
-      } catch {
-        print("ERROR CALLING MOUSEPRESSED()");
-      }
     }
   }
 
@@ -46,7 +43,7 @@ export default class p5ar extends p5xr {
       let hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
       if (hitTestResults.length > 0) {
         let pose = hitTestResults[0].getPose(this.xrRefSpace);
-        return pose;
+        return new ARAnchor(pose.transform.position.x, pose.transform.position.y, pose.transform.position.z);
       }
     }
   }
