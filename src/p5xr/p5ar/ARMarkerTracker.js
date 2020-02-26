@@ -2,7 +2,7 @@ import p5ar from './p5ar';
 import * as constants from '../core/constants.js';
 import p5xr from '../core/p5xr';
 
-export default class p5arTracker extends p5ar {
+export default class ARMarkerTracker extends p5ar {
   constructor() {
     super();
     this.trackingOptions = {

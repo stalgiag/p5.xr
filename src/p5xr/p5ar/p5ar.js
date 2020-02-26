@@ -6,7 +6,6 @@ export default class p5ar extends p5xr {
   constructor() {
     super();
     this.canvas = null;
-    
   }
 
   //* ********************************************************//
@@ -15,7 +14,7 @@ export default class p5ar extends p5xr {
 
   /**
      * This is where the actual p5 canvas is first created, and
-     * the GL rendering context is accessed by p5vr. 
+     * the GL rendering context is accessed by p5vr.
      * The current XRSession also gets a frame of reference and
      * base rendering layer. <br>
      * @param {XRSession}
@@ -33,16 +32,16 @@ export default class p5ar extends p5xr {
   onSelect(event) {
     const context = window;
     const userMousePressed = context.mousePressed;
-    if(typeof userMousePressed == 'function') {
-        userMousePressed();
+    if (typeof userMousePressed === 'function') {
+      userMousePressed();
     }
   }
 
   createAnchor() {
     if (this.xrHitTestSource && this.viewer.pose && this.frame) {
-      let hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
+      const hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
       if (hitTestResults.length > 0) {
-        let pose = hitTestResults[0].getPose(this.xrRefSpace);
+        const pose = hitTestResults[0].getPose(this.xrRefSpace);
         return new ARAnchor(pose.transform.position.x, pose.transform.position.y, pose.transform.position.z);
       }
     }
@@ -54,28 +53,27 @@ export default class p5ar extends p5xr {
    * @param {XRDevice}
    */
   onXRButtonClicked(device) {
-    if(window.injectedPolyfill) {
+    if (window.injectedPolyfill) {
       console.log('ARCORE mode is not supported with a polyfill. Try using a more recent browser version');
       return;
     }
     // Normalize the various vendor prefixed versions of getUserMedia.
-    navigator.getUserMedia = (navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia);
+    navigator.getUserMedia = (navigator.getUserMedia
+        || navigator.webkitGetUserMedia
+        || navigator.mozGetUserMedia
+        || navigator.msGetUserMedia);
 
-    navigator.xr.requestSession('immersive-ar').
-      then((session) => {
+    navigator.xr.requestSession('immersive-ar')
+      .then((session) => {
         this.startSketch(session);
       }, (error) => {
-        console.log(error + ' unable to request an immersive-ar session.');
+        console.log(`${error} unable to request an immersive-ar session.`);
       });
-    
   }
 
   onRequestSession() {
     this.gl = this.canvas.getContext('webgl', {
-      xrCompatible: true
+      xrCompatible: true,
     });
     this.gl.makeXRCompatible().then(() => {
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
@@ -88,8 +86,8 @@ export default class p5ar extends p5xr {
       });
     });
 
-    this.xrSession.requestReferenceSpace('local').
-      then((refSpace) => {
+    this.xrSession.requestReferenceSpace('local')
+      .then((refSpace) => {
         this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));

@@ -2,7 +2,7 @@ import '../jsartoolkit/artoolkit.api.js';
 import WebXRPolyfill from 'webxr-polyfill';
 import p5vr from './p5xr/p5vr/p5vr.js';
 import p5ar from './p5xr/p5ar/p5ar.js';
-import p5arTracker from './p5xr/p5ar/p5arTracker.js';
+import ARMarkerTracker from './p5xr/p5ar/ARMarkerTracker.js';
 import * as constants from './p5xr/core/constants.js';
 import './p5xr/core/raycasting.js';
 
@@ -52,7 +52,7 @@ p5.prototype.createVRCanvas = function () {
  */
 p5.prototype.createARCanvas = function (mode) {
   if (mode === constants.MARKER) {
-    p5xr.instance = new p5arTracker();
+    p5xr.instance = new ARMarkerTracker();
     p5xr.instance.startMarkerSketch();
   } else if (mode === constants.ARCORE) {
     noLoop();
