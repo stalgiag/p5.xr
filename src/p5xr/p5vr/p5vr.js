@@ -15,7 +15,7 @@ export default class p5vr extends p5xr {
 
   /**
    * This is where the actual p5 canvas is first created, and
-   * the GL rendering context is accessed by p5vr. 
+   * the GL rendering context is accessed by p5vr.
    * The current XRSession also gets a frame of reference and
    * base rendering layer. <br>
    * @param {XRSession}
@@ -42,20 +42,19 @@ export default class p5vr extends p5xr {
     this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
     this.gl = canvas.getContext('webgl', {
-      xrCompatible: true
+      xrCompatible: true,
     });
     this.gl.makeXRCompatible().then(() => {
       // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
       // sessions baseLayer. This allows any content rendered to the layer to
       // be displayed on the XRDevice;
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
-
     });
     // Get a frame of reference, which is required for querying poses. In
     // this case an 'local' frame of reference means that all poses will
     // be relative to the location where the XRDevice was first detected.
-    this.xrSession.requestReferenceSpace('local').
-      then((refSpace) => {
+    this.xrSession.requestReferenceSpace('local')
+      .then((refSpace) => {
         this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));

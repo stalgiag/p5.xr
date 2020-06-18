@@ -7,8 +7,8 @@ export default class ARMarkerTracker extends p5ar {
     super();
     this.trackingOptions = {
       smoothingAmount: 15,
-      smoothTolerance : .05,
-      maxToleranceExceed : 10
+      smoothTolerance: 0.05,
+      maxToleranceExceed: 10,
     };
     this.markers = [];
     this.readyForDetection = false;
@@ -19,17 +19,17 @@ export default class ARMarkerTracker extends p5ar {
 
   loadMarker(patt, callback) {
     this.arController.loadMarker(patt, (uId) => {
-      console.log('marker loading successful, UID = ' + uId);
+      console.log(`marker loading successful, UID = ${uId}`);
       this.readyForDetection = true;
       this.markers.push({
         id: uId,
-        currentMat : new Float64Array(16),
+        currentMat: new Float64Array(16),
         transMat: new Float64Array(12),
-        smoothingMats : new Array(this.trackingOptions.smoothingAmount),
-        averageMat : p5.Matrix.identity(),
-        tracker: this.arController.trackPatternMarkerId(uId, 1)
+        smoothingMats: new Array(this.trackingOptions.smoothingAmount),
+        averageMat: p5.Matrix.identity(),
+        tracker: this.arController.trackPatternMarkerId(uId, 1),
       });
-      if(typeof callback === 'function') {
+      if (typeof callback === 'function') {
         callback(uId);
       }
     });
@@ -38,8 +38,7 @@ export default class ARMarkerTracker extends p5ar {
   }
 
   getProjectionMatrix() {
-    
-    let temp = this.arController.getCameraMatrix();
+    const temp = this.arController.getCameraMatrix();
     this.projectionMatrix = p5.Matrix.identity().set(
       temp[0],
       temp[1],
@@ -56,14 +55,14 @@ export default class ARMarkerTracker extends p5ar {
       temp[12],
       temp[13],
       temp[14],
-      temp[15]
+      temp[15],
     );
     this.projectionMatrix.mult(p5.instance._renderer.uPMatrix);
     this.projectionMatrix.apply(this.correctionMat);
-    
+
     p5.instance._renderer.uPMatrix = this.projectionMatrix;
   }
-    
+
   startMarkerSketch() {
     // p5.instance.decrementPreload();
     createCanvas(windowWidth, windowHeight, WEBGL);
@@ -71,7 +70,7 @@ export default class ARMarkerTracker extends p5ar {
 
   addMarker(patt, callback) {
     // TODO :: return id
-    if(!this.readyForDetection) {
+    if (!this.readyForDetection) {
       this.arController = new ARController(width, height, 'camera_para.dat');
       this.arController.onload = this.loadMarker.bind(this, patt, callback);
     } else {
@@ -79,30 +78,29 @@ export default class ARMarkerTracker extends p5ar {
     }
   }
 
-
   getMarkerById(id) {
-    for(let i=0; i<this.markers.length; i++) {
-      if(this.markers[i].id === id) {
+    for (let i = 0; i < this.markers.length; i++) {
+      if (this.markers[i].id === id) {
         return this.markers[i];
       }
     }
   }
 
   isMarkerVisible(id) {
-    if(!this.markers[id]) {return;}
+    if (!this.markers[id]) { return; }
     return this.markers[id].tracker.inCurrent;
   }
 
   getTrackerMatrix(id) {
-    if(!this.readyForDetection) {return p5.Matrix.identity();}
+    if (!this.readyForDetection) { return p5.Matrix.identity(); }
 
     const marker = this.getMarkerById(id);
-    if(!marker) {return p5.Matrix.identity();}
+    if (!marker) { return p5.Matrix.identity(); }
 
     this.arController.getTransMatSquare(id, 1, marker.transMat);
     this.arController.transMatToGLMat(marker.transMat, marker.currentMat, 100);
 
-    let pCurMat = p5.Matrix.identity().set(
+    const pCurMat = p5.Matrix.identity().set(
       marker.currentMat[0],
       marker.currentMat[1],
       marker.currentMat[2],
@@ -118,7 +116,7 @@ export default class ARMarkerTracker extends p5ar {
       marker.currentMat[12],
       marker.currentMat[13],
       marker.currentMat[14],
-      marker.currentMat[15]
+      marker.currentMat[15],
     );
 
     pCurMat.mult(p5.instance._renderer.uMVMatrix);
@@ -139,58 +137,57 @@ export default class ARMarkerTracker extends p5ar {
     mat.mat4[6] *= -1;
     mat.mat4[10] *= -1;
     mat.mat4[14] *= -1;
-  
+
     // 0 0 0 1
     mat.mat4[3] = 0;
     mat.mat4[7] = 0;
     mat.mat4[11] = 0;
     mat.mat4[15] = 1;
-      
+
     return mat;
   }
 
   getSmoothTrackerMatrix(id) {
-    if(!this.readyForDetection) {return p5.Matrix.identity();}
+    if (!this.readyForDetection) { return p5.Matrix.identity(); }
 
     const marker = this.getMarkerById(id);
-    if(!marker) {return p5.Matrix.identity();}
+    if (!marker) { return p5.Matrix.identity(); }
 
     const cur = this.getTrackerMatrix(id);
     this.addToSmoothingMats(cur, id);
     // if there aren't enough frames for averaging
     // return the standard matrix and add it to the smoothing queu
-    if(!marker.smoothingMats[marker.smoothingMats.length-1]) {
+    if (!marker.smoothingMats[marker.smoothingMats.length - 1]) {
       return cur;
-    } else {
-      return marker.averageMat.copy();
     }
+    return marker.averageMat.copy();
   }
-    
+
   addToSmoothingMats(_newMat, id) {
     const marker = this.getMarkerById(id);
-   
+
     // toss garbage frames
-    if(marker.averageMat.mat4[marker.averageMat.mat4.length-1]) {
+    if (marker.averageMat.mat4[marker.averageMat.mat4.length - 1]) {
       let exceedsAverageTolerance = 0;
-      for(let i=0; i<marker.averageMat.mat4.length; i++) {
+      for (let i = 0; i < marker.averageMat.mat4.length; i++) {
         if (Math.abs(marker.averageMat.mat4[i] - _newMat[i]) >= this.trackingOptions.smoothTolerance) {
           exceedsAverageTolerance++;
         }
       }
-      if(exceedsAverageTolerance > this.trackingOptions.maxToleranceExceed || !this.isMarkerVisible(id)) {
+      if (exceedsAverageTolerance > this.trackingOptions.maxToleranceExceed || !this.isMarkerVisible(id)) {
         return;
       }
     }
     // out with the old, in with the _new
     marker.smoothingMats.push(_newMat.mat4.slice());
     marker.smoothingMats.shift();
-      
+
     // if we don't have a full set of smoothing mats
-    if(!marker.smoothingMats[0]) {return;}
-      
-    for(let i=0; i<marker.smoothingMats[0].length; i++) {
+    if (!marker.smoothingMats[0]) { return; }
+
+    for (let i = 0; i < marker.smoothingMats[0].length; i++) {
       let avg = 0;
-      for(let j=0; j<marker.smoothingMats.length; j++) {
+      for (let j = 0; j < marker.smoothingMats.length; j++) {
         avg += marker.smoothingMats[j][i];
       }
       avg /= marker.smoothingMats.length;

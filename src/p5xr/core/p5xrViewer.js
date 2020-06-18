@@ -9,7 +9,7 @@ export default class p5xrViewer {
 
     this.position = new p5.Vector(0, 0, 0);
 
-    this.setPosition = function(x, y, z) {
+    this.setPosition = function (x, y, z) {
       this.position.set(x, y, z);
       p5.instance._renderer.translate(-x, -y, -z);
     };
@@ -30,13 +30,12 @@ export default class p5xrViewer {
     p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
     p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
     p5.instance._renderer._curCamera.cameraMatrix.set(
-      p5.Matrix.identity().mult(this._view.transform.inverse.matrix)
+      p5.Matrix.identity().mult(this._view.transform.inverse.matrix),
     );
-    
-    if(newView.eye === 'left') {
+
+    if (newView.eye === 'left') {
       this.leftPMatrix.set(p5.instance._renderer.uPMatrix.copy());
-    }
-    else {
+    } else {
       this.rightPMatrix.set(p5.instance._renderer.uPMatrix.copy());
     }
   }
@@ -46,22 +45,21 @@ export default class p5xrViewer {
   }
 }
 
-p5.prototype.setViewerPosition = function(x, y, z) {
-  let viewer = p5xr.instance.viewer;
+p5.prototype.setViewerPosition = function (x, y, z) {
+  const { viewer } = p5xr.instance;
   viewer.setPosition(x, y, z);
 };
 
-p5.prototype.sticky = function(drawOnTop = false) {
+p5.prototype.sticky = function (drawOnTop = false) {
   push();
   p5xr.instance.viewer.drawOnTop = drawOnTop;
-  if(drawOnTop)
-    p5.instance._renderer.GL.disable(p5.instance._renderer.GL.DEPTH_TEST);
+  if (drawOnTop) p5.instance._renderer.GL.disable(p5.instance._renderer.GL.DEPTH_TEST);
   p5.instance._renderer.uMVMatrix.set(p5.Matrix.identity());
-  let viewerPosition = p5xr.instance.viewer.position;
+  const viewerPosition = p5xr.instance.viewer.position;
   setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
 };
 
-p5.prototype.noSticky = function() {
+p5.prototype.noSticky = function () {
   p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);
   pop();
 };
