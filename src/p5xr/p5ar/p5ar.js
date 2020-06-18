@@ -1,5 +1,4 @@
 import p5xr from '../core/p5xr';
-import * as constants from '../core/constants.js';
 import ARAnchor from './ARAnchor';
 
 export default class p5ar extends p5xr {
@@ -22,7 +21,7 @@ export default class p5ar extends p5xr {
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', this.onSessionEnded);
-    this.xrSession.addEventListener('select', this.onSelect);
+    this.xrSession.addEventListener('select', touchStarted);
     this.canvas = p5.instance.canvas;
     p5.instance._renderer._curCamera.cameraType = 'custom';
     this.onRequestSession();
@@ -37,14 +36,33 @@ export default class p5ar extends p5xr {
     }
   }
 
-  createAnchor() {
+  detectHit(ev) {
+    if (ev === null || typeof ev === 'undefined') {
+      console.warn('You must pass the touchStarted event to detectHit.');
+      return null;
+    }
+
+    if (!this.xrSession) {
+      return;
+    }
+
+    const y = ev.clientY / window.innerHeight;
+    const x = ev.clientX / window.innerWidth;
     if (this.xrHitTestSource && this.viewer.pose && this.frame) {
       const hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
       if (hitTestResults.length > 0) {
+        // const pose = hitTestResults[0].getPose(ev.inputSource.targetRaySpace, this.xrRefSpace);
         const pose = hitTestResults[0].getPose(this.xrRefSpace);
-        return new ARAnchor(pose.transform.position.x, pose.transform.position.y, pose.transform.position.z);
+        return createVector(pose.transform.position.x, pose.transform.position.y, pose.transform.position.z);
       }
     }
+  }
+
+  createAnchor(vec) {
+    if (vec === null || typeof vec === 'undefined') {
+      return null;
+    }
+    return new ARAnchor(vec.x, vec.y, vec.z);
   }
 
   /**
@@ -62,7 +80,9 @@ export default class p5ar extends p5xr {
         || navigator.mozGetUserMedia
         || navigator.msGetUserMedia);
 
-    navigator.xr.requestSession('immersive-ar')
+    navigator.xr.requestSession('immersive-ar', {
+      requiredFeatures: ['local', 'hit-test'],
+    })
       .then((session) => {
         this.startSketch(session);
       }, (error) => {

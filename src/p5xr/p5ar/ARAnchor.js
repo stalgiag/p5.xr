@@ -4,6 +4,7 @@ export default class ARAnchor {
   }
 
   dispose() {
+    delete this;
   }
 
   isTracking() {

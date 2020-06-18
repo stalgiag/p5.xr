@@ -1,17 +1,11 @@
 import WebXRPolyfill from 'webxr-polyfill';
 import p5vr from './p5xr/p5vr/p5vr.js';
 import p5ar from './p5xr/p5ar/p5ar.js';
-import * as constants from './p5xr/core/constants.js';
 import './p5xr/core/raycasting.js';
 
 window.p5xr = {
   instance: null,
 };
-
-// attach constants to p5
-for (const k in constants) {
-  p5.prototype[k] = constants[k];
-}
 
 function polyfillIfRequired() {
   if (!('xr' in window.navigator)) {
@@ -75,9 +69,16 @@ p5.prototype.surroundTexture = function (tex) {
   pop();
 };
 
-p5.prototype.createAnchor = function () {
+p5.prototype.createAnchor = function (vec) {
   if (p5xr.instance.isVR) {
     return;
   }
-  return p5xr.instance.createAnchor();
+  return p5xr.instance.createAnchor(vec);
+};
+
+p5.prototype.detectHit = function (ev) {
+  if (p5xr.instance.isVR) {
+    return;
+  }
+  return p5xr.instance.detectHit(ev);
 };
