@@ -3,9 +3,9 @@
 ### Device Support for VR
 Any mobile device that is compatible with Google Cardboard
 
-<!-- ### Browser Support for VR
+### Browser Support for VR
 Firefox 69+ for Android and iOS
-Chrome 70+ with [setup](#vr-setup-for-chrome) -->
+Chrome 70+ with [setup](#vr-setup-for-chrome)
 
 ### VR Setup for Chrome
 1. Type `chrome://flags/` into Chrome's URL field
