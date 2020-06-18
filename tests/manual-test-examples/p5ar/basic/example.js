@@ -1,11 +1,9 @@
-
 function setup() {
-  createARCanvas(ARCORE);
+  createARCanvas();
 }
 
 let rot = 0;
 let rotSpeed = 0.1;
-
 
 function draw() {
   rot += rotSpeed;
