@@ -25,58 +25,55 @@
 // is intentionally left out so that the sample pages can demonstrate them more
 // clearly.
 
-
 export default class p5xrButton {
   constructor(options) {
     options = options || {};
-  
+
     options.color = options.color || 'rgb(237, 34, 93)';
     options.background = options.background || false;
     options.disabledOpacity = options.disabledOpacity || 0.5;
     options.height = options.height || window.innerWidth / 5;
     options.corners = options.corners || 'square';
     options.cssprefix = options.cssprefix || 'webvr-ui';
-  
+
     options.textEnterXRTitle = options.textEnterXRTitle || 'ENTER XR';
     options.textXRNotFoundTitle = options.textXRNotFoundTitle || 'XR NOT FOUND';
     options.textExitXRTitle = options.textExitXRTitle || 'EXIT XR';
-  
-    options.onRequestSession = options.onRequestSession || (function() {});
-    options.onEndSession = options.onEndSession || (function() {});
-    
+
+    options.onRequestSession = options.onRequestSession || (function () {});
+    options.onEndSession = options.onEndSession || (function () {});
+
     options.injectCSS = options.injectCSS !== false;
-    
+
     this.options = options;
-    
+
     this.device = null;
     this.session = null;
     this.logoScale = 1.2;
     this._WEBXR_UI_CSS_INJECTED = {};
-  
+
     // Pass in your own domElement if you really dont want to use ours
     this.domElement = options.domElement || this.createDefaultView(options);
     this.__defaultDisplayStyle = this.domElement.style.display || 'initial';
-  
+
     // Bind button click events to __onClick
-    this.domElement.addEventListener('click', ()=> this.__onXRButtonClick());
-  
+    this.domElement.addEventListener('click', () => this.__onXRButtonClick());
+
     this.__forceDisabled = false;
     this.__setDisabledAttribute(true);
     this.setTitle(this.options.textXRNotFoundTitle);
-
   }
-  
-  
+
   generateInnerHTML(cssPrefix, height) {
     const logoHeight = height * this.logoScale;
     const svgString = this.generateXRIconString(cssPrefix, logoHeight) + this.generateNoXRIconString(cssPrefix, logoHeight);
-    
+
     return `<button class="${cssPrefix}-button">
     <div class="${cssPrefix}-title"></div>
     <div class="${cssPrefix}-logo" >${svgString}</div>
     </button>`;
   }
-  
+
   createDefaultView(options) {
     const fontSize = options.height / 3;
 
@@ -106,7 +103,7 @@ export default class p5xrButton {
   }
 
   generateXRIconString(cssPrefix, height) {
-    let aspect = 28 / 18;
+    const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg" version="1.1" x="0px" y="0px"
         width="${aspect * height}px" height="${height}px" viewBox="0 0 28 18" xml:space="preserve">
         <path d="M26.8,1.1C26.1,0.4,25.1,0,24.2,0H3.4c-1,0-1.7,0.4-2.4,1.1C0.3,1.7,0,2.7,0,3.6v10.7
@@ -120,7 +117,7 @@ export default class p5xrButton {
   }
 
   generateNoXRIconString(cssPrefix, height) {
-    let aspect = 28 / 18;
+    const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg-error" x="0px" y="0px"
         width="${aspect * height}px" height="${aspect * height}px" viewBox="0 0 28 28" xml:space="preserve">
         <path d="M17.6,13.4c0-0.2-0.1-0.4-0.1-0.6c0-1.6,1.3-2.8,2.8-2.8s2.8,1.3,2.8,2.8s-1.3,2.8-2.8,2.8
@@ -165,7 +162,7 @@ export default class p5xrButton {
  */
   setTitle(text) {
     this.domElement.title = text;
-    this.ifChild(this.domElement, this.options.cssprefix, 'title', (title)=> {
+    this.ifChild(this.domElement, this.options.cssprefix, 'title', (title) => {
       if (!text) {
         title.style.display = 'none';
       } else {
@@ -184,8 +181,8 @@ export default class p5xrButton {
  * @param {Number} [fontSize=18]
  * @return {string}
  */
-  generateCSS(options, fontSize=18) {
-    const height = options.height;
+  generateCSS(options, fontSize = 18) {
+    const { height } = options;
     const borderWidth = 2;
     const borderColor = options.background ? options.background : options.color;
     const cssPrefix = options.cssprefix;
@@ -255,13 +252,13 @@ export default class p5xrButton {
       .${cssPrefix}-svg {
           fill: ${options.color};
           margin-top: ${(height - fontSize * this.logoScale) / 2 - 2}px;
-          margin-left: ${height / 3 }px;
+          margin-left: ${height / 3}px;
       }
       .${cssPrefix}-svg-error {
           fill: ${options.color};
           display:none;
           margin-top: ${(height - 28 / 18 * fontSize * this.logoScale) / 2 - 2}px;
-          margin-left: ${height / 3 }px;
+          margin-left: ${height / 3}px;
       }
 
 
@@ -299,13 +296,13 @@ export default class p5xrButton {
     // Create the css
     const style = document.createElement('style');
     style.innerHTML = cssText;
-  
-    let head = document.getElementsByTagName('head')[0];
+
+    const head = document.getElementsByTagName('head')[0];
     head.insertBefore(style, head.firstChild);
   }
 
   ifChild(el, cssPrefix, suffix, fn) {
-    const c = el.querySelector('.' + cssPrefix + '-' + suffix);
+    const c = el.querySelector(`.${cssPrefix}-${suffix}`);
     c && fn(c);
   }
 

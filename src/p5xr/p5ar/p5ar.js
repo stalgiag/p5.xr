@@ -47,7 +47,6 @@ export default class p5ar extends p5xr {
     }
   }
 
-
   /**
    * `device.requestSession()` must be called within a user gesture event.
    * @param {XRDevice}

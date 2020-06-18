@@ -1,12 +1,13 @@
 let rot = 0;
-let rotSpeed = 0.015;
+const rotSpeed = 0.015;
 
 let pg;
 
-let counter = 0, elapsed = 0;
+let counter = 0; const
+  elapsed = 0;
 
 function setup() {
-  createARCanvas(ARCORE);
+  createARCanvas();
   pg = createGraphics(400, 400);
   noStroke();
 
@@ -28,26 +29,24 @@ function setup() {
 }
 
 function draw() {
-
-  if(millis() - counter > 1500) {
+  if (millis() - counter > 1500) {
     init();
     counter = millis();
   }
 
   rot += rotSpeed;
-  pg.background(200,50,50);
-  pg.fill(0,0,200);
-  pg.rect(0,0,pg.width, pg.height);
-
+  pg.background(200, 50, 50);
+  pg.fill(0, 0, 200);
+  pg.rect(0, 0, pg.width, pg.height);
 
   pg.background(255);
   generate();
-  for ( let i = 0; i < columns;i++) {
-    for ( let j = 0; j < rows;j++) {
+  for (let i = 0; i < columns; i++) {
+    for (let j = 0; j < rows; j++) {
       if ((board[i][j] == 1)) pg.fill(0);
       else pg.fill(255);
       pg.stroke(0);
-      pg.rect(i * w, j * w, w-1, w-1);
+      pg.rect(i * w, j * w, w - 1, w - 1);
     }
   }
 
@@ -56,7 +55,6 @@ function draw() {
   texture(pg);
   plane(10, 10, 1, 1);
 }
-
 
 let w;
 let columns;
@@ -69,7 +67,7 @@ function init() {
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       // Lining the edges with 0s
-      if (i == 0 || j == 0 || i == columns-1 || j == rows-1) board[i][j] = 0;
+      if (i == 0 || j == 0 || i == columns - 1 || j == rows - 1) board[i][j] = 0;
       // Filling the rest randomly
       else board[i][j] = floor(random(2));
       next[i][j] = 0;
@@ -79,7 +77,6 @@ function init() {
 
 // The process of creating the new generation
 function generate() {
-
   // Loop through every spot in our 2D array and check spots neighbors
   for (let x = 1; x < columns - 1; x++) {
     for (let y = 1; y < rows - 1; y++) {
@@ -87,7 +84,7 @@ function generate() {
       let neighbors = 0;
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
-          neighbors += board[x+i][y+j];
+          neighbors += board[x + i][y + j];
         }
       }
 
@@ -95,16 +92,15 @@ function generate() {
       // we added it in the above loop
       neighbors -= board[x][y];
       // Rules of Life
-      if      ((board[x][y] == 1) && (neighbors <  2)) next[x][y] = 0;           // Loneliness
-      else if ((board[x][y] == 1) && (neighbors >  3)) next[x][y] = 0;           // Overpopulation
-      else if ((board[x][y] == 0) && (neighbors == 3)) next[x][y] = 1;           // Reproduction
-      else                                             next[x][y] = board[x][y]; // Stasis
+      if ((board[x][y] == 1) && (neighbors < 2)) next[x][y] = 0; // Loneliness
+      else if ((board[x][y] == 1) && (neighbors > 3)) next[x][y] = 0; // Overpopulation
+      else if ((board[x][y] == 0) && (neighbors == 3)) next[x][y] = 1; // Reproduction
+      else next[x][y] = board[x][y]; // Stasis
     }
   }
 
   // Swap!
-  let temp = board;
+  const temp = board;
   board = next;
   next = temp;
 }
-
