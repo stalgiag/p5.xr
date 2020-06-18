@@ -24,16 +24,16 @@ This example shows you how sticky(), and intersectsSphere() work.
 ### [View](https://editor.p5js.org/stalgiag/present/5nKLHbLC_)
 ### [Edit](https://editor.p5js.org/stalgiag/sketches/5nKLHbLC_)
 
-<!-- ## ARCore
+## AR
 
-### __ARCore Example__
+### __Basic AR Example__
+This example shows the basic functionality for rendering WebGL p5 elements in AR
+### [View](https://editor.p5js.org/stalgiag/present/4oZ66FKEh)
+### [Edit](https://editor.p5js.org/stalgiag/sketches/4oZ66FKEh)
+
+### __2D Game of Life in AR Example__
 This examples shows the Conway's Game Of Life Example By Dan Shiffman in AR. Note this may run slowly on older phones.
 
 ### [View](https://editor.p5js.org/stalgiag/present/7hD7oBx3c)
 ### [Edit](https://editor.p5js.org/stalgiag/sketches/7hD7oBx3c)
 
-## AR Marker
-
-### __AR Marker Example__
-This example shows how MARKER-based AR works. Show an image of the p5 patt to your phone and a box will anchor to it.
- -- _COMING SOON!_ -->
