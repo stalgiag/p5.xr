@@ -1,10 +1,8 @@
-
 let anchor = null;
 
 function setup() {
-  createARCanvas(ARCORE);
+  createARCanvas();
 }
-
 
 function draw() {
   if (anchor) {
