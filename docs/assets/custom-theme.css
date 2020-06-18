@@ -38,14 +38,14 @@
     --sidebar-name-padding                        : -0;
  
 
-    --sidebar-toggle-icon-color: black;
+    --sidebar-toggle-icon-color: rgb(25, 186, 192);
     --sidebar-toggle-width: 50px;
-    --sidebar-width: 20rem;
+    --sidebar-width: 15rem;
 
-    --sidebar-toggle-icon-height: 25px;
-    --sidebar-toggle-icon-stroke-width: 5px;
-    --sidebar-toggle-icon-width: 36px;
-    --sidebar-toggle-offset-top: calc(100vh - (var(--sidebar-toggle-height)));
+    --sidebar-toggle-icon-height: 1.5rem;
+    --sidebar-toggle-icon-stroke-width: 7px;
+    --sidebar-toggle-icon-width: 2rem;
+    --sidebar-toggle-offset-top: 1rem;
 
     /* Horizontal Rule */
     --hr-border            : 2px solid black;
@@ -295,10 +295,10 @@ h2 {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* .sidebar-toggle {
-    left: 0.75rem;
-    top: -0.01rem;
-} */
+.sidebar-toggle {
+    margin-left: 0.75rem;
+    padding-bottom: 7rem;
+}
 
 .sidebar .app-name {
     border-radius: 10px;
