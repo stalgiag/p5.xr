@@ -4,13 +4,8 @@
 Any mobile device that is compatible with Google Cardboard
 
 ### Browser Support for VR
-Firefox 69+ for Android and iOS
-Chrome 70+ with [setup](#vr-setup-for-chrome)
-
-### VR Setup for Chrome
-1. Type `chrome://flags/` into Chrome's URL field
-2. Type `webvr` in the search field
-3. Set the dropdown next to `WebVR` to `Enabled`
+Chrome 78+ on Android
+Windows 10 with SteamVR and HTC Vive (untested in other headsets)
 
 ## AR
 

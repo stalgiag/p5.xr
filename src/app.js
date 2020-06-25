@@ -8,7 +8,7 @@ window.p5xr = {
 };
 
 function polyfillIfRequired() {
-  if (!('xr' in window.navigator)) {
+  if ('xr' in navigator === false) {
     window.injectedPolyfill = true;
     window.polyfill = new WebXRPolyfill();
   } else {
