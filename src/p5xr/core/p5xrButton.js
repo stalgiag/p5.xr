@@ -384,6 +384,27 @@ export default class p5xrButton {
     if (this.session) {
       this.options.onEndSession(this.session);
     } else if (this.device) {
+      // feature detect
+      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === 'granted') {
+              window.addEventListener('devicemotion', () => {});
+            }
+          })
+          .catch(console.error);
+      }
+
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              window.addEventListener('deviceorientation', () => {});
+            }
+          })
+          .catch(console.error);
+      }
+
       this.options.onRequestSession(this.device);
     }
   }
