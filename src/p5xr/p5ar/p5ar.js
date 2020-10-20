@@ -21,7 +21,9 @@ export default class p5ar extends p5xr {
   startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', this.onSessionEnded);
-    this.xrSession.addEventListener('select', touchStarted);
+    if (typeof touchStarted === 'function') {
+      this.xrSession.addEventListener('select', touchStarted);
+    }
     this.canvas = p5.instance.canvas;
     p5.instance._renderer._curCamera.cameraType = 'custom';
     this.onRequestSession();
