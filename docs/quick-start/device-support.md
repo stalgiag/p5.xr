@@ -1,18 +1,19 @@
 ## VR 
 
 ### Device Support for VR
-Any mobile device that is compatible with Google Cardboard
-
+Currently only Android :-(
+This is constantly in flux in ways that are mostly beyond my control
+so if you need iOS support reach out to me and I can update you when it is back
 ### Browser Support for VR
 Chrome 78+ on Android
 Windows 10 with SteamVR and HTC Vive (untested in other headsets)
 
 ## AR
 
-### Support for iOS
-
-Any iOS device that can run [WebXR Viewer by Mozilla](https://apps.apple.com/us/app/webxr-viewer/id1295998056)
-Just open the sketch in the app!
+### Device Support
+Currently only Android :-(
+This is constantly in flux in ways that are mostly beyond my control
+so if you need iOS support reach out to me and I can update you when it is back
 
 ### Support for Android
 Any [Android device that can run ARCORE](https://developers.google.com/ar/discover/supported-devices)
