@@ -232,8 +232,10 @@ export default class p5xr {
   *
   */
   onSessionEnded() {
-    this.xrHitTestSource.cancel();
-    this.xrHitTestSource = null;
+    if (!this.isVR) {
+      this.xrHitTestSource.cancel();
+      this.xrHitTestSource = null;
+    }
     if (this.xrSession) {
       this.xrSession.end();
       this.xrSession = null;
@@ -243,13 +245,14 @@ export default class p5xr {
       p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
     }
     this.xrButton.session = null;
+    this.xrButton.setTitle(this.isVR ? 'ENTER VR' : 'ENTER AR');
     this.gl = null;
   }
 
   printUnsupportedMessage() {
     console.warn('Your browser/hardware does not work with AR Mode currently. This is'
-        + ' undergoing heavy development currently.'
-        + 'You may be able to fix this by enabling WebXR flags in Chrome.');
+      + ' undergoing heavy development currently.'
+      + 'You may be able to fix this by enabling WebXR flags in Chrome.');
   }
 
   remove() {
