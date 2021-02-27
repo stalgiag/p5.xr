@@ -4,7 +4,7 @@ let tex;
 let bugs = []; // array of Jitter objects
 
 function preload() {
-  tex = createGraphics(1000,1000);
+  tex = createGraphics(1000, 1000);
   createVRCanvas();
 }
 
@@ -22,7 +22,6 @@ function draw() {
     bugs[i].display();
   }
 
-  rotateX(PI);
   surroundTexture(tex);
 }
 

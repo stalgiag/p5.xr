@@ -10,7 +10,6 @@ function preload() {
 }
 
 function draw() {
-  rotateX(PI);
   surroundTexture(vid);
 }
 

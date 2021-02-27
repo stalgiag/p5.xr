@@ -20,7 +20,6 @@ function calculate() {
 }
 
 function draw() {
-  rotateX(PI);
   surroundTexture(tex);
   translate(0, 0, 35);
   rotateY(rot);
