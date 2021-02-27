@@ -64,6 +64,7 @@ p5.prototype.setVRBackgroundColor = function (r, g, b) {
 p5.prototype.surroundTexture = function (tex) {
   push();
   texture(tex);
+  rotateX(PI);
   scale(-1, 1, 1);
   sphere(300, 60, 40);
   pop();
