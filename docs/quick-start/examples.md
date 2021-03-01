@@ -24,6 +24,14 @@ This example shows you how sticky(), and intersectsSphere() work.
 ### [View](https://editor.p5js.org/stalgiag/present/5nKLHbLC_)
 ### [Edit](https://editor.p5js.org/stalgiag/sketches/5nKLHbLC_)
 
+***
+
+### __Tracked Controllers VR Example__
+This example shows you how to display tracked controllers.
+
+### [View](https://editor.p5js.org/msub2/present/cTqip9CFy)
+### [Edit](https://editor.p5js.org/msub2/sketches/cTqip9CFy)
+
 ## AR
 
 ### __Basic AR Example__
@@ -36,4 +44,3 @@ This examples shows the Conway's Game Of Life Example By Dan Shiffman in AR. Not
 
 ### [View](https://editor.p5js.org/stalgiag/present/7hD7oBx3c)
 ### [Edit](https://editor.p5js.org/stalgiag/sketches/7hD7oBx3c)
-
