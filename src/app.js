@@ -83,3 +83,10 @@ p5.prototype.detectHit = function (ev) {
   }
   return p5xr.instance.detectHit(ev);
 };
+
+p5.prototype.getXRInput = function (input) {
+  if (p5xr.instance.xrSession.inputSources.length == 0) {
+    return;
+  }
+  return p5xr.instance.getXRInput(input);
+}
