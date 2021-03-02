@@ -1,13 +1,19 @@
 export default class p5xrInput {
   constructor(inputSource) {
     this._inputSource = inputSource;
-    this._pose = null;
-    this.hand = inputSource.handedness || null;
+    this._pose;
+    this.hand = inputSource.handedness;
   }
 
   get pose() {
     this.updatePose();
-    return [...this._pose.transform.matrix];
+    return this._pose.transform.matrix;
+  }
+
+  get position() {
+    this.updatePose();
+    let p = this._pose.transform.position
+    return new p5.Vector(p.x, p.y, p.z);
   }
 
   updatePose() {
