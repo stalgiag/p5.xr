@@ -35,7 +35,8 @@
       "profile": "http://msub2.com",
       "contributions": [
         "code",
-        "example"
+        "example",
+        "design"
       ]
     }
   ],
