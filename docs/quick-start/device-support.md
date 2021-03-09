@@ -1,21 +1,19 @@
 ## VR 
 
 ### Device Support for VR
-Currently only Android :-(
-This is constantly in flux in ways that are mostly beyond my control
-so if you need iOS support reach out to me and I can update you when it is back
+Android, HTC Vive, Valve Index, and Oculus Quest 1 & 2
+If you need iOS support reach out to me and I can update you when it is back
+
 ### Browser Support for VR
 Chrome 78+ on Android
-Windows 10 with SteamVR and HTC Vive (untested in other headsets)
+Chrome and Firefox on Desktop
 
 ## AR
 
-### Device Support
-Currently only Android :-(
-This is constantly in flux in ways that are mostly beyond my control
-so if you need iOS support reach out to me and I can update you when it is back
+### Device Support for AR
+Android only, iOS support may come in the future
 
-### Support for Android
+### Browser Support for AR
 Any [Android device that can run ARCORE](https://developers.google.com/ar/discover/supported-devices)
 Chrome 78+ with [setup](#ar-setup-for-chrome-arcore)
 
