@@ -1,4 +1,3 @@
-import p5vr from '../p5vr/p5vr';
 import p5xrViewer from './p5xrViewer';
 import p5xrButton from './p5xrButton';
 import p5xrInput from './p5xrInput';
@@ -19,8 +18,8 @@ import p5xrInput from './p5xrInput';
 export default class p5xr {
   constructor() {
     this.xrDevice = null;
-    this.xrButton;
-    this.isVR;
+    this.xrButton = null;
+    this.isVR = null;
     this.xrSession = null;
     this.xrRefSpace = null;
     this.xrViewerSpace = null;
@@ -83,7 +82,6 @@ export default class p5xr {
   init() {
     p5.instance._incrementPreload();
     this._setupxr();
-    this.isVR = this instanceof p5vr;
     this.removeLoadingElement();
     // Is WebXR available on this UA?
     this.xrButton = new p5xrButton({
