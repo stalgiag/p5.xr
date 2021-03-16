@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/stalgiag/p5.xr#readme",
   "dependencies": {
+    "gl-matrix": "^3.3.0",
     "webxr-polyfill": "^2.0.3"
   },
   "devDependencies": {
