@@ -45,7 +45,7 @@ export default class p5ar extends p5xr {
     }
 
     if (!this.xrSession) {
-      return;
+      return null;
     }
 
     const y = ev.clientY / window.innerHeight;

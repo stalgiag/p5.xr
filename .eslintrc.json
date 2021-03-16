@@ -16,6 +16,15 @@
         "class-methods-use-this": "off",
         "no-underscore-dangle": "off",
         "no-undef": "off",
-        "func-names": "off"
+        "func-names": "off",
+        "new-cap": "off",
+        "no-multi-assign":"off",
+        "no-restricted-syntax":"off",
+        "no-plusplus":"off",
+        "no-param-reassign":"off",
+        "prefer-destructuring": "off",
+        "max-len": [2, 150, 4],
+        "prefer-rest-params" : "off",
+        "consistent-return" : "off"
     }
 }

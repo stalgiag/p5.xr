@@ -9,6 +9,11 @@ import p5xr from '../core/p5xr';
  */
 
 export default class p5vr extends p5xr {
+  constructor() {
+    super();
+    this.isVR = true;
+  }
+
   initVR() {
     this.init();
   }

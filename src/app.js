@@ -1,7 +1,7 @@
 import WebXRPolyfill from 'webxr-polyfill';
-import p5vr from './p5xr/p5vr/p5vr.js';
-import p5ar from './p5xr/p5ar/p5ar.js';
-import './p5xr/core/raycasting.js';
+import p5vr from './p5xr/p5vr/p5vr';
+import p5ar from './p5xr/p5ar/p5ar';
+import './p5xr/core/raycasting';
 
 window.p5xr = {
   instance: null,
@@ -85,8 +85,8 @@ p5.prototype.detectHit = function (ev) {
 };
 
 p5.prototype.getXRInput = function (input) {
-  if (p5xr.instance.xrSession.inputSources.length == 0) {
+  if (p5xr.instance.xrSession.inputSources.length === 0) {
     return;
   }
   return p5xr.instance.getXRInput(input);
-}
+};

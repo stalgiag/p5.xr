@@ -27,23 +27,23 @@
 
 export default class p5xrButton {
   constructor(options) {
-    options = options || {};
+    this.options = options || {};
 
-    options.color = options.color || 'rgb(237, 34, 93)';
-    options.background = options.background || false;
-    options.disabledOpacity = options.disabledOpacity || 0.5;
-    options.height = options.height || window.innerWidth / 5;
-    options.corners = options.corners || 'square';
-    options.cssprefix = options.cssprefix || 'webvr-ui';
+    this.options.color = options.color || 'rgb(237, 34, 93)';
+    this.options.background = options.background || false;
+    this.options.disabledOpacity = options.disabledOpacity || 0.5;
+    this.options.height = options.height || window.innerWidth / 5;
+    this.options.corners = options.corners || 'square';
+    this.options.cssprefix = options.cssprefix || 'webvr-ui';
 
-    options.textEnterXRTitle = options.textEnterXRTitle || 'ENTER XR';
-    options.textXRNotFoundTitle = options.textXRNotFoundTitle || 'XR NOT FOUND';
-    options.textExitXRTitle = options.textExitXRTitle || 'EXIT XR';
+    this.options.textEnterXRTitle = options.textEnterXRTitle || 'ENTER XR';
+    this.options.textXRNotFoundTitle = options.textXRNotFoundTitle || 'XR NOT FOUND';
+    this.options.textExitXRTitle = options.textExitXRTitle || 'EXIT XR';
 
-    options.onRequestSession = options.onRequestSession || (function () {});
-    options.onEndSession = options.onEndSession || (function () {});
+    this.options.onRequestSession = options.onRequestSession || (function () {});
+    this.options.onEndSession = options.onEndSession || (function () {});
 
-    options.injectCSS = options.injectCSS !== false;
+    this.options.injectCSS = options.injectCSS !== false;
 
     this.options = options;
 
@@ -66,7 +66,8 @@ export default class p5xrButton {
 
   generateInnerHTML(cssPrefix, height) {
     const logoHeight = height * this.logoScale;
-    const svgString = this.generateXRIconString(cssPrefix, logoHeight) + this.generateNoXRIconString(cssPrefix, logoHeight);
+    const svgString = this.generateXRIconString(cssPrefix, logoHeight)
+      + this.generateNoXRIconString(cssPrefix, logoHeight);
 
     return `<button class="${cssPrefix}-button">
     <div class="${cssPrefix}-title"></div>
