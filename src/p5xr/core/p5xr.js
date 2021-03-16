@@ -96,9 +96,16 @@ export default class p5xr {
     }
     header.appendChild(this.xrButton.domElement);
 
+    // WebXR available
     if (navigator.xr) {
       this.sessionCheck();
     }
+  }
+
+  disableButton() {
+    this.xrButton.setTitle('AR Unavailable');
+    this.xrButton.setTooltip('No XR headset found.');
+    this.xrButton.__setDisabledAttribute(true);
   }
 
   sessionCheck() {
@@ -116,9 +123,13 @@ export default class p5xr {
         console.log(e.message);
       });
     } else {
-      navigator.xr.isSessionSupported('immersive-ar').then(() => {
-        console.log(`AR supported ${msg}`);
-        this.xrButton.setDevice(true);
+      navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+        if (supported) {
+          console.log(`AR supported ${msg}`);
+          this.xrButton.setDevice(true);
+        } else {
+          this.disableButton();
+        }
       });
     }
   }
