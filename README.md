@@ -33,6 +33,8 @@ p5.xr sketches can be run with [p5's online editor.](https://editor.p5js.org/) A
 
 ## Contributors ✨
 
+Interested in contributing to this project? [Check out the contributor docs.](https://github.com/stalgiag/p5.xr/tree/master/contributor-docs)
+
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
