@@ -17,8 +17,8 @@ p5.xr sketches can be run with [p5's online editor.](https://editor.p5js.org/) A
   - Run any 2D or 3D p5 sketch in mobile VR with Google Cardboard
   - Do the above but with Desktop VR (Vive and Oculus)
 
-- __Augmented Reality__ <small><em>All AR features are waiting for the AR module spec to be implemented in browsers</em></small>
-  - Make sketches that use Augmented Reality with any device that supports ARCore. <small><em>Coming Soon</em></small>
+- __Augmented Reality__
+  - Make sketches that use Augmented Reality with any device that supports ARCore.
   - Use marker-based AR on any mobile device <small><em>Coming Soon</em></small>
   - Set anchors and detects planes in your environment --- <small><em>Coming Soon</em></small>
 
