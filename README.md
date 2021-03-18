@@ -1,9 +1,13 @@
 ![](https://github.com/stalgiag/p5.xr/workflows/test/badge.svg)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
-![sad xr cry](https://github.com/stalgiag/p5.xr/raw/master/docs/assets/xr-tear-small.png)
+<p align="center">
+  <img width="400" height="400" src="https://github.com/stalgiag/p5.xr/raw/master/docs/assets/xr-tear-small.png">
+</p>
 
-# [DOCUMENTATION WEBSITE](https://stalgiag.github.io/p5.xr/)
+<h1 align="center">
+  <a href="https://stalgiag.github.io/p5.xr/">🌀🌀 WEBSITE 🌀🌀</a>
+</h1>
 
 ## What is it?
 
