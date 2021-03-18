@@ -12,9 +12,7 @@ function setup() {
 }
 
 function calculate() {
-  // frameCount no longer accessible for some reason
-  // TODO: investigate
-  // checkSync();
+  checkSync();
   checkSetup();
   counter++;
 }
