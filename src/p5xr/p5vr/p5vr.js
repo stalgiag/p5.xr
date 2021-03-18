@@ -52,7 +52,7 @@ export default class p5vr extends p5xr {
    * `device.requestSession()` must be called within a user gesture event.
    * @param {XRDevice}
    */
-  onXRButtonClicked(device) {
+  onXRButtonClicked() {
     if (this.isImmersive) {
       console.log('requesting session with mode: immersive-vr');
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
@@ -72,15 +72,14 @@ export default class p5vr extends p5xr {
       xrCompatible: true,
     });
 
-    // this.gl.makeXRCompatible().then(() => {
     // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
     // sessions baseLayer. This allows any content rendered to the layer to
     // be displayed on the XRDevice;
     this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
-    // });
-    // Get a frame of reference, which is required for querying poses. In
-    // this case an 'local' frame of reference means that all poses will
-    // be relative to the location where the XRDevice was first detected.
+
+    // Get a frame of reference, which is required for querying poses.
+    // 'local' places the initial pose relative to initial location of viewer
+    // 'viewer' is only for inline experiences and only allows rotation
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
     this.xrSession.requestReferenceSpace(refSpaceRequest)
       .then((refSpace) => {
