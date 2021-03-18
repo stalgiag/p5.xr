@@ -95,10 +95,16 @@ export default class p5xr {
       document.querySelector('body').appendChild(header);
     }
     header.appendChild(this.xrButton.domElement);
-
+    // WebXR available
     if (navigator.xr) {
       this.sessionCheck();
     }
+  }
+
+  disableButton() {
+    this.xrButton.setTitle('AR Unavailable');
+    this.xrButton.setTooltip('No XR headset found.');
+    this.xrButton.__setDisabledAttribute(true);
   }
 
   sessionCheck() {
@@ -109,16 +115,23 @@ export default class p5xr {
         if (supported) {
           console.log(`VR supported${msg}`);
           this.xrButton.setDevice(true);
+          this.isImmersive = true;
         } else {
           console.log('This device does not support immersive VR sessions.');
+          this.isImmersive = false;
         }
+        this.xrButton.setDevice(true);
       }).catch((e) => {
         console.log(e.message);
       });
     } else {
-      navigator.xr.isSessionSupported('immersive-ar').then(() => {
-        console.log(`AR supported ${msg}`);
-        this.xrButton.setDevice(true);
+      navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+        if (supported) {
+          console.log(`AR supported ${msg}`);
+          this.xrButton.setDevice(true);
+        } else {
+          this.disableButton();
+        }
       });
     }
   }
@@ -135,6 +148,13 @@ export default class p5xr {
     if (session === null || this.gl === null) { return; }
     // Inform the session that we're ready for the next frame.
     session.requestAnimationFrame(this.onXRFrame.bind(this));
+
+    let targetRefSpace = this.xrRefSpace;
+    if (this.isVR && !this.isImmersive) {
+      // Account for the click-and-drag mouse movement or touch movement when
+      // calculating the viewer pose for inline sessions.
+      targetRefSpace = this.getAdjustedRefSpace(this.xrRefSpace);
+    }
     // Get the XRDevice pose relative to the Frame of Reference we created
     // earlier.
     const viewer = frame.getViewerPose(this.xrRefSpace);
@@ -146,7 +166,7 @@ export default class p5xr {
     // framebuffer cleared, so tracking loss means the scene will simply
     // dissapear.
     if (viewer) {
-      this.viewer.pose = frame.getViewerPose(this.xrRefSpace);
+      this.viewer.pose = frame.getViewerPose(targetRefSpace);
       // If we do have a valid pose, bind the WebGL layer's framebuffer,
       // which is where any content to be displayed on the XRDevice must be
       // rendered.
@@ -218,7 +238,7 @@ export default class p5xr {
         p5.instance._inUserDraw = false;
       }
 
-      if (eyeIndex === 1) {
+      if (eyeIndex === 1 || !this.isImmersive) {
         context._setProperty('frameCount', context.frameCount + 1);
       }
     }

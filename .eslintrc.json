@@ -8,6 +8,7 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "ignorePatterns": "/tests/*",
     "parserOptions": {
         "ecmaVersion": 2018,
         "sourceType": "module"

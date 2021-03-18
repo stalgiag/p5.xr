@@ -23,7 +23,6 @@ function draw() {
   rotateX(10);
   rotateY(20);
   strokeWeight(5);
-  
   box(5);
 }
 
