@@ -71,6 +71,7 @@ export default class p5vr extends p5xr {
     this.gl = this.canvas.getContext('webgl', {
       xrCompatible: true,
     });
+
     // this.gl.makeXRCompatible().then(() => {
     // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
     // sessions baseLayer. This allows any content rendered to the layer to
@@ -88,6 +89,9 @@ export default class p5vr extends p5xr {
         this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
 
         if (!this.isImmersive) {
+          this.xrSession.updateRenderState({
+            inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+          });
           this.addInlineViewListeners(this.canvas);
         }
       });
@@ -101,6 +105,11 @@ export default class p5vr extends p5xr {
       return;
     }
     p5.instance.background(this.curClearColor);
+
+    // Inline sessions need to clear the depth buffer bit
+    if (!this.isImmersive) {
+      this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+    }
   }
 
   // XRReferenceSpace offset is immutable, so return a new reference space
@@ -127,7 +136,6 @@ export default class p5vr extends p5xr {
     if (this.lookPitch < -Math.PI * 0.5) this.lookPitch = -Math.PI * 0.5;
     if (this.lookPitch > Math.PI * 0.5) this.lookPitch = Math.PI * 0.5;
   }
-
 
   // Make the canvas listen for mouse and touch events so that we can
   // adjust the viewer pose accordingly in inline sessions.

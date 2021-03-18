@@ -238,7 +238,7 @@ export default class p5xr {
         p5.instance._inUserDraw = false;
       }
 
-      if (eyeIndex === 1) {
+      if (eyeIndex === 1 || !this.isImmersive) {
         context._setProperty('frameCount', context.frameCount + 1);
       }
     }
