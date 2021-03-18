@@ -58,7 +58,7 @@ export default class p5vr extends p5xr {
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
       console.log('requesting session with mode: non-immersive-vr');
-
+      this.xrButton.hide();
       // Start up an inline session, which should always be supported on
       // browsers that support WebXR regardless of the available hardware.
       navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
