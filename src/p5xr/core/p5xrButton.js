@@ -386,7 +386,7 @@ export default class p5xrButton {
       this.options.onEndSession(this.session);
     } else if (this.device) {
       // feature detect
-      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
         DeviceMotionEvent.requestPermission()
           .then((permissionState) => {
             if (permissionState === 'granted') {
@@ -396,7 +396,7 @@ export default class p5xrButton {
           .catch(console.error);
       }
 
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
