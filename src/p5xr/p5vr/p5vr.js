@@ -105,10 +105,7 @@ export default class p5vr extends p5xr {
     }
     p5.instance.background(this.curClearColor);
 
-    // Inline sessions need to clear the depth buffer bit
-    if (!this.isImmersive) {
-      this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
-    }
+    this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
   }
 
   // XRReferenceSpace offset is immutable, so return a new reference space
