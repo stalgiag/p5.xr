@@ -44,6 +44,7 @@ export default class p5vr extends p5xr {
     this.xrSession.addEventListener('end', this.onSessionEnded.bind(this));
     if (typeof window.setup === 'function') {
       window.setup();
+      p5.instance._millisStart = window.performance.now();
     }
     this.onRequestSession();
   }

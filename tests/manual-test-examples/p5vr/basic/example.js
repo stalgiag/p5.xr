@@ -24,6 +24,7 @@ function draw() {
   rotateY(20);
   strokeWeight(5);
   box(5);
+  
 }
 
 function checkSetup() {
@@ -36,6 +37,6 @@ function checkSync() {
   if(counter === 0) {return;}
 
   if(counter !== frameCount) {
-    console.error('Out of sync!');
+    console.error(`draw timing out of sync:\nframeCount: ${frameCount}\ncalculate() run times: ${counter}`);
   }
 }
