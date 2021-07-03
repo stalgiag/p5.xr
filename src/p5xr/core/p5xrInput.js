@@ -23,7 +23,7 @@ export default class p5xrInput {
   /** @returns {p5.Vector} Returns the current position as a Vector */
   get position() {
     this.updatePose();
-    const p = this._pose.transform.position;
+    const p = this._pose?.transform?.position;
     return new p5.Vector(p.x, p.y, p.z);
   }
 
@@ -35,7 +35,7 @@ export default class p5xrInput {
   /** @returns {GamepadButton} Returns a GamepadButton object corresponding to the controller's trigger button */
   get trigger() {
     this.updateGamepad();
-    return this.gamepad.buttons[0];
+    return this.gamepad?.buttons[0];
   }
 
   /** @returns {GamepadButton} Returns a GamepadButton object corresponding to the controller's grip button */

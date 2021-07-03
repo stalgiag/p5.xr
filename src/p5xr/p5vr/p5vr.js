@@ -68,32 +68,35 @@ export default class p5vr extends p5xr {
   onRequestSession() {
     this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
-    this.gl = this.canvas.getContext('webgl', {
-      xrCompatible: true,
-    });
+    this.gl = this.canvas.getContext('webgl');
+    this.gl.makeXRCompatible().then(() => {
+      // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+      // sessions baseLayer. This allows any content rendered to the layer to
+      // be displayed on the XRDevice;
+      this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
 
-    // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
-    // sessions baseLayer. This allows any content rendered to the layer to
-    // be displayed on the XRDevice;
-    this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
+      // Get a frame of reference, which is required for querying poses.
+      // 'local' places the initial pose relative to initial location of viewer
+      // 'viewer' is only for inline experiences and only allows rotation
+      const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+      this.xrSession.requestReferenceSpace(refSpaceRequest)
+        .then((refSpace) => {
+          this.xrRefSpace = refSpace;
+          // Inform the session that we're ready to begin drawing.
+          this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
 
-    // Get a frame of reference, which is required for querying poses.
-    // 'local' places the initial pose relative to initial location of viewer
-    // 'viewer' is only for inline experiences and only allows rotation
-    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    this.xrSession.requestReferenceSpace(refSpaceRequest)
-      .then((refSpace) => {
-        this.xrRefSpace = refSpace;
-        // Inform the session that we're ready to begin drawing.
-        this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+          if (!this.isImmersive) {
+            this.xrSession.updateRenderState({
+              inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+            });
+            this.addInlineViewListeners(this.canvas);
+          }
+        });
+    }).catch((e) => {
+      console.log(e);
+    })
 
-        if (!this.isImmersive) {
-          this.xrSession.updateRenderState({
-            inlineVerticalFieldOfView: 90 * (Math.PI / 180),
-          });
-          this.addInlineViewListeners(this.canvas);
-        }
-      });
+
   }
 
   /**
