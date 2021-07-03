@@ -212,6 +212,12 @@ export default class p5xr {
         if (typeof userCalculate === 'function') {
           userCalculate();
         }
+        const now = window.performance.now();
+        p5.instance.deltaTime = now - p5.instance._lastFrameTime;
+        p5.instance._frameRate = 1000.0 / (p5.instance.deltaTime);
+        p5.instance._setProperty('deltaTime', p5.instance.deltaTime);
+        p5.instance._lastFrameTime = now;
+        context._setProperty('frameCount', context.frameCount + 1);
       }
     } else {
       // Scale is much smaller in AR
@@ -236,10 +242,6 @@ export default class p5xr {
         userDraw();
       } finally {
         p5.instance._inUserDraw = false;
-      }
-
-      if (eyeIndex === 1 || !this.isImmersive) {
-        context._setProperty('frameCount', context.frameCount + 1);
       }
     }
   }
