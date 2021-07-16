@@ -3,10 +3,10 @@ let ring;
 let letter;
 
 let myFont;
-let randomx = [], randomy = [];
+let randomX = [], randomY = [];
 let words = ["a", "b", "c", "d", "e"];
-
 let index = 0;
+
 let angle = 0;
 let a = 1;
 let x = 10;
@@ -21,14 +21,14 @@ let samplefact = 0.25;
 
 function preload() {
   createVRCanvas();
-  myFont = loadFont('../ITCAvantGardeStd-Demi.otf');
+  myFont = loadFont('assets/WorkSans-Medium.ttf');
 }
-
+ 
 function setup() {
   setVRBackgroundColor(0,0,0);
   textFont(myFont);
 
-  //text to points for wavyOhs
+  //text to points for wavyOhs()
   hiArray = myFont.textToPoints("0", 150, 100, fontSize, {
     sampleFactor: samplefact,
   });
@@ -42,15 +42,14 @@ function setup() {
   letter = createGraphics(200, 200);
 
   for (let i = 0; i < 10; ++i) {
-    randomx[i] = random(-800, 800);
-    randomy[i] = random(-300, 300);
+    randomX[i] = random(-800, 800);
+    randomY[i] = random(-300, 300);
   }
 }
 
 function draw() {
   setViewerPosition(0, 0, 1000);  
-
-  //////ARRAY OF LETTERS CHANGING W/ DELTATIME
+ 
   letter.push();
   letter.clear();
   letter.fill(50);
@@ -60,8 +59,11 @@ function draw() {
   letter.text(words[index], 100, 100);
   letter.pop();
 
-  //index goes up by one until it hits end of array and resets
+  //"words[index]" means the index value is equal to the numerical order of each letter in the "words" array (ex: a=0, b=1, c=2, etc.)
+  //as the time that passes increases with deltaTime, the index value goes up by one until it hits the end of the array & resets
+  //this creates a loop of changing letterforms
   //look up modulo for more info
+
   time += deltaTime;
   if (time > interval) {
     index = (index + 1) % words.length;
@@ -75,7 +77,7 @@ function draw() {
   //each box is translated at a random x/y location (see range in setup)
   for (let i = 0; i < 10; ++i) {
     push();
-    translate(randomx[i], randomy[i]);
+    translate(randomX[i], randomY[i]);
     rotateX(angle / 15);
     rotateY(angle / 15);
     angle += 0.003;
@@ -96,7 +98,7 @@ function draw() {
 }
 
 function wavyOhs() {
-  //possible shapes for textToPoint outlines:  TRIANGLE_FAN|TRIANGLE_STRIP|QUADS|QUAD_STRIP|TESS
+  //possible shapes for textToPoint outlines: TRIANGLE_FAN|TRIANGLE_STRIP|QUADS|QUAD_STRIP|TESS
 
   letter.push();
   letter.fill(255, 30);
@@ -118,10 +120,10 @@ function wavyOhs() {
   letter.pop();
 }
 
-
 function shapes() {
 
-  //GOLDEN TEXTURE
+  //gold texture used on triangle torus
+  //shows rotating letters with thin gold strokes 
   gold.push();
   gold.clear();
   gold.rotate(a * sin * 2);
@@ -138,7 +140,8 @@ function shapes() {
   gold.text("x o x o x o x o x o x o x o x o", -200, -450 + x);
   gold.pop();
 
-  //PLANET TEXTURE
+  //ring texture used on sphere and torus
+  //shows rotating letters with thick white strokes 
   ring.push();
   ring.clear();
   ring.rotate(a * sin * 2);
@@ -156,20 +159,20 @@ function shapes() {
   
   noStroke();
   
-  //ROUND RING TORUS
+  //round ring torus
   push();
   rotateY(180 + a/2);
   rotateX(180 + a/2);
   texture(ring);
   torus(350, 20);
 
-  //TRIANGLE TORUS
+  //triangle torus
   rotateY(180 + a/2);
   texture(gold);
   torus(550, 40, 3);
   pop();
   
-  //SPHERE
+  //sphere 
   push();
   texture(ring);
   rotateZ(15);
