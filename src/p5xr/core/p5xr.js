@@ -250,7 +250,7 @@ export default class p5xr {
     let inputDevice;
     this.xrSession.inputSources.forEach((inputSource) => {
       if (inputSource.handedness == input) {
-        inputDevice = new p5xrInput(inputSource);
+        inputDevice = new p5xrInput(inputSource, this.frame, this.xrRefSpace);
       }
     });
     return inputDevice;

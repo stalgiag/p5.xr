@@ -1,3 +1,6 @@
+import { mat3, vec3 } from 'gl-matrix';
+import p5 from "p5";
+
 /**
  * p5xrInput holds all state and methods related to XR device input
  * @class
@@ -8,10 +11,44 @@ export default class p5xrInput {
    * @constructor
    * @param {XRInputSource} inputSource The input source of the XR device
    */
-  constructor(inputSource) {
+  constructor(inputSource, frame, refSpace) {
     this._inputSource = inputSource;
+    this._targetRayPose = frame.getPose(this._inputSource.targetRaySpace, refSpace);
     this._pose;
     this.gamepad = inputSource.gamepad;
+
+    this._dir = vec3.create();
+    const normalMat = mat3.create();
+    const origin = vec3.create();
+    this._dir[2] = -1.0;
+
+    if (this._targetRayPose) {
+      vec3.transformMat4(origin, origin, this._targetRayPose.transform.matrix);
+      mat3.fromMat4(normalMat, this._targetRayPose.transform.matrix);
+      vec3.transformMat3(this._dir, this._dir, normalMat);
+    }
+    this.direction = this._dir;
+  }
+
+  /** @returns {p5.Vector} Returns the current forward direction */
+  get direction() {
+    return new p5.Vector(this._dir[0], this._dir[1], this._dir[2]);
+  }
+
+  set direction(value) {
+    this._dir = vec3.copy(this._dir, value);
+    vec3.normalize(this._dir, this._dir);
+
+    this.inv_dir = vec3.fromValues(
+      1.0 / this._dir[0],
+      1.0 / this._dir[1],
+      1.0 / this._dir[2]);
+
+    this.sign = [
+      (this.inv_dir[0] < 0) ? 1 : 0,
+      (this.inv_dir[1] < 0) ? 1 : 0,
+      (this.inv_dir[2] < 0) ? 1 : 0,
+    ];
   }
 
   /** @returns {Float32Array} Returns the current 4x4 pose matrix */

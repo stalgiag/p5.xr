@@ -26,6 +26,7 @@
         "prefer-destructuring": "off",
         "max-len": [2, 150, 4],
         "prefer-rest-params" : "off",
-        "consistent-return" : "off"
+        "consistent-return" : "off",
+        "linebreak-style" : "off"
     }
 }
