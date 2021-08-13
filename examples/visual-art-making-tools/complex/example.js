@@ -1,7 +1,7 @@
 const brushStrokes = [];
 const maxOrbs = 200;
 
-let currentShape = 'sphere';
+let currentShape = ['sphere','cube', 'ring' ,'cone' ,'cylinder' ,'ellipsoid'];
 let currentSize = 'regSize';
 
 let ray;
@@ -19,6 +19,11 @@ let uiTop = 0.95;
 let uiMiddle = 0.5;
 let uiBottom = 0.15;
 let uiSize = 0.15;
+
+let x =1;
+let size =1;
+let inc=0.15;
+let floor;
 
 function preload() {
   createVRCanvas();
@@ -40,6 +45,7 @@ function preload() {
 
 function setup() {
   setVRBackgroundColor(0, 0, 0);
+  floor = createGraphics(600,600);
   angleMode(DEGREES);
 }
 
@@ -57,6 +63,7 @@ function draw() {
     hand = left;
   } else {
     // no controller
+    print('In order to draw, please ensure that a controller is connected and tracking');
   }
 
   if (hand) {
@@ -65,9 +72,10 @@ function draw() {
     }
 
     if (hand.grip && hand.grip.pressed) {
+      //when grip is pressed and time > interval, change shape
       time += deltaTime;
         if (time > interval) {
-          index = (index + 1) % textures.length;
+          index = (index + 1) % currentShape.length;
           time = 0;
         }
     }
@@ -98,7 +106,7 @@ function draw() {
     line(0, 0, 0, 0, 0, -100);
     fill(255);
 
-    texture(textures[index]);
+    texture(random(textures));
     noStroke();
     sphere(valSize);
     pop();
@@ -116,7 +124,7 @@ function drawColorControls() {
   }
   // default brush size is 'regSize'
   // this makes sure to set current size of brush to valSize
-  currentSize = valSize;
+  currentSize = valSize + random(-0.1,0.1);
 
   // intersect & change shape to sphere
   push();
@@ -202,9 +210,9 @@ function attemptNewBrushStroke(hand) {
   const brushStroke =
   {
     position: new p5.Vector(hand.position.x, hand.position.y, hand.position.z),
-    tex: textures[index],
-    size: currentSize,
-    shape: currentShape
+    tex: random(textures),
+    size: currentSize + random(-0.1,0.2),
+    shape: currentShape[index]
   }
   brushStrokes.push(brushStroke);
 }
@@ -220,6 +228,7 @@ function drawBrushStrokes() {
     texture(stroke.tex);
 
     //size of stroke
+    scale(-1);
     if (stroke.size === 'regSize'){
       valSize = 0.05;
     } else if (stroke.size === 'addSize'){
@@ -249,10 +258,34 @@ function drawBrushStrokes() {
 
 function drawGround() {
   push();
+
+  if (x>width){
+    x=0;
+  }
+  x+=0.4;
+  
+  floor.fill(5,80);
+  floor.stroke(255);
+  floor.strokeWeight(0.5+size/2)
+  floor.textSize(70+size/2);
+  floor.textLeading(55+size)
+  floor.textWrap(WORD);
+  floor.textStyle(BOLDITALIC);
+  floor.text('TH1S W0RLD 1S Y0UR C4NV4S',x,size,200);
+  floor.text('TH1S W0RLD 1S Y0UR C4NV4S',x-600,size,200);
+  floor.text('TH1S W0RLD 1S Y0UR C4NV4S',x+300,size+300,200);
+  floor.text('TH1S W0RLD 1S Y0UR C4NV4S',x-300,size+300,200);
+  
+  size = size + inc;
+  if(size >= 5 || size <= 0){
+    inc = -inc;
+  }
+  
   translate(0, -1, 0);
-  rotateX(-90);
+  rotateX(90);
   noStroke();
   fill(0, 255, 0);
+  texture(floor);
   plane(10, 10);
   pop();
 }
