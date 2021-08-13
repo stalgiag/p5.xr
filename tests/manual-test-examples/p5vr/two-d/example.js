@@ -42,12 +42,10 @@ function draw() {
 function testBounds() {
   let rad = ellipseSize/2;
   if(pos.x > pg.width - rad || pos.x < 0 + rad) {
-    console.log('X');
     vel.x *= -1;
     col = color(random(255), random(255), random(255));
   }
   if(pos.y > pg.height - rad || pos.y < 0 + rad) {
-    console.log('Y');
     vel.y *= -1;
     col = color(random(255), random(255), random(255));
   }
