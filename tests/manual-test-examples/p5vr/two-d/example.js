@@ -15,14 +15,13 @@ function setup() {
   col = color(255);
   pg = createGraphics(400, 400);
   vel = createVector(speed, speed);
-  pos = createVector(width/2, height/2);
+  pos = createVector(100, 200);
   textureMode(NORMAL);
 }
 
 function calculate() {
   pos.x += vel.x;
   pos.y += vel.y;
-
   testBounds();
 }
 
@@ -43,10 +42,12 @@ function draw() {
 function testBounds() {
   let rad = ellipseSize/2;
   if(pos.x > pg.width - rad || pos.x < 0 + rad) {
+    console.log('X');
     vel.x *= -1;
     col = color(random(255), random(255), random(255));
   }
   if(pos.y > pg.height - rad || pos.y < 0 + rad) {
+    console.log('Y');
     vel.y *= -1;
     col = color(random(255), random(255), random(255));
   }
