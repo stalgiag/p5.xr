@@ -132,19 +132,8 @@ function draw() {
 
   pop();
 
-  // // HANDS
-  // [left, right].forEach((hand) => {
-  //   push();
-  //   //applies pose of controller to the hand
-  //   applyMatrix(hand.pose)
-  //   box(0.15);
-  //   pop();
-
-  // });
-
   drawGround();
 }
-
 
 function drawGround() {
   push();
