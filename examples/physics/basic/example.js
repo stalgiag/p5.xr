@@ -176,17 +176,16 @@ class Ball {
     // if the ball is held...
     // make it a different color than normal
     if (this.held) {
-      fill(this.heldColor);
+    // adding this material makes it easier to see edges of the boundaries
+    // writing it like this makes it so that the ball is not influenced by the lighting
+      emissiveMaterial(this.heldColor);
     } else {
-      fill(this.color);
-    }
+      emissiveMaterial(this.color);
+  }
     noStroke();
 
     // translates the ball to it's position
     translate(this.position);
-
-    // adding this material makes it easier to see edges of the boundaries
-    emissiveMaterial(this.color)
 
     // size of sphere
     sphere(this.radius);
@@ -249,11 +248,8 @@ class Boundary {
 
   render() {
     push();
-    if (this.held) {
-      fill(200, 50, 50);
-    } else {
       fill(this.color);
-    }
+
     // translate boundaries to their designated x,y,z locations
     translate(this.position);
 
