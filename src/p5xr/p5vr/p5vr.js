@@ -114,7 +114,7 @@ export default class p5vr extends p5xr {
   /**
    * clears the background based on the current clear color (`curClearColor`)
    */
-  _clearVR() {
+  clearVR() {
     if (this.curClearColor === null) {
       return;
     }

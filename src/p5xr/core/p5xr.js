@@ -37,7 +37,7 @@ export default class p5xr {
     }
   }
 
-  _updatexr() {
+  updateXR() {
     const renderer = p5.instance._renderer;
     // reset light data for new frame.
 
@@ -66,7 +66,7 @@ export default class p5xr {
   }
 
   // Substitute for p5._setup() which creates a default webgl canvas
-  _setupxr() {
+  setupXR() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     p5.instance._setupDone = true;
   }
@@ -81,7 +81,7 @@ export default class p5xr {
    */
   init() {
     p5.instance._incrementPreload();
-    this._setupxr();
+    this.setupXR();
     this.removeLoadingElement();
     // Is WebXR available on this UA?
     this.xrButton = new p5xrButton({
@@ -183,15 +183,15 @@ export default class p5xr {
         const viewport = glLayer.getViewport(this.viewer.view);
         this.gl.viewport(viewport.x, viewport.y,
           viewport.width * scaleFactor, viewport.height * scaleFactor);
-        this._updateViewport(viewport);
+        this.updateViewport(viewport);
 
-        this._drawEye(i);
+        this.drawEye(i);
         i++;
       }
     }
   }
 
-  _updateViewport(viewport) {
+  updateViewport(viewport) {
     p5.instance._renderer._viewport[0] = viewport.x;
     p5.instance._renderer._viewport[1] = viewport.y;
     p5.instance._renderer._viewport[2] = viewport.width;
@@ -201,7 +201,7 @@ export default class p5xr {
   /**
    * Runs the code that the user has in `draw()` once for each eye
    */
-  _drawEye(eyeIndex) {
+  drawEye(eyeIndex) {
     const context = window;
     const userSetup = context.setup;
     const userDraw = context.draw;
@@ -234,7 +234,7 @@ export default class p5xr {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
 
-      this._updatexr();
+      this.updateXR();
 
       p5.instance._inUserDraw = true;
 
