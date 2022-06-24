@@ -2,7 +2,6 @@ import WebXRPolyfill from 'webxr-polyfill';
 import p5vr from './p5xr/p5vr/p5vr';
 import p5ar from './p5xr/p5ar/p5ar';
 import './p5xr/core/raycasting';
-import p5xr from './p5xr/core/p5xr';
 
 window.p5xr = {
   instance: null,
