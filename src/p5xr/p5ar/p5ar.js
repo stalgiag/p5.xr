@@ -7,6 +7,14 @@ export default class p5ar extends p5xr {
     this.canvas = null;
   }
 
+  initAR() {
+    this.createButton();
+    // WebXR available
+    if (navigator.xr) {
+      this.sessionCheck();
+    }
+  }
+
   //* ********************************************************//
   //* *********ARCORE and ARKIT BASED AR BELOW****************//
   //* ********************************************************//

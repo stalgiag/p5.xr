@@ -45,7 +45,7 @@ p5.prototype.createVRCanvas = function () {
 p5.prototype.createARCanvas = function () {
   noLoop();
   p5xr.instance = new p5ar();
-  p5xr.instance.init();
+  p5xr.instance.initAR();
 };
 
 /**
