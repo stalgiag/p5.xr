@@ -76,10 +76,10 @@ p5.xr requires stylistically consistent code syntax, which it enforces using [ES
 
 ## Device-Specific Development
 
-When modifying code related to VR it is important that you test your changes in both inline (on a desktop computer) and with a VR-capable device such as a Google Cardboard-capable Android phone, Oculus Quest, Oculus Rift, HTV Vive, or Valve Index.
+When modifying code related to VR it is important that you test your changes in both inline (on a desktop computer) and with a VR-capable device such as a Google Cardboard-capable Android phone, Meta Quest, Oculus Rift, HTV Vive, or Valve Index.
 
 With **VR devices** that connect to your computer through SteamVR (Vive, Index, Rift), you can simply open a test in an up-to-date Chrome Browser with SteamVR installed and setup.
 
-With Oculus Quest, the Quest Browser should be used.
+With Meta Quest, the Quest Browser should be used.
 
 With Android Mobile for sketches made for both **AR and VR**, you can run `npm run generate:keys` on your development computer to create an SSL cert-key pair. Then you can run `http-server -S -C cert.pem` to start a secure local server. This should result in a message that gives you the IP address for your new secure local server (ex: `192.168.1.104:8080`). You can then add that IP into the URL input in the Chrome browser on your phone and access the p5xr folder from your phone. This allows you to run the `manual-test-examples` on your phone.
