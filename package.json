@@ -16,8 +16,11 @@
     "watch": "parcel watch ./src/app.js --no-source-maps --out-file  p5xr.js",
     "test": "karma start karma.conf.js",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json -r",
-    "generate:keys": "openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem ",
-    "dev:server": "http-server -S -C cert.pem -K key.pem -o",
+    "setup-ssl": "npm run generate-privatekey && npm run generate-csr && npm run generate-cert",
+    "generate-privatekey" : "openssl genrsa -out key.pem",
+    "generate-csr" :"openssl req -new -key key.pem -out csr.pem",
+    "generate-cert" : "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
+    "dev-server": "http-server -S -C cert.pem -K key.pem -o",
     "prerelease": "npm run build && npm run build:min"
   },
   "repository": {
