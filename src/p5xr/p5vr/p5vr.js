@@ -95,9 +95,7 @@ export default class p5vr extends p5xr {
         });
     }).catch((e) => {
       console.log(e);
-    })
-
-
+    });
   }
 
   /**

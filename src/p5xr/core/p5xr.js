@@ -1,6 +1,6 @@
 import p5xrViewer from './p5xrViewer';
 import p5xrButton from './p5xrButton';
-import p5xrInput from './p5xrInput';
+import './p5xrInput';
 
 /**
  * p5vr class holds all state and methods that are specific to VR
@@ -249,7 +249,7 @@ export default class p5xr {
   getXRInput(input) {
     let inputDevice;
     this.xrSession.inputSources.forEach((inputSource) => {
-      if (inputSource.handedness == input) {
+      if (inputSource.handedness === input) {
         inputDevice = new p5xrInput(inputSource, this.frame, this.xrRefSpace);
       }
     });
