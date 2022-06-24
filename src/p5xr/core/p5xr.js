@@ -30,6 +30,9 @@ export default class p5xr {
     this.viewer = new p5xrViewer();
   }
 
+  /**
+   * Hide the preload loading element
+   */
   removeLoadingElement() {
     const loadingScreen = document.getElementById(window._loadingScreenId);
     if (loadingScreen) {
@@ -37,6 +40,10 @@ export default class p5xr {
     }
   }
 
+  /**
+   * Resets a few key WebGL renderer values. This is typically handled by p5.RendererGL.
+   * but we need to do it manually so that it doesn't happen between drawing in each eye
+   */
   updateXR() {
     const renderer = p5.instance._renderer;
     // reset light data for new frame.
@@ -66,7 +73,7 @@ export default class p5xr {
   }
 
   // Substitute for p5._setup() which creates a default webgl canvas
-  setupXR() {
+  setupCanvas() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     p5.instance._setupDone = true;
   }
@@ -79,11 +86,10 @@ export default class p5xr {
    * Then binds the device to the button. <br>
    * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
    */
-  init() {
+  createButton() {
     p5.instance._incrementPreload();
-    this.setupXR();
+    this.setupCanvas();
     this.removeLoadingElement();
-    // Is WebXR available on this UA?
     this.xrButton = new p5xrButton({
       onRequestSession: this.onXRButtonClicked.bind(this),
       onEndSession: this.onSessionEnded.bind(this),
@@ -95,25 +101,29 @@ export default class p5xr {
       document.querySelector('body').appendChild(header);
     }
     header.appendChild(this.xrButton.domElement);
-    // WebXR available
-    if (navigator.xr) {
-      this.sessionCheck();
-    }
   }
 
+  /**
+   * Disables button, only called when AR session is attempted and
+   * unsupported. VR has inline fallback.
+   */
   disableButton() {
     this.xrButton.setTitle('AR Unavailable');
     this.xrButton.setTooltip('No XR headset found.');
     this.xrButton.__setDisabledAttribute(true);
   }
 
+  /**
+   * Called by `createVRCanvas()` or `createARCanvas`.
+   * Checks what kind of session is supported by the device.
+   */
   sessionCheck() {
-    const msg = window.injectedPolyfill ? ' with polyfill' : ' without polyfill';
+    const msg = window.injectedPolyfill ? 'with polyfill' : 'without polyfill';
 
     if (this.isVR) {
       navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
         if (supported) {
-          console.log(`VR supported${msg}`);
+          console.log(`VR supported ${msg}`);
           this.xrButton.setDevice(true);
           this.isImmersive = true;
         } else {
@@ -173,7 +183,7 @@ export default class p5xr {
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, glLayer.framebuffer);
 
       if (this.isVR) {
-        this._clearVR();
+        this.clearVR();
       }
 
       let i = 0;
@@ -191,6 +201,10 @@ export default class p5xr {
     }
   }
 
+  /**
+   * Update the renderer viewport to match rendering eye
+   * @param {XRViewport} viewport The viewport of the eye
+   */
   updateViewport(viewport) {
     p5.instance._renderer._viewport[0] = viewport.x;
     p5.instance._renderer._viewport[1] = viewport.y;
@@ -200,6 +214,7 @@ export default class p5xr {
 
   /**
    * Runs the code that the user has in `draw()` once for each eye
+   * So twice for VR and once for AR
    */
   drawEye(eyeIndex) {
     const context = window;
@@ -246,6 +261,11 @@ export default class p5xr {
     }
   }
 
+  /**
+   * Takes a string and returns a p5xrInput
+   * @param {String} input The input identifier
+   * @returns {p5xrInput} The input object
+   */
   getXRInput(input) {
     let inputDevice;
     this.xrSession.inputSources.forEach((inputSource) => {
