@@ -179,10 +179,10 @@ export default class p5xr {
       let i = 0;
       for (const view of this.viewer.pose.views) {
         this.viewer.view = view;
-
+        const scaleFactor = this.isImmersive ? 1 : pixelDensity();
         const viewport = glLayer.getViewport(this.viewer.view);
         this.gl.viewport(viewport.x, viewport.y,
-          viewport.width, viewport.height);
+          viewport.width * scaleFactor, viewport.height * scaleFactor);
         this._updateViewport(viewport);
 
         this._drawEye(i);

@@ -75,7 +75,7 @@ export default class p5vr extends p5xr {
       this.setupBaseLayer();
       this.setupReferenceSpace();
       this.xrSession.updateRenderState({
-        inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+        inlineVerticalFieldOfView: 70 * (Math.PI / 180),
       });
       this.addInlineViewListeners(this.canvas);
     } else {
@@ -95,7 +95,8 @@ export default class p5vr extends p5xr {
     // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
     // sessions baseLayer. This allows any content rendered to the layer to
     // be displayed on the XRDevice;
-    this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
+    this.baseLayer = new XRWebGLLayer(this.xrSession, this.gl);
+    this.xrSession.updateRenderState({ baseLayer: this.baseLayer });
   }
 
   setupReferenceSpace() {
