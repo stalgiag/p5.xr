@@ -12,7 +12,7 @@ jobs:
     - name: setup node
       uses: actions/setup-node@v1
       with:
-        node-version: '10.x'
+        node-version: '16.x'
     - name: clean install dependencies and build
       run: | 
         npm ci
