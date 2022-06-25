@@ -2,3 +2,4 @@ tests/*
 docs/*
 contributors-docs/*
 examples/*
+.parcel-cache/*
