@@ -58,7 +58,8 @@ We know the development process can be a little tricky at first. You're not alon
 
    If you're continuously changing files in the library, you may want to run `npm run watch` to automatically rebuild the library for you whenever any of its source files change without you having to first type the command manually.
 
-6. WebXR requires HTTPS. You can run a local test environment by running `npm run setup-ssl` and answering the questions. You can enter whatever you want for the values. Now when you run `npm run dev-server` you will get an HTTPS local server. Note that you will still get the 'Your connection is not private' warning. You can click through this by selecting advanced and "Proceed to ... (unsafe)". Alternatively, you can type 'thisisunsafe' or generate the certificate locally using mkcert. [See the top answer here for more info](https://stackoverflow.com/questions/7580508/getting-chrome-to-accept-self-signed-localhost-certificate).
+6. WebXR requires HTTPS. You can run a local test environment by running `npm run setup-ssl` and answering the questions. You can enter whatever you want for the values. Now when you run `npm run dev-server` you will get an HTTPS local server. Note that you will still get the 'Your connection is not private' warning. You can click through this by selecting advanced and "Proceed to ... (unsafe)". Alternatively, you can type 'thisisunsafe' or generate the certificate locally using mkcert. [See the top answer here for more info](https://stackoverflow.com/questions/7580508/getting-chrome-to-accept-self-signed-localhost-certificate). 
+Note: Windows users may get the following error: `'openssl' is not recognized as an internal or external command,` One solution is to use the Git Bash terminal included with Git installations instead of Powershell or Command Prompt. 
 
 7. If you made changes to source code, look at the relevant manual test examples to see that everything still works as expected. We are hoping to automate this with more unit tests in the future.
 
@@ -85,3 +86,4 @@ With **VR devices** that connect to your computer through SteamVR (Vive, Index, 
 With Meta Quest, the Quest Browser should be used.
 
 With Android Mobile for sketches made for both **AR and VR**, you can run `npm run generate:keys` on your development computer to create an SSL cert-key pair. Then you can run `http-server -S -C cert.pem` to start a secure local server. This should result in a message that gives you the IP address for your new secure local server (ex: `192.168.1.104:8080`). You can then add that IP into the URL input in the Chrome browser on your phone and access the p5xr folder from your phone. This allows you to run the `manual-test-examples` on your phone.
+
