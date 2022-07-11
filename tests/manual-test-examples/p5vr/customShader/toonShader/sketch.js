@@ -7,6 +7,7 @@ function preload() {
 }
 
 function draw() {
+  setViewerPosition(0, 0, 20);
   translate(0, 0, 10);
   noStroke();
   // Custom shaders temporarily broken

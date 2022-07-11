@@ -26,6 +26,7 @@ function calculate() {
 }
 
 function draw() {
+  setViewerPosition(0, 0, 20);
   pg.background(150, 150, 250);
   pg.fill(col);
   pg.ellipse(pg.width/2, pg.height/2, 100);
