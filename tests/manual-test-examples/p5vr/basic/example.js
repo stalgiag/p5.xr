@@ -19,7 +19,7 @@ function calculate() {
 
 function draw() {
   fill(0, 255, 0);
-  translate(0, 0, 10);
+  translate(0, 0, -10);
   rotateX(10);
   rotateY(20);
   strokeWeight(5);
