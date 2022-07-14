@@ -31,7 +31,7 @@ function draw() {
   pg.ellipse(pg.width/2, pg.height/2, 100);
   pg.fill(255);
   pg.ellipse(pos.x, pos.y, 20);
-  translate(0, 0, 10);
+  translate(0, 0, -10);
   noStroke();
   texture(pg);
   rotateY(frameCount * 0.02);
