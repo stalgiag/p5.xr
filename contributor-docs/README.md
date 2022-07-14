@@ -85,5 +85,5 @@ With **VR devices** that connect to your computer through SteamVR (Vive, Index, 
 
 With Meta Quest, the Quest Browser should be used.
 
-With Android Mobile for sketches made for both **AR and VR**, you can run `npm run generate:keys` on your development computer to create an SSL cert-key pair. Then you can run `http-server -S -C cert.pem` to start a secure local server. This should result in a message that gives you the IP address for your new secure local server (ex: `192.168.1.104:8080`). You can then add that IP into the URL input in the Chrome browser on your phone and access the p5xr folder from your phone. This allows you to run the `manual-test-examples` on your phone.
+With Android Mobile for sketches made for both **AR and VR**, you can run `npm run setup-ssl` on your development computer to create an SSL cert-key pair. Then you can run `npm run dev-server` to start a secure local server. This should result in a message that gives you the IP address for your new secure local server (ex: `192.168.1.104:8080`). You can then add that IP into the URL input in the Chrome browser on your phone and access the p5xr folder from your phone. This allows you to run the `manual-test-examples` on your phone.
 
