@@ -18,7 +18,6 @@ function calculate() {
 }
 
 function draw() {
-  setViewerPosition(0, 0, 20);
   fill(0, 255, 0);
   translate(0, 0, 10);
   rotateX(10);
