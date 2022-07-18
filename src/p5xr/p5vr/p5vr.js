@@ -82,7 +82,7 @@ export default class p5vr extends p5xr {
       // Get a frame of reference, which is required for querying poses.
       // 'local' places the initial pose relative to initial location of viewer
       // 'viewer' is only for inline experiences and only allows rotation
-      var refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+      const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
       this.xrSession.requestReferenceSpace(refSpaceRequest)
         .then((refSpace) => {
           this.xrRefSpace = refSpace;
