@@ -26,11 +26,7 @@ export default class p5vr extends p5xr {
   }
 
   initVR() {
-    this.init(); //maybe createButton
-    
-    if (navigator.xr) {
-      this.sessionCheck();
-    }
+    this.createButton()
   }
 
   /**
