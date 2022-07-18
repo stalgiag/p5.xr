@@ -26,7 +26,8 @@ export default class p5vr extends p5xr {
   }
 
   initVR() {
-    this.createButton();
+    this.init(); //maybe createButton
+    
     if (navigator.xr) {
       this.sessionCheck();
     }
@@ -53,7 +54,7 @@ export default class p5vr extends p5xr {
   }
 
   /**
-   * `device.requestSession()` must be called within a user gesture event. //then why can I check for immersion while checking for navigator.xr?
+   * `navigator.xr.requestSession('immersive-vr')` must be called within a user gesture event.
    * @param {XRDevice}
    */
   onXRButtonClicked() {
@@ -71,7 +72,6 @@ export default class p5vr extends p5xr {
   onRequestSession() {
     // this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
-<<<<<<< HEAD
     this.gl = this.canvas.getContext('webgl');
     this.gl.makeXRCompatible().then(() => {
       // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
@@ -99,25 +99,6 @@ export default class p5vr extends p5xr {
     }).catch((e) => {
       console.log(e);
     })
-=======
-    this.gl = this.canvas.getContext('webgl', { xrCompatible: true });
-
-    if (!this.isImmersive) {
-      this.setupBaseLayer();
-      this.setupReferenceSpace();
-      this.xrSession.updateRenderState({
-        inlineVerticalFieldOfView: 70 * (Math.PI / 180),
-      });
-      this.addInlineViewListeners(this.canvas);
-    } else {
-      this.gl.makeXRCompatible().then(() => {
-        this.setupBaseLayer();
-        this.setupReferenceSpace();
-      }).catch((e) => {
-        console.log(e);
-      });
-    }
->>>>>>> 6e67c5f343f0e4d879f0bf7627bfffa6480e4ad2
 
     // Request initial animation frame
     this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
