@@ -13,8 +13,7 @@ export default class p5vr extends p5xr {
   constructor() {
     super();
     this.isVR = true;
-    this.isImmersive = true;
-
+    this.isImmersive = false;
     this.lookYaw = 0;
     this.lookPitch = 0;
     this.LOOK_SPEED = 0.0025;
@@ -23,6 +22,7 @@ export default class p5vr extends p5xr {
     this.primaryTouch = undefined;
     this.prevTouchX = undefined;
     this.prevTouchY = undefined;
+    navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
   }
 
   initVR() {
@@ -50,24 +50,23 @@ export default class p5vr extends p5xr {
   }
 
   /**
-   * `device.requestSession()` must be called within a user gesture event.
+   * `device.requestSession()` must be called within a user gesture event. //then why can I check for immersion while checking for navigator.xr?
    * @param {XRDevice}
    */
   onXRButtonClicked() {
-    if (this.isImmersive) {
+    if (this.hasImmersive) {
       console.log('requesting session with mode: immersive-vr');
+      this.isImmersive = true;
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
-      console.log('requesting session with mode: non-immersive-vr');
+      console.log('hiding xrButton');
       this.xrButton.hide();
-      // Start up an inline session, which should always be supported on
-      // browsers that support WebXR regardless of the available hardware.
-      navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+      //TODO: Request Fullscreen
     }
   }
 
   onRequestSession() {
-    this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
+    // this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
     this.gl = this.canvas.getContext('webgl');
     this.gl.makeXRCompatible().then(() => {
@@ -79,7 +78,7 @@ export default class p5vr extends p5xr {
       // Get a frame of reference, which is required for querying poses.
       // 'local' places the initial pose relative to initial location of viewer
       // 'viewer' is only for inline experiences and only allows rotation
-      const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+      var refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
       this.xrSession.requestReferenceSpace(refSpaceRequest)
         .then((refSpace) => {
           this.xrRefSpace = refSpace;
