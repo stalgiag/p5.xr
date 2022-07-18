@@ -46,6 +46,26 @@ export default class p5vr extends p5xr {
       window.setup();
       p5.instance._millisStart = window.performance.now();
     }
+    console.log('moving refSpaceRequest to start sketch')
+    // Get a frame of reference, which is required for querying poses.
+      // 'local' places the initial pose relative to initial location of viewer
+      // 'viewer' is only for inline experiences and only allows rotation
+      const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+      this.xrSession.requestReferenceSpace(refSpaceRequest)
+        .then((refSpace) => {
+          this.xrRefSpace = refSpace;
+          // Inform the session that we're ready to begin drawing.
+          this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+
+          if (!this.isImmersive) {
+            // console.log('found ya')
+            this.xrSession.updateRenderState({
+              baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+              inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+            });
+            this.addInlineViewListeners(this.canvas);
+          }
+        });
     this.onRequestSession();
   }
 
@@ -75,23 +95,7 @@ export default class p5vr extends p5xr {
       // be displayed on the XRDevice;
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
 
-      // Get a frame of reference, which is required for querying poses.
-      // 'local' places the initial pose relative to initial location of viewer
-      // 'viewer' is only for inline experiences and only allows rotation
-      const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-      this.xrSession.requestReferenceSpace(refSpaceRequest)
-        .then((refSpace) => {
-          this.xrRefSpace = refSpace;
-          // Inform the session that we're ready to begin drawing.
-          this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
-
-          if (!this.isImmersive) {
-            this.xrSession.updateRenderState({
-              inlineVerticalFieldOfView: 90 * (Math.PI / 180),
-            });
-            this.addInlineViewListeners(this.canvas);
-          }
-        });
+      
     }).catch((e) => {
       console.log(e);
     })
