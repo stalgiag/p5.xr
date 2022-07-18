@@ -26,7 +26,10 @@ export default class p5vr extends p5xr {
   }
 
   initVR() {
-    this.init();
+    this.createButton();
+    if (navigator.xr) {
+      this.sessionCheck();
+    }
   }
 
   /**
@@ -68,6 +71,7 @@ export default class p5vr extends p5xr {
   onRequestSession() {
     // this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
+<<<<<<< HEAD
     this.gl = this.canvas.getContext('webgl');
     this.gl.makeXRCompatible().then(() => {
       // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
@@ -95,14 +99,54 @@ export default class p5vr extends p5xr {
     }).catch((e) => {
       console.log(e);
     })
+=======
+    this.gl = this.canvas.getContext('webgl', { xrCompatible: true });
 
+    if (!this.isImmersive) {
+      this.setupBaseLayer();
+      this.setupReferenceSpace();
+      this.xrSession.updateRenderState({
+        inlineVerticalFieldOfView: 70 * (Math.PI / 180),
+      });
+      this.addInlineViewListeners(this.canvas);
+    } else {
+      this.gl.makeXRCompatible().then(() => {
+        this.setupBaseLayer();
+        this.setupReferenceSpace();
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+>>>>>>> 6e67c5f343f0e4d879f0bf7627bfffa6480e4ad2
 
+    // Request initial animation frame
+    this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+  }
+
+  setupBaseLayer() {
+    // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+    // sessions baseLayer. This allows any content rendered to the layer to
+    // be displayed on the XRDevice;
+    this.baseLayer = new XRWebGLLayer(this.xrSession, this.gl);
+    this.xrSession.updateRenderState({ baseLayer: this.baseLayer });
+  }
+
+  setupReferenceSpace() {
+    // Get a frame of reference, which is required for querying poses.
+    // 'local' places the initial pose relative to initial location of viewer
+    // 'viewer' is only for inline experiences and only allows rotation
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+    this.xrSession.requestReferenceSpace(refSpaceRequest)
+      .then((refSpace) => {
+        this.xrRefSpace = refSpace;
+        // Inform the session that we're ready to begin drawing.
+      });
   }
 
   /**
    * clears the background based on the current clear color (`curClearColor`)
    */
-  _clearVR() {
+  clearVR() {
     if (this.curClearColor === null) {
       return;
     }
