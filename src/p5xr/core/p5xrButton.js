@@ -416,19 +416,19 @@ export default class p5xrButton {
  * Updates the display of the button based on it's current state
  * @private
  */
-  __updateButtonState() {
-    if (this.session) {
-      this.setTitle(this.options.textExitXRTitle);
-      this.setTooltip('Exit XR presentation');
-      this.__setDisabledAttribute(false);
-    } else if (this.device) {
-      this.setTitle(this.options.textEnterXRTitle);
-      this.setTooltip('Enter XR');
-      this.__setDisabledAttribute(false);
-    } else {
-      this.setTitle(this.options.textXRNotFoundTitle);
-      this.setTooltip('No XR headset found.');
-      this.__setDisabledAttribute(true);
-    }
-  }
+  // __updateButtonState() {
+  //   if (this.session) {
+  //     this.setTitle(this.options.textExitXRTitle);
+  //     this.setTooltip('Exit XR presentation');
+  //     this.__setDisabledAttribute(false);
+  //   } else if (this.device) {
+  //     this.setTitle(this.options.textEnterXRTitle);
+  //     this.setTooltip('Enter XR');
+  //     this.__setDisabledAttribute(false);
+  //   } else {
+  //     this.setTitle(this.options.textXRNotFoundTitle);
+  //     this.setTooltip('No XR headset found.');
+  //     this.__setDisabledAttribute(true);
+  //   }
+  // }
 }

@@ -284,18 +284,18 @@ export default class p5xr {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
+    } else {
+      if(this.isImmersive){
+        console.log('exiting immersive session')
+        this.isImmersive = false
+        this.sessionCheck()
+        console.log('requesting new session')
+        navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+      }
     }
-    if (this.xrSession) {
-      // this.xrSession.end();
-      // this.xrSession = null;
+    if (this.isImmersive && this.hasImmersive) {
+      this.isImmersive = false
     }
-    // const p5Canvi = document.getElementsByClassName('p5Canvas');
-    // while (p5Canvi.length > 0) {
-    //   p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
-    // }
-    // this.xrButton.session = null;
-    // this.xrButton.setTitle(this.isVR ? 'ENTER VR' : 'ENTER AR');
-    // this.gl = null;
   }
 
   printUnsupportedMessage() {
