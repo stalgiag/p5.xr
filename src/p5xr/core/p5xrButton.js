@@ -30,7 +30,8 @@ export default class p5xrButton {
     this.options = options || {};
 
     this.options.color = options.color || 'rgb(237, 34, 93)';
-    this.options.background = options.background || false;
+    this.options.background = options.background || 'white';
+    this.options.opacity = options.opacity || 0.95;
     this.options.disabledOpacity = options.disabledOpacity || 0.5;
     this.options.height = options.height || window.innerWidth / 5;
     this.options.corners = options.corners || 'square';
@@ -223,7 +224,7 @@ export default class p5xrButton {
           border-radius: ${borderRadius}px;
           box-sizing: border-box;
           background: ${options.background ? options.background : 'none'};
-
+          opacity: ${options.opacity};
           height: ${height}px;
           min-width: ${fontSize * 9.6}px;
           display: inline-block;
