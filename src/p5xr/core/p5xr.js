@@ -286,10 +286,10 @@ export default class p5xr {
       this.xrHitTestSource = null;
     } else {
       if(this.isImmersive){
-        console.log('exiting immersive session')
+        console.log('Exiting immersive session')
         this.isImmersive = false
         this.sessionCheck()
-        console.log('requesting new session')
+        console.log('Requesting new session')
         navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
       }
     }

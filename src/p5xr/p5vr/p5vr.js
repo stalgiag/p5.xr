@@ -52,9 +52,7 @@ export default class p5vr extends p5xr {
           this.xrRefSpace = refSpace;
           // Inform the session that we're ready to begin drawing.
           this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
-
           if (!this.isImmersive) {
-            // console.log('found ya')
             this.xrSession.updateRenderState({
               baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
               inlineVerticalFieldOfView: 90 * (Math.PI / 180),
@@ -71,7 +69,7 @@ export default class p5vr extends p5xr {
    */
   onXRButtonClicked() {
     if (this.hasImmersive) {
-      console.log('requesting session with mode: immersive-vr');
+      console.log('Requesting session with mode: immersive-vr');
       this.isImmersive = true; 
       this.xrDevice = null;
       this.xrSession = null;
@@ -82,7 +80,6 @@ export default class p5vr extends p5xr {
       this.frame = null;
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
-      console.log('hiding xrButton');
       this.xrButton.hide();
       //TODO: Request Fullscreen
     }
@@ -98,7 +95,6 @@ export default class p5vr extends p5xr {
       // Get a frame of reference, which is required for querying poses.
       // 'local' places the initial pose relative to initial location of viewer
       // 'viewer' is only for inline experiences and only allows rotation
-      console.log('setting ref space')
       this.xrSession.requestReferenceSpace(refSpaceRequest)
       .then((refSpace) => {
         this.xrRefSpace = refSpace;
