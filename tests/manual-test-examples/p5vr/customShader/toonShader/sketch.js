@@ -7,7 +7,7 @@ function preload() {
 }
 
 function draw() {
-  translate(0, 0, 10);
+  translate(0, 0, -10);
   noStroke();
   // Custom shaders temporarily broken
   shader(toonShader);
