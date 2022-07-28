@@ -73,6 +73,13 @@ export default class p5vr extends p5xr {
     if (this.hasImmersive) {
       console.log('requesting session with mode: immersive-vr');
       this.isImmersive = true; 
+      this.xrDevice = null;
+      this.xrSession = null;
+      this.xrRefSpace = null;
+      this.xrViewerSpace = null;
+      this.xrHitTestSource = null;
+      this.gl = null;
+      this.frame = null;
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
       console.log('hiding xrButton');
