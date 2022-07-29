@@ -94,7 +94,6 @@ export default class p5vr extends p5xr {
   }
 
   onRequestSession() {
-    // this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
     
