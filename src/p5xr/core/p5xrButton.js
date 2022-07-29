@@ -140,7 +140,6 @@ export default class p5xrButton {
    */
   setDevice(device) {
     this.device = device;
-    // this.__updateButtonState();
     return this;
   }
 
