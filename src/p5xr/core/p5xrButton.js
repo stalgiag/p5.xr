@@ -382,9 +382,7 @@ export default class p5xrButton {
  */
   __onXRButtonClick() {
     if (this.session) {
-      // no longer end session on click
       this.options.onRequestSession(this.device)
-      // this.options.onEndSession(this.session);
     } else if (this.device) {
       // feature detect
       if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
