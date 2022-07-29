@@ -62,6 +62,20 @@ export default class p5vr extends p5xr {
         });
     this.onRequestSession();
   }
+  /**
+   * Helper function to reset XR and GL, should be called between 
+   * ending an XR session and starting a new XR session
+   * 
+   */
+  resetXR(){
+    this.xrDevice = null;
+    this.xrSession = null;
+    this.xrRefSpace = null;
+    this.xrViewerSpace = null;
+    this.xrHitTestSource = null;
+    this.gl = null;
+    this.frame = null;
+  }
 
   /**
    * `navigator.xr.requestSession('immersive-vr')` must be called within a user gesture event.
@@ -70,14 +84,8 @@ export default class p5vr extends p5xr {
   onXRButtonClicked() {
     if (this.hasImmersive) {
       console.log('Requesting session with mode: immersive-vr');
-      this.isImmersive = true; 
-      this.xrDevice = null;
-      this.xrSession = null;
-      this.xrRefSpace = null;
-      this.xrViewerSpace = null;
-      this.xrHitTestSource = null;
-      this.gl = null;
-      this.frame = null;
+      this.isImmersive = true;
+      this.resetXR();
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
       this.xrButton.hide();
