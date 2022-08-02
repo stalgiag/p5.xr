@@ -13,8 +13,7 @@ export default class p5vr extends p5xr {
   constructor() {
     super();
     this.isVR = true;
-    this.isImmersive = true;
-
+    this.isImmersive = false;
     this.lookYaw = 0;
     this.lookPitch = 0;
     this.LOOK_SPEED = 0.0025;
@@ -23,13 +22,11 @@ export default class p5vr extends p5xr {
     this.primaryTouch = undefined;
     this.prevTouchX = undefined;
     this.prevTouchY = undefined;
+    navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
   }
 
   initVR() {
-    this.createButton();
-    if (navigator.xr) {
-      this.sessionCheck();
-    }
+    this.createButton()
   }
 
   /**
@@ -40,7 +37,7 @@ export default class p5vr extends p5xr {
    * @param {XRSession}
    */
   startSketch(session) {
-    this.xrSession = this.xrButton.session = session;
+    this.xrSession = session;
     this.canvas = p5.instance.canvas;
     this.canvas.style.visibility = 'visible';
 
@@ -49,46 +46,74 @@ export default class p5vr extends p5xr {
       window.setup();
       p5.instance._millisStart = window.performance.now();
     }
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+      this.xrSession.requestReferenceSpace(refSpaceRequest)
+        .then((refSpace) => {
+          this.xrRefSpace = refSpace;
+          // Inform the session that we're ready to begin drawing.
+          this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+          if (!this.isImmersive) {
+            this.xrSession.updateRenderState({
+              baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+              inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+            });
+            this.addInlineViewListeners(this.canvas);
+          }
+        });
     this.onRequestSession();
+  }
+  /**
+   * Helper function to reset XR and GL, should be called between 
+   * ending an XR session and starting a new XR session
+   * 
+   */
+  resetXR(){
+    this.xrDevice = null;
+    this.xrSession = null;
+    this.xrRefSpace = null;
+    this.xrViewerSpace = null;
+    this.xrHitTestSource = null;
+    this.gl = null;
+    this.frame = null;
   }
 
   /**
-   * `device.requestSession()` must be called within a user gesture event.
+   * `navigator.xr.requestSession('immersive-vr')` must be called within a user gesture event.
    * @param {XRDevice}
    */
   onXRButtonClicked() {
-    if (this.isImmersive) {
-      console.log('requesting session with mode: immersive-vr');
+    if (this.hasImmersive) {
+      console.log('Requesting session with mode: immersive-vr');
+      this.isImmersive = true;
+      this.resetXR();
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
-      console.log('requesting session with mode: non-immersive-vr');
       this.xrButton.hide();
-      // Start up an inline session, which should always be supported on
-      // browsers that support WebXR regardless of the available hardware.
-      navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+      //TODO: Request Fullscreen
     }
   }
 
   onRequestSession() {
-    this.xrButton.setTitle(this.isVR ? 'EXIT VR' : 'EXIT AR');
     p5.instance._renderer._curCamera.cameraType = 'custom';
-    this.gl = this.canvas.getContext('webgl', { xrCompatible: true });
-
-    if (!this.isImmersive) {
-      this.setupBaseLayer();
-      this.setupReferenceSpace();
-      this.xrSession.updateRenderState({
-        inlineVerticalFieldOfView: 70 * (Math.PI / 180),
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+    
+    this.gl = this.canvas.getContext('webgl');
+    this.gl.makeXRCompatible().then(() => {
+      // Get a frame of reference, which is required for querying poses.
+      // 'local' places the initial pose relative to initial location of viewer
+      // 'viewer' is only for inline experiences and only allows rotation
+      this.xrSession.requestReferenceSpace(refSpaceRequest)
+      .then((refSpace) => {
+        this.xrRefSpace = refSpace;
       });
-      this.addInlineViewListeners(this.canvas);
-    } else {
-      this.gl.makeXRCompatible().then(() => {
-        this.setupBaseLayer();
-        this.setupReferenceSpace();
-      }).catch((e) => {
-        console.log(e);
-      });
-    }
+      
+      // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+      // sessions baseLayer. This allows any content rendered to the layer to
+      // be displayed on the XRDevice;
+      this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
+    }).catch((e) => {
+      console.log(e);
+    })
 
     // Request initial animation frame
     this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
@@ -102,17 +127,6 @@ export default class p5vr extends p5xr {
     this.xrSession.updateRenderState({ baseLayer: this.baseLayer });
   }
 
-  setupReferenceSpace() {
-    // Get a frame of reference, which is required for querying poses.
-    // 'local' places the initial pose relative to initial location of viewer
-    // 'viewer' is only for inline experiences and only allows rotation
-    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    this.xrSession.requestReferenceSpace(refSpaceRequest)
-      .then((refSpace) => {
-        this.xrRefSpace = refSpace;
-        // Inform the session that we're ready to begin drawing.
-      });
-  }
 
   /**
    * clears the background based on the current clear color (`curClearColor`)

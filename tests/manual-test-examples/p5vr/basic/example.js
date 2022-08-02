@@ -13,7 +13,6 @@ function setup() {
 
 function calculate() {
   checkSync();
-  checkSetup();
   counter++;
 }
 
@@ -27,11 +26,6 @@ function draw() {
   
 }
 
-function checkSetup() {
-  if(setupCounter !== 2) {
-    console.error('setup() running incorrectly');
-  }
-}
 
 function checkSync() {
   if(counter === 0) {return;}

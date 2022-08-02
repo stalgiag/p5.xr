@@ -20,6 +20,7 @@ export default class p5xr {
     this.xrDevice = null;
     this.xrButton = null;
     this.isVR = null;
+    this.hasImmersive = null;
     this.xrSession = null;
     this.xrRefSpace = null;
     this.xrViewerSpace = null;
@@ -93,7 +94,7 @@ export default class p5xr {
     this.xrButton = new p5xrButton({
       onRequestSession: this.onXRButtonClicked.bind(this),
       onEndSession: this.onSessionEnded.bind(this),
-      textEnterXRTitle: this.isVR ? 'ENTER VR' : 'ENTER AR',
+      textEnterXRTitle: 'LOADING',
     });
     let header = document.querySelector('header');
     if (!header) {
@@ -101,48 +102,45 @@ export default class p5xr {
       document.querySelector('body').appendChild(header);
     }
     header.appendChild(this.xrButton.domElement);
-  }
 
-  /**
-   * Disables button, only called when AR session is attempted and
-   * unsupported. VR has inline fallback.
-   */
-  disableButton() {
-    this.xrButton.setTitle('AR Unavailable');
-    this.xrButton.setTooltip('No XR headset found.');
-    this.xrButton.__setDisabledAttribute(true);
+    this.sessionCheck();
   }
-
-  /**
-   * Called by `createVRCanvas()` or `createARCanvas`.
-   * Checks what kind of session is supported by the device.
-   */
   sessionCheck() {
-    const msg = window.injectedPolyfill ? 'with polyfill' : 'without polyfill';
-
-    if (this.isVR) {
+    const msg = window.injectedPolyfill ? ' with polyfill' : ' without polyfill';
+    // WebXR availabilty
+    if(navigator.xr){
+      console.log('XR Available')
       navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-        if (supported) {
-          console.log(`VR supported ${msg}`);
-          this.xrButton.setDevice(true);
-          this.isImmersive = true;
-        } else {
-          console.log('This device does not support immersive VR sessions.');
-          this.isImmersive = false;
-        }
+        this.hasImmersive = supported;
+      });
+      if(this.isVR){
+        // Checks if VR is supported
+        this.xrButton.setTitle('Enter VR');
+        this.xrButton.setTooltip('Enter VR');
+        this.xrButton.enable();
+        console.log(`VR supported ${msg}`);
         this.xrButton.setDevice(true);
-      }).catch((e) => {
-        console.log(e.message);
-      });
-    } else {
-      navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-        if (supported) {
-          console.log(`AR supported ${msg}`);
-          this.xrButton.setDevice(true);
-        } else {
-          this.disableButton();
-        }
-      });
+      } else {
+        // Checks if AR is supported
+        navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+          if (supported) {
+            this.xrButton.setTitle('Enter AR');
+            this.xrButton.setTooltip('Enter AR');
+            this.xrButton.enable();
+            console.log(`AR supported ${msg}`);
+            this.xrButton.setDevice(true);
+          } else {
+            this.xrButton.setTitle('AR Not Available');
+            this.xrButton.setTooltip('AR Not Available');
+            this.xrButton.disable();
+            console.log(`AR not supported`);
+          }
+        });
+      }
+    }
+    else {
+      console.log('XR Not Available')
+      this.disableButton()
     }
   }
 
@@ -280,24 +278,24 @@ export default class p5xr {
   * Called either when the user has explicitly ended the session
   *  or when the UA has ended the session for any reason.
   * The xrSession is ended and discarded. p5 is reset with `remove()`
-  *
+  *  //TODO: Revisit how we exit session
   */
   onSessionEnded() {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
+    } else {
+      if(this.isImmersive){
+        console.log('Exiting immersive session')
+        this.isImmersive = false
+        this.sessionCheck()
+        console.log('Requesting new session')
+        navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+      }
     }
-    if (this.xrSession) {
-      this.xrSession.end();
-      this.xrSession = null;
+    if (this.isImmersive && this.hasImmersive) {
+      this.isImmersive = false
     }
-    const p5Canvi = document.getElementsByClassName('p5Canvas');
-    while (p5Canvi.length > 0) {
-      p5Canvi[0].parentNode.removeChild(p5Canvi[0]);
-    }
-    this.xrButton.session = null;
-    this.xrButton.setTitle(this.isVR ? 'ENTER VR' : 'ENTER AR');
-    this.gl = null;
   }
 
   printUnsupportedMessage() {

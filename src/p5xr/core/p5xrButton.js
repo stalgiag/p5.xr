@@ -140,7 +140,6 @@ export default class p5xrButton {
    */
   setDevice(device) {
     this.device = device;
-    this.__updateButtonState();
     return this;
   }
 
@@ -383,7 +382,7 @@ export default class p5xrButton {
  */
   __onXRButtonClick() {
     if (this.session) {
-      this.options.onEndSession(this.session);
+      this.options.onRequestSession(this.device)
     } else if (this.device) {
       // feature detect
       if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -407,26 +406,6 @@ export default class p5xrButton {
       }
 
       this.options.onRequestSession(this.device);
-    }
-  }
-
-  /**
- * Updates the display of the button based on it's current state
- * @private
- */
-  __updateButtonState() {
-    if (this.session) {
-      this.setTitle(this.options.textExitXRTitle);
-      this.setTooltip('Exit XR presentation');
-      this.__setDisabledAttribute(false);
-    } else if (this.device) {
-      this.setTitle(this.options.textEnterXRTitle);
-      this.setTooltip('Enter XR');
-      this.__setDisabledAttribute(false);
-    } else {
-      this.setTitle(this.options.textXRNotFoundTitle);
-      this.setTooltip('No XR headset found.');
-      this.__setDisabledAttribute(true);
     }
   }
 }
