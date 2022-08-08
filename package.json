@@ -40,8 +40,7 @@
   "homepage": "https://github.com/stalgiag/p5.xr#readme",
   "dependencies": {
     "@swc/helpers": "^0.4.2",
-    "gl-matrix": "^3.4.3",
-    "webxr-polyfill": "^2.0.3"
+    "gl-matrix": "^3.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
