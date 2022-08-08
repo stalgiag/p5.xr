@@ -105,20 +105,20 @@ export default class p5xr {
 
     this.sessionCheck();
   }
+
   sessionCheck() {
-    const msg = window.injectedPolyfill ? ' with polyfill' : ' without polyfill';
     // WebXR availabilty
-    if(navigator.xr){
-      console.log('XR Available')
+    if (navigator.xr) {
+      console.log('XR Available');
       navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
         this.hasImmersive = supported;
       });
-      if(this.isVR){
+      if (this.isVR) {
         // Checks if VR is supported
         this.xrButton.setTitle('Enter VR');
         this.xrButton.setTooltip('Enter VR');
         this.xrButton.enable();
-        console.log(`VR supported ${msg}`);
+        console.log('VR supported');
         this.xrButton.setDevice(true);
       } else {
         // Checks if AR is supported
@@ -127,20 +127,19 @@ export default class p5xr {
             this.xrButton.setTitle('Enter AR');
             this.xrButton.setTooltip('Enter AR');
             this.xrButton.enable();
-            console.log(`AR supported ${msg}`);
+            console.log('AR supported');
             this.xrButton.setDevice(true);
           } else {
             this.xrButton.setTitle('AR Not Available');
             this.xrButton.setTooltip('AR Not Available');
             this.xrButton.disable();
-            console.log(`AR not supported`);
+            console.log('AR not supported');
           }
         });
       }
-    }
-    else {
-      console.log('XR Not Available')
-      this.disableButton()
+    } else {
+      console.log('XR Not Available');
+      this.disableButton();
     }
   }
 
@@ -284,17 +283,15 @@ export default class p5xr {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
-    } else {
-      if(this.isImmersive){
-        console.log('Exiting immersive session')
-        this.isImmersive = false
-        this.sessionCheck()
-        console.log('Requesting new session')
-        navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
-      }
+    } else if (this.isImmersive) {
+      console.log('Exiting immersive session');
+      this.isImmersive = false;
+      this.sessionCheck();
+      console.log('Requesting new session');
+      navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
     }
     if (this.isImmersive && this.hasImmersive) {
-      this.isImmersive = false
+      this.isImmersive = false;
     }
   }
 

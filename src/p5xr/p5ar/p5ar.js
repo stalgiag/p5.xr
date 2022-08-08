@@ -80,10 +80,6 @@ export default class p5ar extends p5xr {
    * @param {XRDevice}
    */
   onXRButtonClicked(device) {
-    if (window.injectedPolyfill) {
-      console.log('ARCORE mode is not supported with a polyfill. Try using a more recent browser version');
-      return;
-    }
     // Normalize the various vendor prefixed versions of getUserMedia.
     navigator.getUserMedia = (navigator.getUserMedia
         || navigator.webkitGetUserMedia
