@@ -1,6 +1,6 @@
 import p5xrViewer from './p5xrViewer';
 import p5xrButton from './p5xrButton';
-import './p5xrInput';
+import p5xrInput from './p5xrInput';
 
 /**
  * p5vr class holds all state and methods that are specific to VR
