@@ -5,13 +5,17 @@
   "source": "./src/app.js",
   "unpkg": "dist/p5xr.min.js",
   "p5xr.min": "dist/p5xr.min.js",
-  "main": "dist/p5xr.js",
+  "p5xr": "dist/p5xr.js",
   "targets": {
     "p5xr.min": {
-      "optimize": true
+      "optimize": true,
+      "isLibrary": false,
+      "outputFormat": "global"
     },
-    "main": {
-      "optimize": false
+    "p5xr": {
+      "optimize": false,
+      "isLibrary": false,
+      "outputFormat": "global"
     }
   },
   "directories": {
