@@ -5,12 +5,12 @@
   "source": "./src/app.js",
   "unpkg": "dist/p5xr.min.js",
   "p5xr.min": "dist/p5xr.min.js",
-  "p5xr": "dist/p5xr.js",
+  "main": "dist/p5xr.js",
   "targets": {
     "p5xr.min": {
       "optimize": true
     },
-    "p5xr": {
+    "main": {
       "optimize": false
     }
   },
