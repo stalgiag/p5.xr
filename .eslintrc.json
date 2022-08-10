@@ -1,7 +1,7 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es2020": true
     },
     "extends": "airbnb-base",
     "globals": {
@@ -10,7 +10,7 @@
     },
     "ignorePatterns": ["/tests/*", "/examples/*"],
     "parserOptions": {
-        "ecmaVersion": 2018,
+        "ecmaVersion": 2020,
         "sourceType": "module"
     },
     "rules": {
@@ -24,9 +24,10 @@
         "no-plusplus":"off",
         "no-param-reassign":"off",
         "prefer-destructuring": "off",
-        "max-len": [2, 150, 4],
+        "max-len": [2, 175, 4],
         "prefer-rest-params" : "off",
         "consistent-return" : "off",
-        "linebreak-style" : "off"
+        "linebreak-style" : "off",
+        "no-console" : "off"
     }
 }

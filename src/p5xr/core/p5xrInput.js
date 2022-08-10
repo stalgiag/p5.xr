@@ -13,7 +13,7 @@ export default class p5xrInput {
   constructor(inputSource, frame, refSpace) {
     this._inputSource = inputSource;
     this._targetRayPose = frame.getPose(this._inputSource.targetRaySpace, refSpace);
-    this._pose;
+    this._pose = undefined;
     this.gamepad = inputSource.gamepad;
 
     this._dir = vec3.create();
@@ -41,7 +41,8 @@ export default class p5xrInput {
     this.inv_dir = vec3.fromValues(
       1.0 / this._dir[0],
       1.0 / this._dir[1],
-      1.0 / this._dir[2]);
+      1.0 / this._dir[2],
+    );
 
     this.sign = [
       (this.inv_dir[0] < 0) ? 1 : 0,

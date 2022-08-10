@@ -26,7 +26,7 @@ export default class p5vr extends p5xr {
   }
 
   initVR() {
-    this.createButton()
+    this.createButton();
   }
 
   /**
@@ -47,27 +47,28 @@ export default class p5vr extends p5xr {
       p5.instance._millisStart = window.performance.now();
     }
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-      this.xrSession.requestReferenceSpace(refSpaceRequest)
-        .then((refSpace) => {
-          this.xrRefSpace = refSpace;
-          // Inform the session that we're ready to begin drawing.
-          this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
-          if (!this.isImmersive) {
-            this.xrSession.updateRenderState({
-              baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
-              inlineVerticalFieldOfView: 90 * (Math.PI / 180),
-            });
-            this.addInlineViewListeners(this.canvas);
-          }
-        });
+    this.xrSession.requestReferenceSpace(refSpaceRequest)
+      .then((refSpace) => {
+        this.xrRefSpace = refSpace;
+        // Inform the session that we're ready to begin drawing.
+        this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+        if (!this.isImmersive) {
+          this.xrSession.updateRenderState({
+            baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+            inlineVerticalFieldOfView: 90 * (Math.PI / 180),
+          });
+          this.addInlineViewListeners(this.canvas);
+        }
+      });
     this.onRequestSession();
   }
+
   /**
-   * Helper function to reset XR and GL, should be called between 
+   * Helper function to reset XR and GL, should be called between
    * ending an XR session and starting a new XR session
-   * 
+   *
    */
-  resetXR(){
+  resetXR() {
     this.xrDevice = null;
     this.xrSession = null;
     this.xrRefSpace = null;
@@ -89,31 +90,31 @@ export default class p5vr extends p5xr {
       navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
     } else {
       this.xrButton.hide();
-      //TODO: Request Fullscreen
+      // TODO: Request Fullscreen
     }
   }
 
   onRequestSession() {
     p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    
+
     this.gl = this.canvas.getContext('webgl');
     this.gl.makeXRCompatible().then(() => {
       // Get a frame of reference, which is required for querying poses.
       // 'local' places the initial pose relative to initial location of viewer
       // 'viewer' is only for inline experiences and only allows rotation
       this.xrSession.requestReferenceSpace(refSpaceRequest)
-      .then((refSpace) => {
-        this.xrRefSpace = refSpace;
-      });
-      
+        .then((refSpace) => {
+          this.xrRefSpace = refSpace;
+        });
+
       // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
       // sessions baseLayer. This allows any content rendered to the layer to
       // be displayed on the XRDevice;
       this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
     }).catch((e) => {
       console.log(e);
-    })
+    });
 
     // Request initial animation frame
     this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
@@ -126,7 +127,6 @@ export default class p5vr extends p5xr {
     this.baseLayer = new XRWebGLLayer(this.xrSession, this.gl);
     this.xrSession.updateRenderState({ baseLayer: this.baseLayer });
   }
-
 
   /**
    * clears the background based on the current clear color (`curClearColor`)

@@ -189,9 +189,9 @@ export default class p5xrButton {
     const cssPrefix = options.cssprefix;
 
     let borderRadius;
-    if (options.corners == 'round') {
+    if (options.corners === 'round') {
       borderRadius = options.height / 2;
-    } else if (options.corners == 'square') {
+    } else if (options.corners === 'square') {
       borderRadius = 2;
     } else {
       borderRadius = options.corners;
@@ -258,7 +258,7 @@ export default class p5xrButton {
       .${cssPrefix}-svg-error {
           fill: ${options.color};
           display:none;
-          margin-top: ${(height - 28 / 18 * fontSize * this.logoScale) / 2 - 2}px;
+          margin-top: ${(height - (28 / 18) * fontSize * this.logoScale) / 2 - 2}px;
           margin-left: ${height / 3}px;
       }
 
@@ -304,7 +304,9 @@ export default class p5xrButton {
 
   ifChild(el, cssPrefix, suffix, fn) {
     const c = el.querySelector(`.${cssPrefix}-${suffix}`);
-    c && fn(c);
+    if (c) {
+      fn(c);
+    }
   }
 
   /**
@@ -383,7 +385,7 @@ export default class p5xrButton {
  */
   __onXRButtonClick() {
     if (this.session) {
-      this.options.onRequestSession(this.device)
+      this.options.onRequestSession(this.device);
     } else if (this.device) {
       // feature detect
       if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -398,7 +400,7 @@ export default class p5xrButton {
 
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
-          .then(permissionState => {
+          .then((permissionState) => {
             if (permissionState === 'granted') {
               window.addEventListener('deviceorientation', () => {});
             }

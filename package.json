@@ -22,7 +22,8 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "parcel build --no-source-maps",
+    "grunt": "grunt build",
+    "build": "parcel build --no-cache --no-source-maps",
     "watch": "parcel watch",
     "test": "karma start karma.conf.js",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json -r",
@@ -30,7 +31,8 @@
     "generate-privatekey": "openssl genrsa -out key.pem",
     "generate-csr": "openssl req -new -key key.pem -out csr.pem",
     "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
-    "dev-server": "http-server -S -C cert.pem -K key.pem -o"
+    "dev-server": "http-server -S -C cert.pem -K key.pem -o",
+    "jsdoc": "jsdoc2md ./src/app.js > TEST.md"
   },
   "repository": {
     "type": "git",
@@ -50,7 +52,8 @@
   "homepage": "https://github.com/stalgiag/p5.xr#readme",
   "dependencies": {
     "@swc/helpers": "^0.4.2",
-    "gl-matrix": "^3.4.3"
+    "gl-matrix": "^3.4.3",
+    "grunt-karma": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -67,9 +70,13 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.26.0",
     "fast-async": "^6.3.8",
+    "grunt": "^1.5.3",
+    "grunt-eslint": "^24.0.0",
+    "grunt-run": "^0.8.1",
     "http-server": "^0.12.3",
     "jsdoc": "^3.6.10",
     "jsdoc-export-default-interop": "^0.3.1",
+    "jsdoc-to-markdown": "^7.1.1",
     "karma": "^4.4.1",
     "karma-browserify": "^6.1.0",
     "karma-chai": "^0.1.0",
