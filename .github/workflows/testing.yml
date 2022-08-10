@@ -20,6 +20,6 @@ jobs:
     - name: clean install dependencies and build
       run: | 
         npm ci
-        npm run build
+        npm run grunt
     - name: run tests
       run: npm run test
