@@ -32,7 +32,7 @@
     "generate-csr": "openssl req -new -key key.pem -out csr.pem",
     "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
     "dev-server": "http-server -S -C cert.pem -K key.pem -o",
-    "jsdoc": "jsdoc2md ./src/app.js > TEST.md"
+    "jsdoc2md": "grunt jsdoc2md"
   },
   "repository": {
     "type": "git",
@@ -72,6 +72,7 @@
     "fast-async": "^6.3.8",
     "grunt": "^1.5.3",
     "grunt-eslint": "^24.0.0",
+    "grunt-jsdoc-to-markdown": "^6.0.0",
     "grunt-run": "^0.8.1",
     "http-server": "^0.12.3",
     "jsdoc": "^3.6.10",
