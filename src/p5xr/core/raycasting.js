@@ -72,7 +72,7 @@ p5.prototype.intersectsSphere = function () {
     origin: null,
     direction: null,
   };
-  if (arguments.length !== 2 || !arguments[1].hasOwnProperty('origin')) {
+  if (arguments.length !== 2 || !Object.hasOwn(arguments[1], 'origin')) {
     const screenX = arguments[1] || 0; const
       screenY = arguments[2] || 0;
     ray = p5xr.instance.viewer.getRayFromScreen(screenX, screenY);
@@ -118,7 +118,7 @@ p5.prototype.intersectsBox = function () {
     origin: null,
     direction: null,
   };
-  if (arguments[arguments.length - 1].hasOwnProperty('origin')) {
+  if (Object.hasOwn(arguments[arguments.length - 1], 'origin')) {
     ray.origin = arguments[arguments.length - 1].origin.copy();
     ray.direction = arguments[arguments.length - 1].direction.copy();
     height = arguments.length > 2 ? arguments[1] : width;
@@ -188,7 +188,7 @@ p5.prototype.intersectsPlane = function () {
     origin: null,
     direction: null,
   };
-  if (arguments[0].hasOwnProperty('origin')) {
+  if (Object.hasOwn(arguments[0], 'origin')) {
     ray.origin = arguments[0].origin.copy();
     ray.direction = arguments[0].direction.copy();
   } else {

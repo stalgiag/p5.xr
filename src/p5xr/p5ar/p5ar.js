@@ -38,11 +38,11 @@ export default class p5ar extends p5xr {
     p5.instance._decrementPreload();
   }
 
-  onSelect(event) {
+  onSelect(ev) {
     const context = window;
     const userMousePressed = context.mousePressed;
     if (typeof userMousePressed === 'function') {
-      userMousePressed();
+      userMousePressed(ev);
     }
   }
 
@@ -56,8 +56,6 @@ export default class p5ar extends p5xr {
       return null;
     }
 
-    const y = ev.clientY / window.innerHeight;
-    const x = ev.clientX / window.innerWidth;
     if (this.xrHitTestSource && this.viewer.pose && this.frame) {
       const hitTestResults = this.frame.getHitTestResults(this.xrHitTestSource);
       if (hitTestResults.length > 0) {
@@ -79,7 +77,7 @@ export default class p5ar extends p5xr {
    * `device.requestSession()` must be called within a user gesture event.
    * @param {XRDevice}
    */
-  onXRButtonClicked(device) {
+  onXRButtonClicked() {
     // Normalize the various vendor prefixed versions of getUserMedia.
     navigator.getUserMedia = (navigator.getUserMedia
         || navigator.webkitGetUserMedia

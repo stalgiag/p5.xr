@@ -1,4 +1,4 @@
-name: test
+name: Check linting, unit tests, and build
 
 on:
   push:
@@ -20,6 +20,4 @@ jobs:
     - name: clean install dependencies and build
       run: | 
         npm ci
-        npm run build
-    - name: run tests
-      run: npm run test
+        npm run grunt

@@ -61,17 +61,17 @@ We know the development process can be a little tricky at first. You're not alon
 6. WebXR requires HTTPS. You can run a local test environment by running `npm run setup-ssl` and answering the questions. You can enter whatever you want for the values. Now when you run `npm run dev-server` you will get an HTTPS local server. Note that you will still get the 'Your connection is not private' warning. You can click through this by selecting advanced and "Proceed to ... (unsafe)". Alternatively, you can type 'thisisunsafe' or generate the certificate locally using mkcert. [See the top answer here for more info](https://stackoverflow.com/questions/7580508/getting-chrome-to-accept-self-signed-localhost-certificate). 
 Note: Windows users may get the following error: `'openssl' is not recognized as an internal or external command,` One solution is to use the Git Bash terminal included with Git installations instead of Powershell or Command Prompt. 
 
-7. If you made changes to source code, look at the relevant manual test examples to see that everything still works as expected. We are hoping to automate this with more unit tests in the future.
+1. If you made changes to source code, look at the relevant manual test examples to see that everything still works as expected.
 
-8. Make some changes locally to the codebase and [commit](https://help.github.com/articles/github-glossary/#commit) them with Git.
+2. Make some changes locally to the codebase and [commit](https://help.github.com/articles/github-glossary/#commit) them with Git.
    ```
    $ git add -u
    $ git commit -m "YOUR COMMIT MESSAGE"
    ```
 
-9. Run `npm run test` to make sure the existing unit tests pass.
+3. Run `npm run grunt` to check that there aren't any formatting issues, the unit tests pass, and the output files build successfully.
 
-10. Once everything is ready, submit your changes as a [pull request](https://help.github.com/articles/creating-a-pull-request).
+4.  Once everything is ready, submit your changes as a [pull request](https://help.github.com/articles/creating-a-pull-request).
 
 ## Code Syntax
 
