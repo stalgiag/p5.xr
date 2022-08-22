@@ -24,6 +24,7 @@ window.p5xr = {
  * via a button click gesture
  * @method createVRCanvas
  * @section VR
+ * @category Initialization
  */
 p5.prototype.createVRCanvas = function () {
   noLoop();
@@ -32,14 +33,15 @@ p5.prototype.createVRCanvas = function () {
 };
 
 /**
- * starts the process of creating a VR-ready canvas
- * This actually just creates a button that will set into motion
- * the creation of a AR canvas and creates a new p5ar object.
+ * **AR IS LARGELY UNTESTED AND EXPERIMENTAL**
+ * This creates a button that will create a AR canvas and new p5ar object
+ * on click.
  * This should be called in `preload()` so
  * that the entire sketch can wait to start until the user has "entered AR"
- * via a button click gesture
+ * via a button click gesture/
  * @method createARCanvas
  * @section AR
+ * @category Initialization
  */
 p5.prototype.createARCanvas = function () {
   noLoop();
@@ -49,6 +51,7 @@ p5.prototype.createARCanvas = function () {
 
 // #endregion
 
+// #region Background
 /**
  * Sets the clear color for VR-Mode. <br><br>
  * This has to happen separately from calls to background
@@ -58,6 +61,7 @@ p5.prototype.createARCanvas = function () {
  * @param  {Number} g green value of background
  * @param  {Number} b blue value of background
  * @section VR
+ * @category Background
  */
 p5.prototype.setVRBackgroundColor = function (r, g, b) {
   p5xr.instance.curClearColor = color(r, g, b);
@@ -67,6 +71,7 @@ p5.prototype.setVRBackgroundColor = function (r, g, b) {
  * Creates a 360 degree texture around the current sketch using the supplied image.
  * @param {p5.Image} tex The texture to be used for the background
  * @section VR
+ * @category Background
  */
 p5.prototype.surroundTexture = function (tex) {
   push();
@@ -77,8 +82,12 @@ p5.prototype.surroundTexture = function (tex) {
   pop();
 };
 
+// #endregion
+
+// #region Anchors
+
 /**
- * **EXPERIMENTAL**
+ * **AR IS LARGELY UNTESTED AND EXPERIMENTAL**
  * @param {p5.Vector} vec Vector for the AR real-world hit position
  * @returns p5.Anchor object with anchor position and orientation
  * @section AR
@@ -90,12 +99,19 @@ p5.prototype.createAnchor = function (vec) {
   return p5xr.instance.createAnchor(vec);
 };
 
+/**
+ * @ignore
+ */
 p5.prototype.detectHit = function (ev) {
   if (p5xr.instance.isVR) {
     return;
   }
   return p5xr.instance.detectHit(ev);
 };
+
+// #endregion
+
+// #region Input
 
 /**
  * Get an XR input source for the given input source id.
@@ -109,6 +125,10 @@ p5.prototype.getXRInput = function (input) {
   }
   return p5xr.instance.getXRInput(input);
 };
+
+// #endregion
+
+// #region View
 
 /**
  * Sets the position of the viewer
@@ -147,3 +167,5 @@ p5.prototype.noSticky = function () {
   p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);
   pop();
 };
+
+// #endregion
