@@ -1,4 +1,11 @@
-export default class p5xrViewer {
+/**
+ * @class p5xrViewer
+ * Class that contains state of current viewer position and view. The view and pose matrices
+ * are updated automatically but can be accessed directly. For most use cases, the viewer position
+ * should be modified using the setViewerPosition function.
+ * @category View
+ */
+class p5xrViewer {
   constructor() {
     this._pose = null;
     this._view = null;
@@ -15,6 +22,10 @@ export default class p5xrViewer {
     };
   }
 
+  /**
+   * @type {p5.Matrix}
+   * Pose matrix
+   */
   set pose(newPose) {
     this._pose = newPose;
     this.poseMatrix.set(newPose.poseModelMatrix);
@@ -25,6 +36,10 @@ export default class p5xrViewer {
   }
 
   // TODO: set matrices for non polyfill
+  /**
+   * @type {p5.Matrix}
+   * View matrix
+   */
   set view(newView) {
     this._view = newView;
     p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
@@ -45,21 +60,4 @@ export default class p5xrViewer {
   }
 }
 
-p5.prototype.setViewerPosition = function (x, y, z) {
-  const { viewer } = p5xr.instance;
-  viewer.setPosition(x, y, z);
-};
-
-p5.prototype.sticky = function (drawOnTop = false) {
-  push();
-  p5xr.instance.viewer.drawOnTop = drawOnTop;
-  if (drawOnTop) p5.instance._renderer.GL.disable(p5.instance._renderer.GL.DEPTH_TEST);
-  p5.instance._renderer.uMVMatrix.set(p5.Matrix.identity());
-  const viewerPosition = p5xr.instance.viewer.position;
-  setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
-};
-
-p5.prototype.noSticky = function () {
-  p5.instance._renderer.GL.enable(p5.instance._renderer.GL.DEPTH_TEST);
-  pop();
-};
+export default p5xrViewer;
