@@ -35,7 +35,6 @@ class p5xrViewer {
     return this._pose;
   }
 
-  // TODO: set matrices for non polyfill
   /**
    * @type {p5.Matrix}
    * View matrix

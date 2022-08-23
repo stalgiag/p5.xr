@@ -23,12 +23,13 @@ window.p5xr = {
  * that the entire sketch can wait to start until the user has "entered VR"
  * via a button click gesture
  * @method createVRCanvas
+ * @param {p5XRButton} [xrButton] An optional button to replace default button for entering VR
  * @section VR
  * @category Initialization
  */
-p5.prototype.createVRCanvas = function () {
+p5.prototype.createVRCanvas = function (xrButton) {
   noLoop();
-  p5xr.instance = new p5vr();
+  p5xr.instance = new p5vr(xrButton);
   p5xr.instance.initVR();
 };
 
@@ -47,6 +48,39 @@ p5.prototype.createARCanvas = function () {
   noLoop();
   p5xr.instance = new p5ar();
   p5xr.instance.initAR();
+};
+
+/**
+ * Get the current "Enter XR" button.
+ * @returns {p5xrButton} The button object
+ * @method getEnterXRButton
+ * @category Initialization
+ */
+p5.prototype.getXRButton = function () {
+  if (p5xr && p5xr.instance && p5xr.instance.xrButton) {
+    return p5xr.instance.xrButton;
+  }
+  console.warn('No XR button found. Make sure to call createVRCanvas() or createARCanvas() first.');
+};
+
+/**
+ * Creates a new p5xrButton object to use for entering and exiting XR.
+ * @param {Object} options Options for the creation of p5xrButton
+ * @param {Color} options.background Color of the button background, defaults to rgb(237,34,93)
+ * @param {Number} options.opacity Opacity of the button background when XR is available, defaults to 0.95
+ * @param {Number} options.disabledOpacity Opacity of the button background when XR is unavailable, defaults to 0.5
+ * @param {Number} options.height Height of the button, defaults to window.innerWidth / 5
+ * @param {Number} options.fontSize Font size for the button, defaults to height / 3
+ * @param {String} options.textEnterXRTitle Text to display on the button before entering XR, defaults to "ENTER XR"
+ * @param {String} options.textXRNotFoundTitle Text to display on the button when XR not found, defaults to "XR NOT FOUND"
+ * @param {String} options.textExitXRTitle Text to display on the button when currently in XR, defaults to "EXIT XR"
+ * @param {HTMLElement} options.domElement Pass in an alternate DOM Element to use for the button, should provide a 'click' event
+ * @returns {p5xrButton} The button object
+ * @method createXRButton
+ * @category Initialization
+ */
+p5.prototype.createXRButton = function (options) {
+  return new p5xrButton(options);
 };
 
 // #endregion

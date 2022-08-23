@@ -16,9 +16,9 @@ import p5xrInput from './p5xrInput';
  * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
  */
 export default class p5xr {
-  constructor() {
+  constructor(xrButton) {
     this.xrDevice = null;
-    this.xrButton = null;
+    this.xrButton = xrButton || null;
     this.isVR = null;
     this.hasImmersive = null;
     this.xrSession = null;

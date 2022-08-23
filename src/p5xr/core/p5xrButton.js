@@ -1,31 +1,11 @@
-// This is primarily adopted from webxr-button.js
-// copying the original license here
-// TODO :: custom solution for buttons
-//
-//
-//
-// Copyright 2016 Google Inc.
-//
-//     Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-//     You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-//     Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-//     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//     See the License for the specific language governing permissions and
-// limitations under the License.
-
-// This is a stripped down and specialized version of WebVR-UI
-// (https://github.com/googlevr/webvr-ui) that takes out most of the state
-// management in favor of providing a simple way of listing available devices
-// for the needs of the sample pages. Functionality like beginning sessions
-// is intentionally left out so that the sample pages can demonstrate them more
-// clearly.
-
-export default class p5xrButton {
+/**
+ * @class p5xrButton
+ * A button that handles entering and exiting an XR session.
+ * All browsers require that the user grant permission to enter XR and permission
+ * can only be request with a user gesture.
+ * @category Initialization
+ */
+class p5xrButton {
   constructor(options) {
     this.options = options || {};
 
@@ -34,6 +14,7 @@ export default class p5xrButton {
     this.options.opacity = options.opacity || 0.95;
     this.options.disabledOpacity = options.disabledOpacity || 0.5;
     this.options.height = options.height || window.innerWidth / 5;
+    this.options.fontSize = options.fontSize || this.options.height / 3;
     this.options.corners = options.corners || 'square';
     this.options.cssprefix = options.cssprefix || 'webvr-ui';
 
@@ -53,8 +34,7 @@ export default class p5xrButton {
     this.logoScale = 1.2;
     this._WEBXR_UI_CSS_INJECTED = {};
 
-    // Pass in your own domElement if you really dont want to use ours
-    this.domElement = options.domElement || this.createDefaultView(options);
+    this.domElement = options.domElement || this.__createDefaultView(options);
     this.__defaultDisplayStyle = this.domElement.style.display || 'initial';
 
     // Bind button click events to __onClick
@@ -65,10 +45,18 @@ export default class p5xrButton {
     this.setTitle(this.options.textXRNotFoundTitle);
   }
 
-  generateInnerHTML(cssPrefix, height) {
+  /**
+   * Generate inner HTML for the button
+   * @param {String} cssPrefix string to prefix to the css classes
+   * @param {Number} height height of the button
+   * @returns {String} innerHTML for the button
+   * @private
+   * @ignore
+   */
+  __generateInnerHTML(cssPrefix, height) {
     const logoHeight = height * this.logoScale;
-    const svgString = this.generateXRIconString(cssPrefix, logoHeight)
-      + this.generateNoXRIconString(cssPrefix, logoHeight);
+    const svgString = this.__generateXRIconString(cssPrefix, logoHeight)
+      + this.__generateNoXRIconString(cssPrefix, logoHeight);
 
     return `<button class="${cssPrefix}-button">
     <div class="${cssPrefix}-title"></div>
@@ -76,35 +64,64 @@ export default class p5xrButton {
     </button>`;
   }
 
-  createDefaultView(options) {
-    const fontSize = options.height / 3;
-
+  /**
+   * Create the default view for the button.
+   * @param {Object}} options options for the button
+   * @returns HTMLElement the button element
+   * @private
+   * @ignore
+   */
+  __createDefaultView(options) {
     if (options.injectCSS) {
       // Check that css isnt already injected
       if (!this._WEBXR_UI_CSS_INJECTED[options.cssprefix]) {
-        this.injectCSS(this.generateCSS(options, fontSize));
+        this.__injectCSS(this.__generateCSS(options));
         this._WEBXR_UI_CSS_INJECTED[options.cssprefix] = true;
       }
     }
 
     const el = document.createElement('div');
-    el.innerHTML = this.generateInnerHTML(options.cssprefix, fontSize);
+    el.innerHTML = this.__generateInnerHTML(options.cssprefix, options.fontSize);
     return el.firstChild;
   }
 
-  createXRIcon(cssPrefix, height) {
+  /**
+   * Create the icon element for the XR available state for button.
+   * @param {String} cssPrefix string to prefix to the css classes
+   * @param {Number} height height of the button
+   * @returns HTMLElement the icon element
+   * @private
+   * @ignore
+   */
+  __createXRIcon(cssPrefix, height) {
     const el = document.createElement('div');
     el.innerHTML = generateXRIconString(cssPrefix, height);
     return el.firstChild;
   }
 
-  createNoXRIcon(cssPrefix, height) {
+  /**
+   * Create the icon element for the XR not available state for button.
+   * @param {String} cssPrefix string to prefix to the css classes
+   * @param {Number} height height of the button
+   * @returns HTMLElement the icon element
+   * @private
+   * @ignore
+   */
+  __createNoXRIcon(cssPrefix, height) {
     const el = document.createElement('div');
     el.innerHTML = generateNoXRIconString(cssPrefix, height);
     return el.firstChild;
   }
 
-  generateXRIconString(cssPrefix, height) {
+  /**
+   * Generate the SVG string for the XR available state for button.
+   * @param {String} cssPrefix string to prefix to the css classes
+   * @param {Number} height height of the button
+   * @returns {String} the svg string for the XR icon
+   * @private
+   * @ignore
+   */
+  __generateXRIconString(cssPrefix, height) {
     const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg" version="1.1" x="0px" y="0px"
         width="${aspect * height}px" height="${height}px" viewBox="0 0 28 18" xml:space="preserve">
@@ -118,7 +135,15 @@ export default class p5xrButton {
     </svg>`;
   }
 
-  generateNoXRIconString(cssPrefix, height) {
+  /**
+   * Generate the SVG string for the XR not available state for button.
+   * @param {String} cssPrefix string to prefix to the css classes
+   * @param {Number} height height of the button
+   * @returns {String} the svg string for the XR icon
+   * @private
+   * @ignore
+   */
+  __generateNoXRIconString(cssPrefix, height) {
     const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg-error" x="0px" y="0px"
         width="${aspect * height}px" height="${aspect * height}px" viewBox="0 0 28 28" xml:space="preserve">
@@ -135,9 +160,10 @@ export default class p5xrButton {
   }
 
   /**
-   * Sets the XRDevice this button is associated with.
+   * Sets the XRDevice this button is associated with. This rarely needs to be called directly.
+   * @method setDevice
    * @param {XRDevice} device
-   * @return {EnterXRButton}
+   * @return {p5xrButton}
    */
   setDevice(device) {
     this.device = device;
@@ -145,10 +171,10 @@ export default class p5xrButton {
   }
 
   /**
- * Indicate that there's an active XRSession. Switches the button to "Exit XR"
- * state if not null, or "Enter XR" state if null.
- * @param {XRSession} session
- * @return {EnterXRButton}
+ * Indicates to the p5xrButton that there's an active XRSession.
+ * Switches the button to it's exitXR state if session is not null.
+ * @param {XRSession} session The active XRSession associated with the button
+ * @return {p5xrButton}
  */
   setSession(session) {
     this.session = session;
@@ -157,9 +183,9 @@ export default class p5xrButton {
   }
 
   /**
- * Set the title of the button
- * @param {string} text
- * @return {EnterXRButton}
+ * Set the title of the p5xrButton
+ * @param {String} text The title for the button
+ * @return {p5xrButton}
  */
   setTitle(text) {
     this.domElement.title = text;
@@ -176,13 +202,14 @@ export default class p5xrButton {
   }
 
   /**
- * Generate the CSS string to inject
+ * Generates the CSS string to inject based on the options passed to the constructor.
  *
  * @param {Object} options
- * @param {Number} [fontSize=18]
- * @return {string}
+ * @return {String}
+ * @private
+ * @ignore
  */
-  generateCSS(options, fontSize = 18) {
+  __generateCSS(options) {
     const { height } = options;
     const borderWidth = 2;
     const borderColor = options.background ? options.background : options.color;
@@ -225,7 +252,7 @@ export default class p5xrButton {
           background: ${options.background ? options.background : 'none'};
           opacity: ${options.opacity};
           height: ${height}px;
-          min-width: ${fontSize * 9.6}px;
+          min-width: ${options.fontSize * 9.6}px;
           display: inline-block;
           position: absolute;
           top: 5%;
@@ -252,13 +279,13 @@ export default class p5xrButton {
       }
       .${cssPrefix}-svg {
           fill: ${options.color};
-          margin-top: ${(height - fontSize * this.logoScale) / 2 - 2}px;
+          margin-top: ${(height - options.fontSize * this.logoScale) / 2 - 2}px;
           margin-left: ${height / 3}px;
       }
       .${cssPrefix}-svg-error {
           fill: ${options.color};
           display:none;
-          margin-top: ${(height - (28 / 18) * fontSize * this.logoScale) / 2 - 2}px;
+          margin-top: ${(height - (28 / 18) * options.fontSize * this.logoScale) / 2 - 2}px;
           margin-left: ${height / 3}px;
       }
 
@@ -270,7 +297,7 @@ export default class p5xrButton {
       .${cssPrefix}-title {
           color: ${options.color};
           position: relative;
-          font-size: ${fontSize}px;
+          font-size: ${options.fontSize}px;
           padding-left: ${height * 1.05}px;
           padding-right: ${(borderRadius - 10 < 5) ? height / 3 : borderRadius - 10}px;
       }
@@ -293,7 +320,13 @@ export default class p5xrButton {
     `);
   }
 
-  injectCSS(cssText) {
+  /**
+   * Inject CSS string into the DOM.
+   * @param {String} cssText CSS string to inject
+   * @private
+   * @ignore
+   */
+  __injectCSS(cssText) {
     // Create the css
     const style = document.createElement('style');
     style.innerHTML = cssText;
@@ -302,6 +335,15 @@ export default class p5xrButton {
     head.insertBefore(style, head.firstChild);
   }
 
+  /**
+   * Runs a callback function on the child of the given element if it exists.
+   * @param {HTMLElement} el The element to check
+   * @param {String} cssPrefix The css prefix to check
+   * @param {String} suffix The suffix to check
+   * @param {Function} fn
+   * @private
+   * @ignore
+   */
   ifChild(el, cssPrefix, suffix, fn) {
     const c = el.querySelector(`.${cssPrefix}-${suffix}`);
     if (c) {
@@ -311,8 +353,8 @@ export default class p5xrButton {
 
   /**
  * Set the tooltip of the button
- * @param {string} tooltip
- * @return {EnterXRButton}
+ * @param {String} tooltip
+ * @return {p5xrButton}
  */
   setTooltip(tooltip) {
     this.domElement.title = tooltip;
@@ -321,7 +363,7 @@ export default class p5xrButton {
 
   /**
  * Show the button
- * @return {EnterXRButton}
+ * @return {p5xrButton}
  */
   show() {
     this.domElement.style.display = this.__defaultDisplayStyle;
@@ -330,7 +372,7 @@ export default class p5xrButton {
 
   /**
  * Hide the button
- * @return {EnterXRButton}
+ * @return {p5xrButton}
  */
   hide() {
     this.domElement.style.display = 'none';
@@ -339,7 +381,7 @@ export default class p5xrButton {
 
   /**
  * Enable the button
- * @return {EnterXRButton}
+ * @return {p5xrButton}
  */
   enable() {
     this.__setDisabledAttribute(false);
@@ -349,7 +391,7 @@ export default class p5xrButton {
 
   /**
  * Disable the button from being clicked
- * @return {EnterXRButton}
+ * @return {p5xrButton}
  */
   disable() {
     this.__setDisabledAttribute(true);
@@ -358,8 +400,8 @@ export default class p5xrButton {
   }
 
   /**
- * clean up object for garbage collection
- */
+   * Remove the p5xrButton from the DOM
+   */
   remove() {
     if (this.domElement.parentElement) {
       this.domElement.parentElement.removeChild(this.domElement);
@@ -368,8 +410,9 @@ export default class p5xrButton {
 
   /**
  * Set the disabled attribute
- * @param {boolean} disabled
+ * @param {Boolean} disabled
  * @private
+ * @ignore
  */
   __setDisabledAttribute(disabled) {
     if (disabled || this.__forceDisabled) {
@@ -382,6 +425,7 @@ export default class p5xrButton {
   /**
  * Handling click event from button
  * @private
+ * @ignore
  */
   __onXRButtonClick() {
     if (this.session) {
@@ -412,3 +456,5 @@ export default class p5xrButton {
     }
   }
 }
+
+export default p5xrButton;
