@@ -30,7 +30,7 @@ window.p5xr = {
 p5.prototype.createVRCanvas = function (xrButton) {
   noLoop();
   p5xr.instance = new p5vr(xrButton);
-  p5xr.instance.initVR();
+  p5xr.instance.__initVR();
 };
 
 /**
@@ -130,7 +130,7 @@ p5.prototype.createAnchor = function (vec) {
   if (p5xr.instance.isVR) {
     return;
   }
-  return p5xr.instance.createAnchor(vec);
+  return p5xr.instance.__createAnchor(vec);
 };
 
 /**
@@ -140,7 +140,7 @@ p5.prototype.detectHit = function (ev) {
   if (p5xr.instance.isVR) {
     return;
   }
-  return p5xr.instance.detectHit(ev);
+  return p5xr.instance.__detectHit(ev);
 };
 
 // #endregion
@@ -157,7 +157,7 @@ p5.prototype.getXRInput = function (input) {
   if (p5xr.instance.xrSession.inputSources.length === 0) {
     return;
   }
-  return p5xr.instance.getXRInput(input);
+  return p5xr.instance.__getXRInput(input);
 };
 
 // #endregion

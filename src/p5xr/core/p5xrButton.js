@@ -38,7 +38,7 @@ class p5xrButton {
     this.__defaultDisplayStyle = this.domElement.style.display || 'initial';
 
     // Bind button click events to __onClick
-    this.domElement.addEventListener('click', () => this.__onXRButtonClick());
+    this.domElement.addEventListener('click', () => this.__onXRButtonClicked());
 
     this.__forceDisabled = false;
     this.__setDisabledAttribute(true);
@@ -161,7 +161,6 @@ class p5xrButton {
 
   /**
    * Sets the XRDevice this button is associated with. This rarely needs to be called directly.
-   * @method setDevice
    * @param {XRDevice} device
    * @return {p5xrButton}
    */
@@ -427,7 +426,7 @@ class p5xrButton {
  * @private
  * @ignore
  */
-  __onXRButtonClick() {
+  __onXRButtonClicked() {
     if (this.session) {
       this.options.onRequestSession(this.device);
     } else if (this.device) {

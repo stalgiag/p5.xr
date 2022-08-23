@@ -22,11 +22,17 @@ export default class p5vr extends p5xr {
     this.primaryTouch = undefined;
     this.prevTouchX = undefined;
     this.prevTouchY = undefined;
-    navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+    navigator.xr.requestSession('inline').then(this.__startSketch.bind(this));
   }
 
-  initVR() {
-    this.createButton();
+  /**
+   * Currently a stub function that just creates a button
+   * Previously handled more, now can be replaced with refactor
+   * @private
+   * @ignore
+   */
+  __initVR() {
+    this.__createButton();
   }
 
   /**
@@ -35,16 +41,15 @@ export default class p5vr extends p5xr {
    * The current XRSession also gets a frame of reference and
    * base rendering layer. <br>
    * @param {XRSession}
-   * @method startSketch
    * @private
    * @ignore
    */
-  startSketch(session) {
+  __startSketch(session) {
     this.xrSession = session;
     this.canvas = p5.instance.canvas;
     this.canvas.style.visibility = 'visible';
 
-    this.xrSession.addEventListener('end', this.onSessionEnded.bind(this));
+    this.xrSession.addEventListener('end', this.__onSessionEnded.bind(this));
     if (typeof window.setup === 'function') {
       window.setup();
       p5.instance._millisStart = window.performance.now();
@@ -54,7 +59,7 @@ export default class p5vr extends p5xr {
       .then((refSpace) => {
         this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
-        this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+        this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
         if (!this.isImmersive) {
           this.xrSession.updateRenderState({
             baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
@@ -63,15 +68,13 @@ export default class p5vr extends p5xr {
           this.addInlineViewListeners(this.canvas);
         }
       });
-    this.onRequestSession();
+    this.__onRequestSession();
   }
 
   /**
    * Helper function to reset XR and GL, should be called between
    * ending an XR session and starting a new XR session
    * @method resetXR
-   * @private
-   * @ignore
    */
   resetXR() {
     this.xrDevice = null;
@@ -86,16 +89,15 @@ export default class p5vr extends p5xr {
   /**
    * `navigator.xr.requestSession('immersive-vr')` must be called within a user gesture event.
    * @param {XRDevice}
-   * @method onSessionEnded
    * @private
    * @ignore
    */
-  onXRButtonClicked() {
+  __onXRButtonClicked() {
     if (this.hasImmersive) {
       console.log('Requesting session with mode: immersive-vr');
       this.isImmersive = true;
       this.resetXR();
-      navigator.xr.requestSession('immersive-vr').then(this.startSketch.bind(this));
+      navigator.xr.requestSession('immersive-vr').then(this.__startSketch.bind(this));
     } else {
       this.xrButton.hide();
       // TODO: Request Fullscreen
@@ -104,11 +106,10 @@ export default class p5vr extends p5xr {
 
   /**
    * Requests a reference space and makes the p5's WebGL layer XR compatible.
-   * @method onRequestSession
    * @private
    * @ignore
    */
-  onRequestSession() {
+  __onRequestSession() {
     p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
 
@@ -131,12 +132,11 @@ export default class p5vr extends p5xr {
     });
 
     // Request initial animation frame
-    this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+    this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
   }
 
   /**
    * clears the background based on the current clear color (`curClearColor`)
-   * @method clearVR
    * @private
    * @ignore
    */
@@ -152,9 +152,7 @@ export default class p5vr extends p5xr {
   /**
    * Returns a new reference space modified by the inline session's viewer pose.
    * @param {XRReferenceSpace} refSpace Reference space adjusted for user's current pose
-   * @returns {XRReferenceSpace} Referennce space adjusted by inline view's current pose
-   * @method getAdjustedRefSpace
-   * @private
+   * @returns {XRReferenceSpace} Referennce space adjusted by inline view's current pose   * @private
    * @ignore
    */
   getAdjustedRefSpace(refSpace) {
@@ -177,7 +175,6 @@ export default class p5vr extends p5xr {
    * Modifies the view of an inline session, called by mouse events.
    * @param {Number} dx view yaw change in radians
    * @param {Numbers} dy view pitch change in radians
-   * @method rotateInlineView
    * @private
    * @ignore
    */
@@ -193,7 +190,6 @@ export default class p5vr extends p5xr {
   /**
   * Adds event listeners to the canvas to allow for user interaction with the canvas during
   * inline sessions.
-  * @method addInlineViewListeners
   * @private
   * @ignore
   */
