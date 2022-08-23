@@ -238,7 +238,7 @@ p5.prototype.getRayFromScreen = function (x, y) {
  * Checks ray against a sphere collider with given radius at current drawing position.
  * @method intersectsSphere
  * @param {Number} radius The radius of the sphere to check collision with
- * @param {Number} [Ray] Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)
+ * @param {Number} [Ray] Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)
  * @returns {Boolean} True if the ray intersects with a sphere with the given radius at current drawing position, false otherwise
  * @category Raycasting
  */
@@ -292,7 +292,7 @@ p5.prototype.intersectsSphere = function (radius) {
  * @param {Number} width Width of box collider for check
  * @param {Number} [height] Optional. Height of box collider for check
  * @param {Number} [depth] Optional. Depth of box collider for check
- * @param {Ray} [ray] Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)
+ * @param {Ray} [ray] Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)
  * @returns {Boolean} True if the ray intersects with a box collider with given dimension at current drawing position, false otherwise
  * @category Raycasting
  */
@@ -371,7 +371,7 @@ p5.prototype.intersectsBox = function () {
 /**
  * Checks ray against a plane with at current drawing position and returns normalized x and y coordinates of intersection point.
  * @method intersectsPlane
- * @param {Ray} [ray] Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)
+ * @param {Ray} [ray] Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)
  * @returns {p5.Vector} The normalized coordinate of the intersection point on the plane, or null if no intersection
  * @category Raycasting
  */
@@ -407,7 +407,7 @@ p5.prototype.intersectsPlane = function () {
   ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x + uMVMatrixInv[9] * rayDirectionCopy.y + uMVMatrixInv[10] * rayDirectionCopy.z;
   ray.direction.normalize();
 
-  // represeting plane
+  // representing plane
   const planeNormal = new p5.Vector(0, 0, 1);
   const planePoint = new p5.Vector(0, 0, 0);
 
