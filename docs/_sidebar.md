@@ -9,10 +9,7 @@
   - [Examples](quick-start/examples.md)
 ***
 - __REFERENCE__
-  - [VR](reference/vr.md)
-  <!-- - [AR](reference/ar.md) -->
-  - [Raycasting](reference/raycasting.md)
-  - [Utilities](reference/utilities.md)
+  - [Reference](reference/app.md)
 ***
 - __CONTRIBUTING__
     - [How To Help](contributing/contributing.md)
