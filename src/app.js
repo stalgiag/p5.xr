@@ -380,9 +380,10 @@ p5.prototype.intersectsPlane = function () {
     origin: null,
     direction: null,
   };
-  if (Object.hasOwn(arguments[0], 'origin')) {
-    ray.origin = arguments[0].origin.copy();
-    ray.direction = arguments[0].direction.copy();
+  const { origin, direction } = arguments.length > 0 ? arguments[0] : {};
+  if (origin && direction) {
+    ray.origin = origin.copy();
+    ray.direction = direction.copy();
   } else {
     ray = p5xr.instance.viewer.getRayFromScreen(arguments[0], arguments[1]);
   }
