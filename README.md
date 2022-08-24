@@ -2,7 +2,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 <p align="center">
-  <img width="400" height="400" src="https://github.com/stalgiag/p5.xr/raw/master/docs/assets/xr-tear-small.png">
+  <img width="400" height="400" src="https://github.com/stalgiag/p5.xr/raw/main/docs/assets/xr-tear-small.png">
 </p>
 
 <h1 align="center">
