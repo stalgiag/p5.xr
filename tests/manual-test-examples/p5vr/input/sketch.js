@@ -21,6 +21,9 @@ function draw() {
         fill(255);
       }
       translate(hand.position.x, hand.position.y, hand.position.z);
+      rotateX(-hand.rotation.x)
+      rotateY(hand.rotation.y)
+      rotateZ(-hand.rotation.z)
 		  box(0.05);
 		  pop();
 	  }

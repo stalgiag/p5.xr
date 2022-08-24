@@ -1,4 +1,5 @@
 import { mat3, vec3 } from 'gl-matrix';
+import p5 from 'p5';
 import Quaternion from 'quaternion';
 
 /**
@@ -16,7 +17,6 @@ export default class p5xrInput {
     this._targetRayPose = frame.getPose(this._inputSource.targetRaySpace, refSpace);
     this._pose = undefined;
     this.gamepad = inputSource.gamepad;
-
     this._dir = vec3.create();
     const normalMat = mat3.create();
     const origin = vec3.create();
@@ -28,6 +28,7 @@ export default class p5xrInput {
       vec3.transformMat3(this._dir, this._dir, normalMat);
     }
     this.direction = this._dir;
+    // console.log(p5.instance.angleMode);
   }
 
   /** @returns {p5.Vector} Returns the current forward direction */
@@ -63,6 +64,18 @@ export default class p5xrInput {
     this.updatePose();
     const p = this._pose?.transform?.position;
     return new p5.Vector(p.x, p.y, p.z);
+  }
+  /** @returns {p5.Vector} Returns the current rotation as a Vector */
+  get rotation() {
+    this.updatePose();
+    if (this._pose){
+      const {x, y, z, w} = this._pose?.transform?.orientation;
+      let q = new Quaternion(x, y, z, w);
+      let e = q.toEuler();
+      let c = (p5.instance.angleMode = RADIANS) ? 1 : 180 / Math.PI; // TODO: Change output with ANGLE MODE
+      return new p5.Vector(e.roll * c, e.pitch * c,  e.yaw * c);
+    }
+    return new p5.Vector(0, 0, 0);
   }
 
   /** Retrieves the latest XRPose from the current XRFrame */
