@@ -1,4 +1,5 @@
 import { mat3, vec3 } from 'gl-matrix';
+import Quaternion from 'quaternion';
 
 /**
  * p5xrInput holds all state and methods related to XR device input
