@@ -1,5 +1,4 @@
 import { mat3, vec3 } from 'gl-matrix';
-import p5 from 'p5';
 import Quaternion from 'quaternion';
 
 /**
@@ -72,8 +71,8 @@ export default class p5xrInput {
       const {x, y, z, w} = this._pose?.transform?.orientation;
       let q = new Quaternion(x, y, z, w);
       let e = q.toEuler();
-      let c = (p5.instance.angleMode = RADIANS) ? 1 : 180 / Math.PI; // TODO: Change output with ANGLE MODE
-      return new p5.Vector(e.roll * c, e.pitch * c,  e.yaw * c);
+      let c = (p5.instance.angleMode == RADIANS)? 1 : 180 / Math.PI; // TODO: Change output with ANGLE MODE
+      return new p5.Vector( -e.yaw * c, e.pitch * c, -e.roll * c  );
     }
     return new p5.Vector(0, 0, 0);
   }
