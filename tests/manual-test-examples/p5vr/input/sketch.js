@@ -17,13 +17,14 @@ function draw() {
 		  push();
       if(hand.trigger && hand.trigger.pressed) {
         fill(255, 255, 0);
-      } else {
+      }
+      else if(hand.grip && hand.grip.pressed) {
+        fill(0, 255, 255);
+      } 
+      else {
         fill(255);
       }
-      translate(hand.position.x, hand.position.y, hand.position.z);
-      rotateX(-hand.rotation.x)
-      rotateY(hand.rotation.y)
-      rotateZ(-hand.rotation.z)
+      applyMatrix(hand.pose)
 		  box(0.05);
 		  pop();
 	  }
