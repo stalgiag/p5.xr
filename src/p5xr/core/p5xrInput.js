@@ -1,4 +1,5 @@
 import { mat3, vec3 } from 'gl-matrix';
+import Quaternion from 'quaternion';
 
 /**
  * p5xrInput holds all state and methods related to XR device input
@@ -15,7 +16,6 @@ export default class p5xrInput {
     this._targetRayPose = frame.getPose(this._inputSource.targetRaySpace, refSpace);
     this._pose = undefined;
     this.gamepad = inputSource.gamepad;
-
     this._dir = vec3.create();
     const normalMat = mat3.create();
     const origin = vec3.create();
@@ -57,11 +57,31 @@ export default class p5xrInput {
     return this._pose.transform.matrix;
   }
 
-  /** @returns {p5.Vector} Returns the current position as a Vector */
+  /** @returns {p5.Vector} Returns the current position as a Vector. */
   get position() {
     this.updatePose();
     const p = this._pose?.transform?.position;
     return new p5.Vector(p.x, p.y, p.z);
+  }
+
+  /** @returns {p5.Vector} Returns the current rotation as an euler Vector.
+   * Using this is prone to gimbal locking, which leads to unexpected results.
+   * `applyMatrix(p5xrInput.pose)` is the preferred method of rotation. */
+  get rotation() {
+    this.updatePose();
+    if (this._pose) {
+      const {
+        x, y, z, w,
+      } = this._pose?.transform?.orientation;
+      const q = new Quaternion(x, y, z, w);
+      const e = q.toEuler();
+      if (p5.instance.angleMode === RADIANS) {
+        return new p5.Vector(-e.yaw, e.pitch, -e.roll);
+      }
+      // angleMode is degrees
+      return new p5.Vector(p5.toDegrees(-e.yaw), p5.toDegrees(e.pitch), p5.toDegrees(-e.roll));
+    }
+    return new p5.Vector(0, 0, 0);
   }
 
   /** Retrieves the latest XRPose from the current XRFrame */
