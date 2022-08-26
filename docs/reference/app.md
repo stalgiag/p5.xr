@@ -14,6 +14,7 @@
     * [.direction](#p5xrInput+direction) : <code>p5.Vector</code>
     * [.pose](#p5xrInput+pose) : <code>Float32Array</code>
     * [.position](#p5xrInput+position) : <code>p5.Vector</code>
+    * [.rotation](#p5xrInput+rotation) : <code>p5.Vector</code>
     * [.trigger](#p5xrInput+trigger) : <code>GamepadButton</code>
     * [.grip](#p5xrInput+grip) : <code>GamepadButton</code>
     * [.touchpad](#p5xrInput+touchpad) : <code>GamepadButton</code>
@@ -313,6 +314,7 @@ Creates a new p5xrButton object to use for entering and exiting XR.
     * [.direction](#p5xrInput+direction) : <code>p5.Vector</code>
     * [.pose](#p5xrInput+pose) : <code>Float32Array</code>
     * [.position](#p5xrInput+position) : <code>p5.Vector</code>
+    * [.rotation](#p5xrInput+rotation) : <code>p5.Vector</code>
     * [.trigger](#p5xrInput+trigger) : <code>GamepadButton</code>
     * [.grip](#p5xrInput+grip) : <code>GamepadButton</code>
     * [.touchpad](#p5xrInput+touchpad) : <code>GamepadButton</code>
@@ -354,6 +356,12 @@ function draw() {
 
 ### p5xrInput.position : <code>p5.Vector</code>
 Returns the current position as a Vector
+
+**Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+<a name="p5xrInput+rotation"></a>
+
+### p5xrInput.rotation : <code>p5.Vector</code>
+Returns the current rotation as an euler Vector.Using this is prone to gimbal locking, which leads to unexpected results.`applyMatrix(p5xrInput.pose)` is the preferred method of rotation.
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
 <a name="p5xrInput+trigger"></a>
@@ -449,7 +457,7 @@ Checks ray against a sphere collider with given radius at current drawing positi
     <td>radius</td><td><code>Number</code></td><td><p>The radius of the sphere to check collision with</p>
 </td>
     </tr><tr>
-    <td>[Ray]</td><td><code>Number</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)</p>
+    <td>[Ray]</td><td><code>Number</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -479,7 +487,7 @@ Checks ray against a box collider with given dimensions at current drawing posit
     <td>[depth]</td><td><code>Number</code></td><td><p>Optional. Depth of box collider for check</p>
 </td>
     </tr><tr>
-    <td>[ray]</td><td><code>Ray</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)</p>
+    <td>[ray]</td><td><code>Ray</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -500,7 +508,7 @@ Checks ray against a plane with at current drawing position and returns normaliz
   </thead>
   <tbody>
 <tr>
-    <td>[ray]</td><td><code>Ray</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(width/2, height/2)</p>
+    <td>[ray]</td><td><code>Ray</code></td><td><p>Optional. The ray to use for checking, defaults to getRayFromScreen(0, 0)</p>
 </td>
     </tr>  </tbody>
 </table>
