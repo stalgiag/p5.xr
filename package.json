@@ -53,7 +53,8 @@
   "dependencies": {
     "@swc/helpers": "^0.4.2",
     "gl-matrix": "^3.4.3",
-    "grunt-karma": "^4.0.2"
+    "grunt-karma": "^4.0.2",
+    "quaternion": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
