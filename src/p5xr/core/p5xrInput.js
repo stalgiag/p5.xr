@@ -27,7 +27,6 @@ export default class p5xrInput {
       vec3.transformMat3(this._dir, this._dir, normalMat);
     }
     this.direction = this._dir;
-    // console.log(p5.instance.angleMode);
   }
 
   /** @returns {p5.Vector} Returns the current forward direction */
@@ -58,21 +57,29 @@ export default class p5xrInput {
     return this._pose.transform.matrix;
   }
 
-  /** @returns {p5.Vector} Returns the current position as a Vector */
+  /** @returns {p5.Vector} Returns the current position as a Vector. */
   get position() {
     this.updatePose();
     const p = this._pose?.transform?.position;
     return new p5.Vector(p.x, p.y, p.z);
   }
-  /** @returns {p5.Vector} Returns the current rotation as a Vector */
+
+  /** @returns {p5.Vector} Returns the current rotation as an euler Vector.
+   * Using this is prone to gimbal locking, which leads to unexpected results.
+   * `applyMatrix(p5xrInput.pose)` is the preferred method of rotation. */
   get rotation() {
     this.updatePose();
-    if (this._pose){
-      const {x, y, z, w} = this._pose?.transform?.orientation;
-      let q = new Quaternion(x, y, z, w);
-      let e = q.toEuler();
-      let c = (p5.instance.angleMode == RADIANS)? 1 : 180 / Math.PI; // TODO: Change output with ANGLE MODE
-      return new p5.Vector( -e.yaw * c, e.pitch * c, -e.roll * c  );
+    if (this._pose) {
+      const {
+        x, y, z, w,
+      } = this._pose?.transform?.orientation;
+      const q = new Quaternion(x, y, z, w);
+      const e = q.toEuler();
+      if (p5.instance.angleMode === RADIANS) {
+        return new p5.Vector(-e.yaw, e.pitch, -e.roll);
+      }
+      // angleMode is degrees
+      return new p5.Vector(p5.toDegrees(-e.yaw), p5.toDegrees(e.pitch), p5.toDegrees(-e.roll));
     }
     return new p5.Vector(0, 0, 0);
   }
