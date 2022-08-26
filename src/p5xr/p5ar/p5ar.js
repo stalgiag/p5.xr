@@ -8,10 +8,10 @@ export default class p5ar extends p5xr {
   }
 
   initAR() {
-    this.createButton();
+    this.__createButton();
     // WebXR available
     if (navigator.xr) {
-      this.sessionCheck();
+      this.__sessionCheck();
     }
   }
 
@@ -25,20 +25,28 @@ export default class p5ar extends p5xr {
      * The current XRSession also gets a frame of reference and
      * base rendering layer. <br>
      * @param {XRSession}
+     * @private
+     * @ignore
      */
-  startSketch(session) {
+  __startSketch(session) {
     this.xrSession = this.xrButton.session = session;
-    this.xrSession.addEventListener('end', this.onSessionEnded);
+    this.xrSession.addEventListener('end', this.__onSessionEnded);
     if (typeof touchStarted === 'function') {
       this.xrSession.addEventListener('select', touchStarted);
     }
     this.canvas = p5.instance.canvas;
     p5.instance._renderer._curCamera.cameraType = 'custom';
-    this.onRequestSession();
+    this.__onRequestSession();
     p5.instance._decrementPreload();
   }
 
-  onSelect(ev) {
+  /**
+   *
+   * @param {InputEvent} ev
+   * @private
+   * @ignore
+   */
+  __onSelect(ev) {
     const context = window;
     const userMousePressed = context.mousePressed;
     if (typeof userMousePressed === 'function') {
@@ -46,7 +54,14 @@ export default class p5ar extends p5xr {
     }
   }
 
-  detectHit(ev) {
+  /**
+   *
+   * @param {InputEvent} ev
+   * @returns {p5.Vector}
+   * @private
+   * @ignore
+   */
+  __detectHit(ev) {
     if (ev === null || typeof ev === 'undefined') {
       console.warn('You must pass the touchStarted event to detectHit.');
       return null;
@@ -66,7 +81,14 @@ export default class p5ar extends p5xr {
     }
   }
 
-  createAnchor(vec) {
+  /**
+   *
+   * @param {p5.Vector} vec Vector3
+   * @returns ARAnchor
+   * @private
+   * @ignore
+   */
+  __createAnchor(vec) {
     if (vec === null || typeof vec === 'undefined') {
       return null;
     }
@@ -76,8 +98,10 @@ export default class p5ar extends p5xr {
   /**
    * `device.requestSession()` must be called within a user gesture event.
    * @param {XRDevice}
+   * @private
+   * @ignore
    */
-  onXRButtonClicked() {
+  __onXRButtonClicked() {
     // Normalize the various vendor prefixed versions of getUserMedia.
     navigator.getUserMedia = (navigator.getUserMedia
         || navigator.webkitGetUserMedia
@@ -88,13 +112,17 @@ export default class p5ar extends p5xr {
       requiredFeatures: ['local', 'hit-test'],
     })
       .then((session) => {
-        this.startSketch(session);
+        this.__startSketch(session);
       }, (error) => {
         console.log(`${error} unable to request an immersive-ar session.`);
       });
   }
 
-  onRequestSession() {
+  /**
+   * @private
+   * @ignore
+   */
+  __onRequestSession() {
     this.gl = this.canvas.getContext('webgl', {
       xrCompatible: true,
     });
@@ -113,7 +141,7 @@ export default class p5ar extends p5xr {
       .then((refSpace) => {
         this.xrRefSpace = refSpace;
         // Inform the session that we're ready to begin drawing.
-        this.xrSession.requestAnimationFrame(this.onXRFrame.bind(this));
+        this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
       });
   }
 }

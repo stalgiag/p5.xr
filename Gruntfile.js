@@ -24,17 +24,31 @@ module.exports = (grunt) => {
         },
       },
     },
+    jsdoc2md: {
+      oneOutputFile: {
+        src: 'src/**/*.js',
+        dest: 'docs/reference/app.md',
+        options: {
+          'no-gfm': true,
+          'global-index-format': 'grouped',
+        },
+      },
+    },
   });
 
   // Load task plugins
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-run');
+  grunt.loadNpmTasks('grunt-jsdoc-to-markdown');
 
   // Tasks
   grunt.registerTask('build', [
     'eslint',
     'karma:unit',
     'run:build',
+  ]);
+  grunt.registerTask('docs', [
+    'jsdoc2md',
   ]);
 };

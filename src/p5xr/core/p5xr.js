@@ -16,9 +16,9 @@ import p5xrInput from './p5xrInput';
  * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
  */
 export default class p5xr {
-  constructor() {
+  constructor(xrButton) {
     this.xrDevice = null;
-    this.xrButton = null;
+    this.xrButton = xrButton || null;
     this.isVR = null;
     this.hasImmersive = null;
     this.xrSession = null;
@@ -33,8 +33,10 @@ export default class p5xr {
 
   /**
    * Hide the preload loading element
+   * @private
+   * @ignore
    */
-  removeLoadingElement() {
+  __removeLoadingElement() {
     const loadingScreen = document.getElementById(window._loadingScreenId);
     if (loadingScreen) {
       loadingScreen.parentNode.removeChild(loadingScreen);
@@ -44,8 +46,10 @@ export default class p5xr {
   /**
    * Resets a few key WebGL renderer values. This is typically handled by p5.RendererGL.
    * but we need to do it manually so that it doesn't happen between drawing in each eye
+   * @private
+   * @ignore
    */
-  updateXR() {
+  __updateXR() {
     const renderer = p5.instance._renderer;
     // reset light data for new frame.
 
@@ -73,8 +77,12 @@ export default class p5xr {
     renderer._tint = [255, 255, 255, 255];
   }
 
-  // Substitute for p5._setup() which creates a default webgl canvas
-  setupCanvas() {
+  /**
+   * Substitute for p5._setup() which creates a default webgl canvas
+   * @private
+   * @ignore
+   */
+  __setupCanvas() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     p5.instance._setupDone = true;
   }
@@ -84,16 +92,17 @@ export default class p5xr {
    * Creates the button for entering XR.
    * Requests an XRDevice object based on current device.
    * Checks if the device supports an immersive session.
-   * Then binds the device to the button. <br>
-   * <b>TODO:</b> Custom styling for button prior to VR canvas creation.
+   * Then binds the device to the button.
+   * @private
+   * @ignore
    */
-  createButton() {
+  __createButton() {
     p5.instance._incrementPreload();
-    this.setupCanvas();
-    this.removeLoadingElement();
+    this.__setupCanvas();
+    this.__removeLoadingElement();
     this.xrButton = new p5xrButton({
-      onRequestSession: this.onXRButtonClicked.bind(this),
-      onEndSession: this.onSessionEnded.bind(this),
+      onRequestSession: this.__onXRButtonClicked.bind(this),
+      onEndSession: this.__onSessionEnded.bind(this),
       textEnterXRTitle: 'LOADING',
     });
     let header = document.querySelector('header');
@@ -103,10 +112,16 @@ export default class p5xr {
     }
     header.appendChild(this.xrButton.domElement);
 
-    this.sessionCheck();
+    this.__sessionCheck();
   }
 
-  sessionCheck() {
+  /**
+   * Checks if the device supports an immersive session.
+   * If it does, gives the device to the button and updates its state.
+   * @private
+   * @ignore
+   */
+  __sessionCheck() {
     // WebXR availabilty
     if (navigator.xr) {
       console.log('XR Available');
@@ -149,12 +164,14 @@ export default class p5xr {
    * the device pose is retrieved, the modelViewMatrix (`uMVMatrix`) for p5 is set,
    * and each eye is drawn
    * @param frame {XRFrame}
+   * @private
+   * @ignore
    */
-  onXRFrame(t, frame) {
+  __onXRFrame(t, frame) {
     const session = this.xrSession = frame.session;
     if (session === null || this.gl === null) { return; }
     // Inform the session that we're ready for the next frame.
-    session.requestAnimationFrame(this.onXRFrame.bind(this));
+    session.requestAnimationFrame(this.__onXRFrame.bind(this));
 
     let targetRefSpace = this.xrRefSpace;
     if (this.isVR && !this.isImmersive) {
@@ -190,9 +207,9 @@ export default class p5xr {
         const viewport = glLayer.getViewport(this.viewer.view);
         this.gl.viewport(viewport.x, viewport.y,
           viewport.width * scaleFactor, viewport.height * scaleFactor);
-        this.updateViewport(viewport);
+        this.__updateViewport(viewport);
 
-        this.drawEye(i);
+        this.__drawEye(i);
         i++;
       }
     }
@@ -201,8 +218,10 @@ export default class p5xr {
   /**
    * Update the renderer viewport to match rendering eye
    * @param {XRViewport} viewport The viewport of the eye
+   * @private
+   * @ignore
    */
-  updateViewport(viewport) {
+  __updateViewport(viewport) {
     p5.instance._renderer._viewport[0] = viewport.x;
     p5.instance._renderer._viewport[1] = viewport.y;
     p5.instance._renderer._viewport[2] = viewport.width;
@@ -212,8 +231,11 @@ export default class p5xr {
   /**
    * Runs the code that the user has in `draw()` once for each eye
    * So twice for VR and once for AR
+   * @param {Number} i The index of the eye
+   * @private
+   * @ignore
    */
-  drawEye(eyeIndex) {
+  __drawEye(eyeIndex) {
     const context = window;
     const userSetup = context.setup;
     const userDraw = context.draw;
@@ -246,7 +268,7 @@ export default class p5xr {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
 
-      this.updateXR();
+      this.__updateXR();
 
       p5.instance._inUserDraw = true;
 
@@ -260,10 +282,13 @@ export default class p5xr {
 
   /**
    * Takes a string and returns a p5xrInput
+   * Public interface is p5.prototype.getXRInput which calls this
    * @param {String} input The input identifier
    * @returns {p5xrInput} The input object
+   * @private
+   * @ignore
    */
-  getXRInput(input) {
+  __getXRInput(input) {
     let inputDevice;
     this.xrSession.inputSources.forEach((inputSource) => {
       if (inputSource.handedness === input) {
@@ -278,23 +303,29 @@ export default class p5xr {
   *  or when the UA has ended the session for any reason.
   * The xrSession is ended and discarded. p5 is reset with `remove()`
   *  //TODO: Revisit how we exit session
+  * @private
+  * @ignore
   */
-  onSessionEnded() {
+  __onSessionEnded() {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
     } else if (this.isImmersive) {
       console.log('Exiting immersive session');
       this.isImmersive = false;
-      this.sessionCheck();
+      this.__sessionCheck();
       console.log('Requesting new session');
-      navigator.xr.requestSession('inline').then(this.startSketch.bind(this));
+      navigator.xr.requestSession('inline').then(this.__startSketch.bind(this));
     }
     if (this.isImmersive && this.hasImmersive) {
       this.isImmersive = false;
     }
   }
 
+  /**
+   * @private
+   * @ignore
+   */
   printUnsupportedMessage() {
     console.warn('Your browser/hardware does not work with AR Mode currently. This is'
       + ' undergoing heavy development currently.'
