@@ -1,51 +1,3 @@
-## Classes
-
-* [p5xrButton](#p5xrButton)
-    * [.setDevice(device)](#p5xrButton+setDevice) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.setSession(session)](#p5xrButton+setSession) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.setTitle(text)](#p5xrButton+setTitle) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.setTooltip(tooltip)](#p5xrButton+setTooltip) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.show()](#p5xrButton+show) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.hide()](#p5xrButton+hide) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.enable()](#p5xrButton+enable) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.disable()](#p5xrButton+disable) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-    * [.remove()](#p5xrButton+remove)
-* [p5xrInput](#p5xrInput)
-    * [.direction](#p5xrInput+direction) : <code>p5.Vector</code>
-    * [.pose](#p5xrInput+pose) : <code>Float32Array</code>
-    * [.position](#p5xrInput+position) : <code>p5.Vector</code>
-    * [.rotation](#p5xrInput+rotation) : <code>p5.Vector</code>
-    * [.trigger](#p5xrInput+trigger) : <code>GamepadButton</code>
-    * [.grip](#p5xrInput+grip) : <code>GamepadButton</code>
-    * [.touchpad](#p5xrInput+touchpad) : <code>GamepadButton</code>
-    * [.thumbstick](#p5xrInput+thumbstick) : <code>GamepadButton</code>
-    * [.touchpad2D](#p5xrInput+touchpad2D) : <code>p5.Vector</code>
-    * [.thumbstick2D](#p5xrInput+thumbstick2D) : <code>p5.Vector</code>
-    * [.updatePose()](#p5xrInput+updatePose) ⇒ <code>XRPose</code>
-    * [.updateGamepad()](#p5xrInput+updateGamepad) ⇒ <code>Gamepad</code>
-* [p5xrViewer](#p5xrViewer)
-    * [.pose](#p5xrViewer+pose) : <code>p5.Matrix</code>
-    * [.view](#p5xrViewer+view) : <code>p5.Matrix</code>
-    * [.getRayFromScreen(screenX, screenY)](#p5xrViewer+getRayFromScreen) ⇒ <code>Ray</code>
-
-## Functions
-
-* [resetXR()](#resetXR)
-* [setVRBackgroundColor(r, g, b)](#setVRBackgroundColor)
-* [createVRCanvas([xrButton])](#createVRCanvas)
-* [createARCanvas()](#createARCanvas)
-* [getEnterXRButton()](#getEnterXRButton) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-* [createXRButton(options)](#createXRButton) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-* [getRayFromScreen(x, y)](#getRayFromScreen) ⇒ <code>Ray</code>
-* [intersectsSphere(radius, [Ray])](#intersectsSphere) ⇒ <code>Boolean</code>
-* [intersectsBox(width, [height], [depth], [ray])](#intersectsBox) ⇒ <code>Boolean</code>
-* [intersectsPlane([ray])](#intersectsPlane) ⇒ <code>p5.Vector</code>
-* [generateRay(x1, y1, z1, x2, y2, z2)](#generateRay) ⇒ <code>Ray</code>
-* [setViewerPosition(targetX, targetY, targetZ)](#setViewerPosition)
-* [getViewer()](#getViewer) ⇒ [<code>p5xrViewer</code>](#p5xrViewer)
-* [sticky(drawOnTop)](#sticky)
-* [noSticky()](#noSticky)
-
 <a name="resetXR"></a>
 
 ## resetXR()
@@ -53,6 +5,9 @@ Helper function to reset XR and GL, should be called between
 ending an XR session and starting a new XR session
 
 **Kind**: global function  
+
+* * *
+
 <a name="setVRBackgroundColor"></a>
 
 ## setVRBackgroundColor(r, g, b)
@@ -82,6 +37,37 @@ to avoid clearing between drawing the eyes
     </tr>  </tbody>
 </table>
 
+**Example**  
+```js
+let timer = 0;
+const timeBetween = 2000;
+
+function preload() {
+  createVRCanvas();
+}
+
+function setup() {
+  randomizeBackground();
+}
+
+function draw() {
+  if(millis() - timer > timeBetween) {
+    randomizeBackground();
+    timer = millis();
+  }
+
+  translate(0, 0, -100);
+  rotateX(frameCount * 0.005);
+  box(10);
+}
+
+function randomizeBackground() {
+  setVRBackgroundColor(random(255), random(255), random(255));
+}
+```
+
+* * *
+
 <a name="p5xrButton"></a>
 
 ## p5xrButton
@@ -104,6 +90,9 @@ can only be request with a user gesture.
     * [.disable()](#p5xrButton+disable) ⇒ [<code>p5xrButton</code>](#p5xrButton)
     * [.remove()](#p5xrButton+remove)
 
+
+* * *
+
 <a name="p5xrButton+setDevice"></a>
 
 ### p5xrButton.setDevice(device) ⇒ [<code>p5xrButton</code>](#p5xrButton)
@@ -121,6 +110,9 @@ Sets the XRDevice this button is associated with. This rarely needs to be called
     <td>device</td><td><code>XRDevice</code></td>
     </tr>  </tbody>
 </table>
+
+
+* * *
 
 <a name="p5xrButton+setSession"></a>
 
@@ -142,6 +134,9 @@ Switches the button to it's exitXR state if session is not null.
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="p5xrButton+setTitle"></a>
 
 ### p5xrButton.setTitle(text) ⇒ [<code>p5xrButton</code>](#p5xrButton)
@@ -161,6 +156,9 @@ Set the title of the p5xrButton
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="p5xrButton+setTooltip"></a>
 
 ### p5xrButton.setTooltip(tooltip) ⇒ [<code>p5xrButton</code>](#p5xrButton)
@@ -179,36 +177,54 @@ Set the tooltip of the button
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="p5xrButton+show"></a>
 
 ### p5xrButton.show() ⇒ [<code>p5xrButton</code>](#p5xrButton)
 Show the button
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
+
+* * *
+
 <a name="p5xrButton+hide"></a>
 
 ### p5xrButton.hide() ⇒ [<code>p5xrButton</code>](#p5xrButton)
 Hide the button
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
+
+* * *
+
 <a name="p5xrButton+enable"></a>
 
 ### p5xrButton.enable() ⇒ [<code>p5xrButton</code>](#p5xrButton)
 Enable the button
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
+
+* * *
+
 <a name="p5xrButton+disable"></a>
 
 ### p5xrButton.disable() ⇒ [<code>p5xrButton</code>](#p5xrButton)
 Disable the button from being clicked
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
+
+* * *
+
 <a name="p5xrButton+remove"></a>
 
 ### p5xrButton.remove()
 Remove the p5xrButton from the DOM
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
+
+* * *
+
 <a name="createVRCanvas"></a>
 
 ## createVRCanvas([xrButton])
@@ -235,6 +251,9 @@ via a button click gesture
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="createARCanvas"></a>
 
 ## createARCanvas()
@@ -248,6 +267,9 @@ via a button click gesture/
 **Kind**: global function  
 **Category**: Initialization  
 **Section**: AR  
+
+* * *
+
 <a name="getEnterXRButton"></a>
 
 ## getEnterXRButton() ⇒ [<code>p5xrButton</code>](#p5xrButton)
@@ -256,6 +278,9 @@ Get the current "Enter XR" button.
 **Kind**: global function  
 **Returns**: [<code>p5xrButton</code>](#p5xrButton) - The button object  
 **Category**: Initialization  
+
+* * *
+
 <a name="createXRButton"></a>
 
 ## createXRButton(options) ⇒ [<code>p5xrButton</code>](#p5xrButton)
@@ -304,6 +329,9 @@ Creates a new p5xrButton object to use for entering and exiting XR.
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="p5xrInput"></a>
 
 ## p5xrInput
@@ -324,10 +352,16 @@ Creates a new p5xrButton object to use for entering and exiting XR.
     * [.updatePose()](#p5xrInput+updatePose) ⇒ <code>XRPose</code>
     * [.updateGamepad()](#p5xrInput+updateGamepad) ⇒ <code>Gamepad</code>
 
+
+* * *
+
 <a name="p5xrInput+direction"></a>
 
 ### p5xrInput.direction : <code>p5.Vector</code>
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+pose"></a>
 
 ### p5xrInput.pose : <code>Float32Array</code>
@@ -339,7 +373,7 @@ The current 4x4 pose matrix
 // Draws a box at the current pose matrix
 let right;
 
-function setup() {
+function preload() {
  createVRCanvas();
 }
 
@@ -351,55 +385,83 @@ function draw() {
     box(10);
     pop();
  }
+}
 ```
+
+* * *
+
 <a name="p5xrInput+position"></a>
 
 ### p5xrInput.position : <code>p5.Vector</code>
 Returns the current position as a Vector
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+rotation"></a>
 
 ### p5xrInput.rotation : <code>p5.Vector</code>
 Returns the current rotation as an euler Vector.Using this is prone to gimbal locking, which leads to unexpected results.`applyMatrix(p5xrInput.pose)` is the preferred method of rotation.
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+trigger"></a>
 
 ### p5xrInput.trigger : <code>GamepadButton</code>
 Returns a GamepadButton object corresponding to the controller's trigger button
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+grip"></a>
 
 ### p5xrInput.grip : <code>GamepadButton</code>
 Returns a GamepadButton object corresponding to the controller's grip button
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+touchpad"></a>
 
 ### p5xrInput.touchpad : <code>GamepadButton</code>
 Returns a GamepadButton object corresponding to the controller's touchpad button
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+thumbstick"></a>
 
 ### p5xrInput.thumbstick : <code>GamepadButton</code>
 Returns a GamepadButton object corresponding to the controller's thumbstick button
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+touchpad2D"></a>
 
 ### p5xrInput.touchpad2D : <code>p5.Vector</code>
 Returns a Vector with the touchpad's X and Y values
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+thumbstick2D"></a>
 
 ### p5xrInput.thumbstick2D : <code>p5.Vector</code>
 Returns a Vector with the thumbstick's X and Y values
 
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
+
+* * *
+
 <a name="p5xrInput+updatePose"></a>
 
 ### p5xrInput.updatePose() ⇒ <code>XRPose</code>
@@ -407,6 +469,9 @@ Retrieves the latest pose using the current frame
 
 **Kind**: instance method of [<code>p5xrInput</code>](#p5xrInput)  
 **Returns**: <code>XRPose</code> - The latest pose from the XRInputSource  
+
+* * *
+
 <a name="p5xrInput+updateGamepad"></a>
 
 ### p5xrInput.updateGamepad() ⇒ <code>Gamepad</code>
@@ -414,6 +479,9 @@ Retrieves the latest Gamepad from the XRInputSource
 
 **Kind**: instance method of [<code>p5xrInput</code>](#p5xrInput)  
 **Returns**: <code>Gamepad</code> - The latest Gamepad from the XRInputSource  
+
+* * *
+
 <a name="getRayFromScreen"></a>
 
 ## getRayFromScreen(x, y) ⇒ <code>Ray</code>
@@ -438,6 +506,9 @@ Takes a 2D screen coordinate and returns a Ray in 3D coordinates.
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="intersectsSphere"></a>
 
 ## intersectsSphere(radius, [Ray]) ⇒ <code>Boolean</code>
@@ -461,6 +532,9 @@ Checks ray against a sphere collider with given radius at current drawing positi
 </td>
     </tr>  </tbody>
 </table>
+
+
+* * *
 
 <a name="intersectsBox"></a>
 
@@ -492,6 +566,9 @@ Checks ray against a box collider with given dimensions at current drawing posit
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="intersectsPlane"></a>
 
 ## intersectsPlane([ray]) ⇒ <code>p5.Vector</code>
@@ -512,6 +589,9 @@ Checks ray against a plane with at current drawing position and returns normaliz
 </td>
     </tr>  </tbody>
 </table>
+
+
+* * *
 
 <a name="generateRay"></a>
 
@@ -549,6 +629,9 @@ Create a ray object for using with raycasting methods.
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="p5xrViewer"></a>
 
 ## p5xrViewer
@@ -565,18 +648,27 @@ should be modified using the setViewerPosition function.
     * [.view](#p5xrViewer+view) : <code>p5.Matrix</code>
     * [.getRayFromScreen(screenX, screenY)](#p5xrViewer+getRayFromScreen) ⇒ <code>Ray</code>
 
+
+* * *
+
 <a name="p5xrViewer+pose"></a>
 
 ### p5xrViewer.pose : <code>p5.Matrix</code>
 Pose matrix
 
 **Kind**: instance property of [<code>p5xrViewer</code>](#p5xrViewer)  
+
+* * *
+
 <a name="p5xrViewer+view"></a>
 
 ### p5xrViewer.view : <code>p5.Matrix</code>
 View matrix
 
 **Kind**: instance property of [<code>p5xrViewer</code>](#p5xrViewer)  
+
+* * *
+
 <a name="p5xrViewer+getRayFromScreen"></a>
 
 ### p5xrViewer.getRayFromScreen(screenX, screenY) ⇒ <code>Ray</code>
@@ -600,6 +692,9 @@ Used for raycasting.
 </td>
     </tr>  </tbody>
 </table>
+
+
+* * *
 
 <a name="setViewerPosition"></a>
 
@@ -627,6 +722,9 @@ Sets the position of the viewer
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="getViewer"></a>
 
 ## getViewer() ⇒ [<code>p5xrViewer</code>](#p5xrViewer)
@@ -635,6 +733,9 @@ Gets the current viewer object
 **Kind**: global function  
 **Returns**: [<code>p5xrViewer</code>](#p5xrViewer) - The viewer object  
 **Category**: View  
+
+* * *
+
 <a name="sticky"></a>
 
 ## sticky(drawOnTop)
@@ -655,6 +756,9 @@ All calls after sticky() and before noSticky() will move with the view.
     </tr>  </tbody>
 </table>
 
+
+* * *
+
 <a name="noSticky"></a>
 
 ## noSticky()
@@ -662,3 +766,6 @@ All calls after sticky() and before noSticky() will move with the view.
 
 **Kind**: global function  
 **Category**: View  
+
+* * *
+

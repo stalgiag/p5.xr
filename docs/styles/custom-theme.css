@@ -1,11 +1,11 @@
 @font-face {
     font-family: kaerukaeru;
-    src: url("./kaerukaeru-regular.otf")
+    src: url("../assets/kaerukaeru-regular.otf")
 }
 
 @font-face {
     font-family: sporting-grotesk;
-    src: url("./sporting-grotesk.otf")
+    src: url("../assets/sporting-grotesk.otf")
 }
 
 :root {
@@ -13,6 +13,7 @@
     --mono-hue: 50;
     --mono-saturation: 98%;
 
+    --search-input-border-color: black;
 
     --mono-base: hsl(var(--mono-hue), var(--mono-saturation), 60%);
 
@@ -40,7 +41,7 @@
 
     --sidebar-toggle-icon-color: rgb(25, 186, 192);
     --sidebar-toggle-width: 50px;
-    --sidebar-width: 15rem;
+    --sidebar-width: 20rem;
 
     --sidebar-toggle-icon-height: 1.5rem;
     --sidebar-toggle-icon-stroke-width: 7px;
@@ -226,7 +227,6 @@
 --sidebar-nav-link-border-width--active       : 2px;
 --sidebar-nav-link-border-width--hover        : 2px;
 --sidebar-nav-link-color                      : black;
---sidebar-nav-link-color--active              : var(--mono-base);
 --sidebar-nav-link-color--hover               : ;
 --sidebar-nav-link-font-weight                : normal;
 --sidebar-nav-link-font-weight--active        : ;
@@ -245,9 +245,9 @@
 --sidebar-nav-link-before-content-l1: ;
 --sidebar-nav-link-before-content-l1--active  : ;
 --sidebar-nav-link-before-content-l2          : ' ';
---sidebar-nav-link-before-content-l2--active  : '👁️  👁️';
+--sidebar-nav-link-before-content-l2--active  : ' ';
 --sidebar-nav-link-before-content-l3          : ' ';
---sidebar-nav-link-before-content-l3--active  : '👁️  👁️';
+--sidebar-nav-link-before-content-l3--active  : ' ';
 --sidebar-nav-link-before-content-l4          : ' ';
 --sidebar-nav-link-before-content-l4--active  : ' ';
 

@@ -62,7 +62,7 @@ class p5xrInput {
    * // Draws a box at the current pose matrix
    * let right;
    *
-   * function setup() {
+   * function preload() {
    *  createVRCanvas();
    * }
    *
@@ -74,6 +74,7 @@ class p5xrInput {
    *     box(10);
    *     pop();
    *  }
+   * }
    * */
   get pose() {
     this.updatePose();
