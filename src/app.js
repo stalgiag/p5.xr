@@ -93,6 +93,35 @@ p5.prototype.createXRButton = function (options) {
  * @param  {Number} r red value of background
  * @param  {Number} g green value of background
  * @param  {Number} b blue value of background
+ * @example
+ *
+ * let timer = 0;
+ * const timeBetween = 2000;
+ *
+ * function preload() {
+ *   createVRCanvas();
+ * }
+ *
+ * function setup() {
+ *   randomizeBackground();
+ * }
+ *
+ * function draw() {
+ *   if(millis() - timer > timeBetween) {
+ *     randomizeBackground();
+ *     timer = millis();
+ *   }
+ *
+ *   translate(0, 0, -100);
+ *   rotateX(frameCount * 0.005);
+ *   box(10);
+ * }
+ *
+ * function randomizeBackground() {
+ *   setVRBackgroundColor(random(255), random(255), random(255));
+ * }
+ *
+ *
  * @section VR
  * @category Background
  */

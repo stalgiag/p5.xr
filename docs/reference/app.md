@@ -82,6 +82,34 @@ to avoid clearing between drawing the eyes
     </tr>  </tbody>
 </table>
 
+**Example**  
+```js
+let timer = 0;
+const timeBetween = 2000;
+
+function preload() {
+  createVRCanvas();
+}
+
+function setup() {
+  randomizeBackground();
+}
+
+function draw() {
+  if(millis() - timer > timeBetween) {
+    randomizeBackground();
+    timer = millis();
+  }
+
+  translate(0, 0, -100);
+  rotateX(frameCount * 0.005);
+  box(10);
+}
+
+function randomizeBackground() {
+  setVRBackgroundColor(random(255), random(255), random(255));
+}
+```
 <a name="p5xrButton"></a>
 
 ## p5xrButton
@@ -339,7 +367,7 @@ The current 4x4 pose matrix
 // Draws a box at the current pose matrix
 let right;
 
-function setup() {
+function preload() {
  createVRCanvas();
 }
 
@@ -351,6 +379,7 @@ function draw() {
     box(10);
     pop();
  }
+}
 ```
 <a name="p5xrInput+position"></a>
 
