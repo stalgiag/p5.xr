@@ -1,4 +1,4 @@
-const renderCode = function (exampleName) {
+const renderCode = function () {
   const selector = 'language-js';
   const examples = document.getElementsByTagName('code');
   const filteredExamples = Array.from(examples).filter((example) => example.className.includes(selector));
@@ -45,11 +45,21 @@ const renderCode = function (exampleName) {
       css: '* {overflow: hidden;}',
       js: code,
     });
-
-    iframe.src = url;
+    const button = document.createElement('button');
+    button.innerText = '►';
+    button.style.position = 'absolute';
+    button.style.top = '10px';
+    button.style.right = '10px';
+    button.style.fontSize = '20px';
+    parent.appendChild(button);
+    button.onclick = () => {
+      iframe.src = url;
+    };
   }
 };
 
 window.onload = () => {
-  setTimeout(renderCode, 1000);
+  if (!(navigator.userAgent.match(/iPhone|iPad|iPod|Android/i))) {
+    setTimeout(renderCode, 1000);
+  }
 };
