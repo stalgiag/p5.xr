@@ -1,4 +1,4 @@
-<img src="https://github.com/stalgiag/p5.xr/raw/master/docs/assets/xr-tear.png" alt="drawing of a face with eyes that are the letter x and r with a tear coming out of one eye" style="max-width:40%; margin-left:30%; margin-bottom: -30px"/>
+<img src="https://github.com/stalgiag/p5.xr/raw/main/docs/assets/xr-tear.png" alt="drawing of a face with eyes that are the letter x and r with a tear coming out of one eye" style="max-width:40%; margin-left:30%; margin-bottom: -30px"/>
 
 ## What is it?
 

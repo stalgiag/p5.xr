@@ -58,8 +58,12 @@ const renderCode = function () {
   }
 };
 
-window.onload = () => {
-  if (!(navigator.userAgent.match(/iPhone|iPad|iPod|Android/i))) {
-    setTimeout(renderCode, 1000);
-  }
-};
+function docsifyOnloadedHooks(hook) {
+  hook.doneEach(() => {
+    if (!(navigator.userAgent.match(/iPhone|iPad|iPod|Android/i))) {
+      setTimeout(renderCode, 1000);
+    }
+  });
+}
+
+$docsify.plugins = [].concat(docsifyOnloadedHooks, $docsify.plugins);

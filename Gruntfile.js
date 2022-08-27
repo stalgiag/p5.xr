@@ -30,7 +30,8 @@ module.exports = (grunt) => {
         dest: 'docs/reference/app.md',
         options: {
           'no-gfm': true,
-          'global-index-format': 'grouped',
+          separators: true,
+          'global-index-format': 'none',
         },
       },
     },
