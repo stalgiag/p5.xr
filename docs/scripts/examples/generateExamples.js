@@ -21,7 +21,7 @@ const renderCode = function () {
           <meta name='apple-mobile-web-app-capable' content='yes'>
           ${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
           <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
-          <script src="https://github.com/stalgiag/p5.xr/releases/download/v0.4.65/p5xr.min.js"></script>
+          <script src="https://github.com/stalgiag/p5.xr/releases/download/v0.4.65/p5xr.js"></script>
         </head>
         <body>
           ${html || ''}
