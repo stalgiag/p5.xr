@@ -5,3 +5,12 @@ examples/*
 .parcel-cache/*
 .cache/*
 *.map
+*.pem
+src/*
+.keep
+.prettierrc
+.github
+.all-contributorsrc
+contributor-docs/*
+docs/*
+karma.conf.js
