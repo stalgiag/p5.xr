@@ -47,6 +47,17 @@
       "contributions": [
         "example"
       ]
+    },
+    {
+      "login": "smrghsh",
+      "name": "Samir Ghosh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22751315?v=4",
+      "profile": "http://samir.tech",
+      "contributions": [
+        "code",
+        "design",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -54,5 +65,6 @@
   "projectOwner": "stalgiag",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
