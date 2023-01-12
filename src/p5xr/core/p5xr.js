@@ -121,37 +121,14 @@ export default class p5xr {
    * @private
    * @ignore
    */
-  __sessionCheck() {
+  async __sessionCheck() {
     // WebXR availabilty
     if (navigator.xr) {
       console.log('XR Available');
-      navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-        this.hasImmersive = supported;
-      });
-      if (this.isVR) {
-        // Checks if VR is supported
-        this.xrButton.setTitle('Enter VR');
-        this.xrButton.setTooltip('Enter VR');
-        this.xrButton.enable();
-        console.log('VR supported');
-        this.xrButton.setDevice(true);
-      } else {
-        // Checks if AR is supported
-        navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-          if (supported) {
-            this.xrButton.setTitle('Enter AR');
-            this.xrButton.setTooltip('Enter AR');
-            this.xrButton.enable();
-            console.log('AR supported');
-            this.xrButton.setDevice(true);
-          } else {
-            this.xrButton.setTitle('AR Not Available');
-            this.xrButton.setTooltip('AR Not Available');
-            this.xrButton.disable();
-            console.log('AR not supported');
-          }
-        });
-      }
+      const mode = this.isVR ? 'VR' : 'AR';
+      const session = this.isVR ? 'immersive-vr' : 'immersive-ar';
+      const supported = await navigator.xr.isSessionSupported(session);
+      this.xrButton.setAvailable(supported, mode);
     } else {
       console.log('XR Not Available');
       this.disableButton();
@@ -168,8 +145,10 @@ export default class p5xr {
    * @ignore
    */
   __onXRFrame(t, frame) {
-    const session = this.xrSession = frame.session;
-    if (session === null || this.gl === null) { return; }
+    const session = (this.xrSession = frame.session);
+    if (session === null || this.gl === null) {
+      return;
+    }
     // Inform the session that we're ready for the next frame.
     session.requestAnimationFrame(this.__onXRFrame.bind(this));
 
@@ -205,8 +184,12 @@ export default class p5xr {
         this.viewer.view = view;
         const scaleFactor = this.isImmersive ? 1 : pixelDensity();
         const viewport = glLayer.getViewport(this.viewer.view);
-        this.gl.viewport(viewport.x, viewport.y,
-          viewport.width * scaleFactor, viewport.height * scaleFactor);
+        this.gl.viewport(
+          viewport.x,
+          viewport.y,
+          viewport.width * scaleFactor,
+          viewport.height * scaleFactor
+        );
         this.__updateViewport(viewport);
 
         this.__drawEye(i);
@@ -248,7 +231,7 @@ export default class p5xr {
         }
         const now = window.performance.now();
         p5.instance.deltaTime = now - p5.instance._lastFrameTime;
-        p5.instance._frameRate = 1000.0 / (p5.instance.deltaTime);
+        p5.instance._frameRate = 1000.0 / p5.instance.deltaTime;
         p5.instance._setProperty('deltaTime', p5.instance.deltaTime);
         p5.instance._lastFrameTime = now;
         context._setProperty('frameCount', context.frameCount + 1);
@@ -299,13 +282,13 @@ export default class p5xr {
   }
 
   /**
-  * Called either when the user has explicitly ended the session
-  *  or when the UA has ended the session for any reason.
-  * The xrSession is ended and discarded. p5 is reset with `remove()`
-  *  //TODO: Revisit how we exit session
-  * @private
-  * @ignore
-  */
+   * Called either when the user has explicitly ended the session
+   *  or when the UA has ended the session for any reason.
+   * The xrSession is ended and discarded. p5 is reset with `remove()`
+   *  //TODO: Revisit how we exit session
+   * @private
+   * @ignore
+   */
   __onSessionEnded() {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
@@ -327,9 +310,11 @@ export default class p5xr {
    * @ignore
    */
   printUnsupportedMessage() {
-    console.warn('Your browser/hardware does not work with AR Mode currently. This is'
-      + ' undergoing heavy development currently.'
-      + 'You may be able to fix this by enabling WebXR flags in Chrome.');
+    console.warn(
+      'Your browser/hardware does not work with AR Mode currently. This is' +
+        ' undergoing heavy development currently.' +
+        'You may be able to fix this by enabling WebXR flags in Chrome.'
+    );
   }
 
   remove() {

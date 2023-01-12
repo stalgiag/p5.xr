@@ -154,13 +154,10 @@
 
     /* Links */
     --cover-link-border-bottom: ;
-    --cover-link-border-bottom--hover: ;
     --cover-link-color: ;
-    --cover-link-color--hover: ;
     --cover-link-text-decoration: underline;
     --cover-link-text-decoration--hover: ;
     --cover-link-text-decoration-color: ;
-    --cover-link-text-decoration-color--hover: ;
 
     /* Tables */
     --table-body-border-color           : ;
@@ -204,8 +201,8 @@
 
 /* Nav Links */
 --sidebar-nav-link-background-color           : ;
---sidebar-nav-link-background-color--active   : black;
---sidebar-nav-link-background-color--hover    : black;
+--sidebar-nav-link-background--active   : black;
+--sidebar-nav-link-background--hover    : black;
 --sidebar-nav-link-background-image           : ;
 --sidebar-nav-link-background-image--active   : ;
 --sidebar-nav-link-background-image--hover    : ;
@@ -222,12 +219,13 @@
 --sidebar-nav-link-border-radius              : 10px;
 --sidebar-nav-link-border-style               : solid;
 --sidebar-nav-link-border-style--active       : ;
---sidebar-nav-link-border-style--hover        : ;
+--sidebar-nav-link-border-style--hover        : solid;
 --sidebar-nav-link-border-width               : 2px;
 --sidebar-nav-link-border-width--active       : 2px;
 --sidebar-nav-link-border-width--hover        : 2px;
 --sidebar-nav-link-color                      : black;
---sidebar-nav-link-color--hover               : ;
+--sidebar-nav-link-color--hover               : white;
+--sidebar-nav-link-color--active               : white;
 --sidebar-nav-link-font-weight                : normal;
 --sidebar-nav-link-font-weight--active        : ;
 --sidebar-nav-link-font-weight--hover         : ;
@@ -237,7 +235,7 @@
 --sidebar-nav-link-text-decoration--active    : ;
 --sidebar-nav-link-text-decoration--hover     : ;
 --sidebar-nav-link-text-decoration-color      : ;
---sidebar-nav-link-transition                 : all var(--duration-fast) ease-in-out;
+--sidebar-nav-link-transition                 : all var(--duration-fast) ease-in;
 
 /* Nav Links - Pseudo Content */
 --sidebar-nav-link-before-content             : ;
@@ -252,7 +250,7 @@
 --sidebar-nav-link-before-content-l4--active  : ' ';
 
 /* Nav Links - Pseudo Style */
---sidebar-nav-link-before-color               : ;
+--sidebar-nav-link-before-color               : black;
 --sidebar-nav-link-before-color--active       : ;
 --sidebar-nav-link-before-color-l1            : ;
 --sidebar-nav-link-before-color-l1--active    : ;
@@ -269,16 +267,17 @@
 --sidebar-nav-link-before-margin-l4           : 2.35em .35em 0.35em 0;
 
 /* Nav Page Links */
---sidebar-nav-pagelink-background-image             : ;
---sidebar-nav-pagelink-background-image--active     : ;
---sidebar-nav-pagelink-background-image--collapse   : ;
+
+--sidebar-nav-pagelink-color--active     : white;
+--sidebar-nav-pagelink-background--active     : black;
+--sidebar-nav-pagelink-background--collapse   : black;
 --sidebar-nav-pagelink-background-image--loaded     : ;
 --sidebar-nav-pagelink-background-position          : ;
 --sidebar-nav-pagelink-background-position--active  :  ;
 --sidebar-nav-pagelink-background-position--collapse: ;
 --sidebar-nav-pagelink-background-position--loaded  : ;
 --sidebar-nav-pagelink-background-size              : ;
---sidebar-nav-pagelink-padding                      : 0 0px;
+--sidebar-nav-pagelink-padding                      : 0;
 --sidebar-nav-pagelink-transition                   : var(--sidebar-nav-link-transition)
 }
 

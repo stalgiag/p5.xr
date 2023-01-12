@@ -2,7 +2,6 @@
 - __GENERAL__
   - [General Info](README.md)
   - [Community](general/community.md)
-  - [Why?](general/why.md)
 ***
 - __QUICK START__
   - [Device and Browser Support](quick-start/device-support.md)
