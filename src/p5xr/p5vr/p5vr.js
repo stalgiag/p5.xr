@@ -22,7 +22,9 @@ export default class p5vr extends p5xr {
     this.primaryTouch = undefined;
     this.prevTouchX = undefined;
     this.prevTouchY = undefined;
-    navigator.xr.requestSession('inline').then(this.__startSketch.bind(this));
+    if (navigator?.xr) {
+      navigator.xr.requestSession('inline').then(this.__startSketch.bind(this));
+    }
   }
 
   /**
@@ -55,19 +57,18 @@ export default class p5vr extends p5xr {
       p5.instance._millisStart = window.performance.now();
     }
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    this.xrSession.requestReferenceSpace(refSpaceRequest)
-      .then((refSpace) => {
-        this.xrRefSpace = refSpace;
-        // Inform the session that we're ready to begin drawing.
-        this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
-        if (!this.isImmersive) {
-          this.xrSession.updateRenderState({
-            baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
-            inlineVerticalFieldOfView: 90 * (Math.PI / 180),
-          });
-          this.addInlineViewListeners(this.canvas);
-        }
-      });
+    this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
+      this.xrRefSpace = refSpace;
+      // Inform the session that we're ready to begin drawing.
+      this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+      if (!this.isImmersive) {
+        this.xrSession.updateRenderState({
+          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+          inlineVerticalFieldOfView: 70 * (Math.PI / 180),
+        });
+        this.addInlineViewListeners(this.canvas);
+      }
+    });
     this.__onRequestSession();
   }
 
@@ -97,10 +98,11 @@ export default class p5vr extends p5xr {
       console.log('Requesting session with mode: immersive-vr');
       this.isImmersive = true;
       this.resetXR();
-      navigator.xr.requestSession('immersive-vr').then(this.__startSketch.bind(this));
+      navigator.xr
+        .requestSession('immersive-vr')
+        .then(this.__startSketch.bind(this));
     } else {
       this.xrButton.hide();
-      // TODO: Request Fullscreen
     }
   }
 
@@ -114,22 +116,28 @@ export default class p5vr extends p5xr {
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
 
     this.gl = this.canvas.getContext('webgl');
-    this.gl.makeXRCompatible().then(() => {
-      // Get a frame of reference, which is required for querying poses.
-      // 'local' places the initial pose relative to initial location of viewer
-      // 'viewer' is only for inline experiences and only allows rotation
-      this.xrSession.requestReferenceSpace(refSpaceRequest)
-        .then((refSpace) => {
-          this.xrRefSpace = refSpace;
-        });
+    this.gl
+      .makeXRCompatible()
+      .then(() => {
+        // Get a frame of reference, which is required for querying poses.
+        // 'local' places the initial pose relative to initial location of viewer
+        // 'viewer' is only for inline experiences and only allows rotation
+        this.xrSession
+          .requestReferenceSpace(refSpaceRequest)
+          .then((refSpace) => {
+            this.xrRefSpace = refSpace;
+          });
 
-      // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
-      // sessions baseLayer. This allows any content rendered to the layer to
-      // be displayed on the XRDevice;
-      this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
-    }).catch((e) => {
-      console.log(e);
-    });
+        // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+        // sessions baseLayer. This allows any content rendered to the layer to
+        // be displayed on the XRDevice;
+        this.xrSession.updateRenderState({
+          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
     // Request initial animation frame
     this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
@@ -165,8 +173,11 @@ export default class p5vr extends p5xr {
     const xform = new XRRigidTransform(
       { x: 0, y: 0, z: 0 },
       {
-        x: invOrientation[0], y: invOrientation[1], z: invOrientation[2], w: invOrientation[3],
-      },
+        x: invOrientation[0],
+        y: invOrientation[1],
+        z: invOrientation[2],
+        w: invOrientation[3],
+      }
     );
     return refSpace.getOffsetReferenceSpace(xform);
   }
@@ -188,11 +199,11 @@ export default class p5vr extends p5xr {
   // Make the canvas listen for mouse and touch events so that we can
   // adjust the viewer pose accordingly in inline sessions.
   /**
-  * Adds event listeners to the canvas to allow for user interaction with the canvas during
-  * inline sessions.
-  * @private
-  * @ignore
-  */
+   * Adds event listeners to the canvas to allow for user interaction with the canvas during
+   * inline sessions.
+   * @private
+   * @ignore
+   */
   addInlineViewListeners() {
     this.canvas.addEventListener('mousemove', (event) => {
       // Only rotate when the right button is pressed
@@ -219,7 +230,10 @@ export default class p5vr extends p5xr {
       for (const touch of event.changedTouches) {
         if (this.primaryTouch === touch.identifier) {
           this.primaryTouch = undefined;
-          this.rotateInlineView(touch.pageX - this.prevTouchX, touch.pageY - this.prevTouchY);
+          this.rotateInlineView(
+            touch.pageX - this.prevTouchX,
+            touch.pageY - this.prevTouchY
+          );
         }
       }
     });
@@ -240,7 +254,10 @@ export default class p5vr extends p5xr {
     this.canvas.addEventListener('touchmove', (event) => {
       for (const touch of event.changedTouches) {
         if (this.primaryTouch === touch.identifier) {
-          this.rotateInlineView(touch.pageX - this.prevTouchX, touch.pageY - this.prevTouchY);
+          this.rotateInlineView(
+            touch.pageX - this.prevTouchX,
+            touch.pageY - this.prevTouchY
+          );
           this.prevTouchX = touch.pageX;
           this.prevTouchY = touch.pageY;
         }

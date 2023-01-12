@@ -10,7 +10,7 @@ export default class p5ar extends p5xr {
   initAR() {
     this.__createButton();
     // WebXR available
-    if (navigator.xr) {
+    if (navigator?.xr) {
       this.__sessionCheck();
     }
   }
@@ -20,14 +20,14 @@ export default class p5ar extends p5xr {
   //* ********************************************************//
 
   /**
-     * This is where the actual p5 canvas is first created, and
-     * the GL rendering context is accessed by p5vr.
-     * The current XRSession also gets a frame of reference and
-     * base rendering layer. <br>
-     * @param {XRSession}
-     * @private
-     * @ignore
-     */
+   * This is where the actual p5 canvas is first created, and
+   * the GL rendering context is accessed by p5vr.
+   * The current XRSession also gets a frame of reference and
+   * base rendering layer. <br>
+   * @param {XRSession}
+   * @private
+   * @ignore
+   */
   __startSketch(session) {
     this.xrSession = this.xrButton.session = session;
     this.xrSession.addEventListener('end', this.__onSessionEnded);
@@ -76,7 +76,11 @@ export default class p5ar extends p5xr {
       if (hitTestResults.length > 0) {
         // const pose = hitTestResults[0].getPose(ev.inputSource.targetRaySpace, this.xrRefSpace);
         const pose = hitTestResults[0].getPose(this.xrRefSpace);
-        return createVector(pose.transform.position.x, pose.transform.position.y, pose.transform.position.z);
+        return createVector(
+          pose.transform.position.x,
+          pose.transform.position.y,
+          pose.transform.position.z
+        );
       }
     }
   }
@@ -103,19 +107,24 @@ export default class p5ar extends p5xr {
    */
   __onXRButtonClicked() {
     // Normalize the various vendor prefixed versions of getUserMedia.
-    navigator.getUserMedia = (navigator.getUserMedia
-        || navigator.webkitGetUserMedia
-        || navigator.mozGetUserMedia
-        || navigator.msGetUserMedia);
+    navigator.getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia;
 
-    navigator.xr.requestSession('immersive-ar', {
-      requiredFeatures: ['local', 'hit-test'],
-    })
-      .then((session) => {
-        this.__startSketch(session);
-      }, (error) => {
-        console.log(`${error} unable to request an immersive-ar session.`);
-      });
+    navigator.xr
+      .requestSession('immersive-ar', {
+        requiredFeatures: ['local', 'hit-test'],
+      })
+      .then(
+        (session) => {
+          this.__startSketch(session);
+        },
+        (error) => {
+          console.log(`${error} unable to request an immersive-ar session.`);
+        }
+      );
   }
 
   /**
@@ -127,21 +136,24 @@ export default class p5ar extends p5xr {
       xrCompatible: true,
     });
     this.gl.makeXRCompatible().then(() => {
-      this.xrSession.updateRenderState({ baseLayer: new XRWebGLLayer(this.xrSession, this.gl) });
+      this.xrSession.updateRenderState({
+        baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+      });
     });
 
     this.xrSession.requestReferenceSpace('viewer').then((refSpace) => {
       this.xrViewerSpace = refSpace;
-      this.xrSession.requestHitTestSource({ space: this.xrViewerSpace }).then((hitTestSource) => {
-        this.xrHitTestSource = hitTestSource;
-      });
+      this.xrSession
+        .requestHitTestSource({ space: this.xrViewerSpace })
+        .then((hitTestSource) => {
+          this.xrHitTestSource = hitTestSource;
+        });
     });
 
-    this.xrSession.requestReferenceSpace('local')
-      .then((refSpace) => {
-        this.xrRefSpace = refSpace;
-        // Inform the session that we're ready to begin drawing.
-        this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
-      });
+    this.xrSession.requestReferenceSpace('local').then((refSpace) => {
+      this.xrRefSpace = refSpace;
+      // Inform the session that we're ready to begin drawing.
+      this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+    });
   }
 }

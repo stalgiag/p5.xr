@@ -6,7 +6,7 @@ If you need iOS support reach out to me and I can update you when it is back
 
 ### Browser Support for VR
 Chrome 78+ on Android
-Chrome and Firefox on Desktop
+Chrome and Chromium (Brave, Edge, etc) on Desktop
 
 ## AR
 
