@@ -1,8 +1,7 @@
 <a name="resetXR"></a>
 
 ## resetXR()
-Helper function to reset XR and GL, should be called between
-ending an XR session and starting a new XR session
+Helper function to reset XR and GL, should be called betweenending an XR session and starting a new XR session
 
 **Kind**: global function  
 
@@ -11,9 +10,7 @@ ending an XR session and starting a new XR session
 <a name="setVRBackgroundColor"></a>
 
 ## setVRBackgroundColor(r, g, b)
-Sets the clear color for VR-Mode. <br><br>
-This has to happen separately from calls to background
-to avoid clearing between drawing the eyes
+Sets the clear color for VR-Mode. <br><br>This has to happen separately from calls to backgroundto avoid clearing between drawing the eyes
 
 **Kind**: global function  
 **Category**: Background  
@@ -39,31 +36,7 @@ to avoid clearing between drawing the eyes
 
 **Example**  
 ```js
-let timer = 0;
-const timeBetween = 2000;
-
-function preload() {
-  createVRCanvas();
-}
-
-function setup() {
-  randomizeBackground();
-}
-
-function draw() {
-  if(millis() - timer > timeBetween) {
-    randomizeBackground();
-    timer = millis();
-  }
-
-  translate(0, 0, -100);
-  rotateX(frameCount * 0.005);
-  box(10);
-}
-
-function randomizeBackground() {
-  setVRBackgroundColor(random(255), random(255), random(255));
-}
+let timer = 0;const timeBetween = 2000;function preload() {  createVRCanvas();}function setup() {  randomizeBackground();}function draw() {  if(millis() - timer > timeBetween) {    randomizeBackground();    timer = millis();  }  translate(0, 0, -100);  rotateX(frameCount * 0.005);  box(10);}function randomizeBackground() {  setVRBackgroundColor(random(255), random(255), random(255));}
 ```
 
 * * *
@@ -71,10 +44,7 @@ function randomizeBackground() {
 <a name="p5xrButton"></a>
 
 ## p5xrButton
-p5xrButton
-A button that handles entering and exiting an XR session.
-All browsers require that the user grant permission to enter XR and permission
-can only be request with a user gesture.
+p5xrButtonA button that handles entering and exiting an XR session.All browsers require that the user grant permission to enter XR and permissioncan only be request with a user gesture.
 
 **Kind**: global class  
 **Category**: Initialization  
@@ -117,8 +87,7 @@ Sets the XRDevice this button is associated with. This rarely needs to be called
 <a name="p5xrButton+setSession"></a>
 
 ### p5xrButton.setSession(session) ⇒ [<code>p5xrButton</code>](#p5xrButton)
-Indicates to the p5xrButton that there's an active XRSession.
-Switches the button to it's exitXR state if session is not null.
+Indicates to the p5xrButton that there's an active XRSession.Switches the button to it's exitXR state if session is not null.
 
 **Kind**: instance method of [<code>p5xrButton</code>](#p5xrButton)  
 <table>
@@ -228,12 +197,7 @@ Remove the p5xrButton from the DOM
 <a name="createVRCanvas"></a>
 
 ## createVRCanvas([xrButton])
-starts the process of creating a VR-ready canvas
-This actually just creates a button that will set into motion
-the creation of a VR canvas and creates a new p5vr object.
-This should be called in `preload()` so
-that the entire sketch can wait to start until the user has "entered VR"
-via a button click gesture
+starts the process of creating a VR-ready canvasThis actually just creates a button that will set into motionthe creation of a VR canvas and creates a new p5vr object.This should be called in `preload()` sothat the entire sketch can wait to start until the user has "entered VR"via a button click gesture
 
 **Kind**: global function  
 **Category**: Initialization  
@@ -257,12 +221,7 @@ via a button click gesture
 <a name="createARCanvas"></a>
 
 ## createARCanvas()
-**AR IS LARGELY UNTESTED AND EXPERIMENTAL**
-This creates a button that will create a AR canvas and new p5ar object
-on click.
-This should be called in `preload()` so
-that the entire sketch can wait to start until the user has "entered AR"
-via a button click gesture/
+**AR IS LARGELY UNTESTED AND EXPERIMENTAL**This creates a button that will create a AR canvas and new p5ar objecton click.This should be called in `preload()` sothat the entire sketch can wait to start until the user has "entered AR"via a button click gesture/
 
 **Kind**: global function  
 **Category**: Initialization  
@@ -370,22 +329,7 @@ The current 4x4 pose matrix
 **Kind**: instance property of [<code>p5xrInput</code>](#p5xrInput)  
 **Example**  
 ```js
-// Draws a box at the current pose matrix
-let right;
-
-function preload() {
- createVRCanvas();
-}
-
-function draw() {
-  right = getXRInput('right');
-  if (right) {
-    push();
-    translate(right.pose());
-    box(10);
-    pop();
- }
-}
+// Draws a box at the current pose matrixlet right;function preload() { createVRCanvas();}function draw() {  right = getXRInput('right');  if (right) {    push();    translate(right.pose());    box(10);    pop(); }}
 ```
 
 * * *
@@ -635,10 +579,7 @@ Create a ray object for using with raycasting methods.
 <a name="p5xrViewer"></a>
 
 ## p5xrViewer
-p5xrViewer
-Class that contains state of current viewer position and view. The view and pose matrices
-are updated automatically but can be accessed directly. For most use cases, the viewer position
-should be modified using the setViewerPosition function.
+p5xrViewerClass that contains state of current viewer position and view. The view and pose matricesare updated automatically but can be accessed directly. For most use cases, the viewer positionshould be modified using the setViewerPosition function.
 
 **Kind**: global class  
 **Category**: View  
@@ -672,8 +613,7 @@ View matrix
 <a name="p5xrViewer+getRayFromScreen"></a>
 
 ### p5xrViewer.getRayFromScreen(screenX, screenY) ⇒ <code>Ray</code>
-Get a ray object from a viewer for a given screen coordinate.
-Used for raycasting.
+Get a ray object from a viewer for a given screen coordinate.Used for raycasting.
 
 **Kind**: instance method of [<code>p5xrViewer</code>](#p5xrViewer)  
 **Returns**: <code>Ray</code> - Ray from viewer position to screen position, {origin, direction}  
@@ -699,7 +639,7 @@ Used for raycasting.
 <a name="setViewerPosition"></a>
 
 ## setViewerPosition(targetX, targetY, targetZ)
-Sets the position of the viewer
+Sets the position of the viewer.
 
 **Kind**: global function  
 **Category**: View  
@@ -722,6 +662,10 @@ Sets the position of the viewer
     </tr>  </tbody>
 </table>
 
+**Example**  
+```js
+function preload() {  createVRCanvas();}function setup() {  setVRBackgroundColor(0, 0, 255);  angleMode(DEGREES);  noStroke();}var viewerPosition = new p5.Vector(0,0,0);function draw() {  setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);  //moves the viewer forward if a key is pressed  if(keyIsPressed){    viewerPosition.z -= 0.01  }  //moves the viewer forward if controller trigger is pressed  const left = getXRInput(LEFT);  const right = getXRInput(RIGHT);  [left, right].forEach((hand) => {	  if (hand) {		  push();      if( (hand.trigger && hand.trigger.pressed) || keyIsPressed) {        viewerPosition.z -= 0.01      }      fill(255, 255, 0);      applyMatrix(hand.pose)		  box(0.05);		  pop();	  }  });  //draw a 10x10 floor  push();  translate(0, -1, 0);  rotateX(-90);  fill(0, 255, 0);  plane(10, 10);  pop();  //resets the viewer's position if they move too far  if (viewerPosition.z < -7) {    viewerPosition.z = 7;  }}
+```
 
 * * *
 
