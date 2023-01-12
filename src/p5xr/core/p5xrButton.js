@@ -19,8 +19,7 @@ class p5xrButton {
     this.options.cssprefix = options.cssprefix || 'webvr-ui';
 
     this.options.textEnterXRTitle = options.textEnterXRTitle || 'ENTER XR';
-    this.options.textXRNotFoundTitle =
-      options.textXRNotFoundTitle || 'XR NOT FOUND';
+    this.options.textXRNotFoundTitle = options.textXRNotFoundTitle || 'XR NOT FOUND';
     this.options.textExitXRTitle = options.textExitXRTitle || 'EXIT XR';
 
     this.options.onRequestSession = options.onRequestSession || function () {};
@@ -56,9 +55,8 @@ class p5xrButton {
    */
   __generateInnerHTML(cssPrefix, height) {
     const logoHeight = height * this.logoScale;
-    const svgString =
-      this.__generateXRIconString(cssPrefix, logoHeight) +
-      this.__generateNoXRIconString(cssPrefix, logoHeight);
+    const svgString = this.__generateXRIconString(cssPrefix, logoHeight)
+      + this.__generateNoXRIconString(cssPrefix, logoHeight);
 
     return `<button class="${cssPrefix}-button">
     <div class="${cssPrefix}-title"></div>
@@ -85,7 +83,7 @@ class p5xrButton {
     const el = document.createElement('div');
     el.innerHTML = this.__generateInnerHTML(
       options.cssprefix,
-      options.fontSize
+      options.fontSize,
     );
     return el.firstChild;
   }
@@ -130,8 +128,8 @@ class p5xrButton {
     const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg" version="1.1" x="0px" y="0px"
         width="${
-          aspect * height
-        }px" height="${height}px" viewBox="0 0 28 18" xml:space="preserve">
+  aspect * height
+}px" height="${height}px" viewBox="0 0 28 18" xml:space="preserve">
         <path d="M26.8,1.1C26.1,0.4,25.1,0,24.2,0H3.4c-1,0-1.7,0.4-2.4,1.1C0.3,1.7,0,2.7,0,3.6v10.7
         c0,1,0.3,1.9,0.9,2.6C1.6,17.6,2.4,18,3.4,18h5c0.7,0,1.3-0.2,1.8-0.5c0.6-0.3,1-0.8,1.3-1.4l
         1.5-2.6C13.2,13.1,13,13,14,13v0h-0.2 h0c0.3,0,0.7,0.1,0.8,0.5l1.4,2.6c0.3,0.6,0.8,1.1,1.3,
@@ -154,8 +152,8 @@ class p5xrButton {
     const aspect = 28 / 18;
     return `<svg class="${cssPrefix}-svg-error" x="0px" y="0px"
         width="${aspect * height}px" height="${
-      aspect * height
-    }px" viewBox="0 0 28 28" xml:space="preserve">
+  aspect * height
+}px" viewBox="0 0 28 28" xml:space="preserve">
         <path d="M17.6,13.4c0-0.2-0.1-0.4-0.1-0.6c0-1.6,1.3-2.8,2.8-2.8s2.8,1.3,2.8,2.8s-1.3,2.8-2.8,2.8
         c-0.2,0-0.4,0-0.6-0.1l5.9,5.9c0.5-0.2,0.9-0.4,1.3-0.8
         c0.7-0.7,1.1-1.6,1.1-2.5V7.4c0-1-0.4-1.9-1.1-2.5c-0.7-0.7-1.6-1-2.5-1
@@ -294,8 +292,8 @@ class p5xrButton {
           fill: ${options.color};
           display:none;
           margin-top: ${
-            (height - (28 / 18) * options.fontSize * this.logoScale) / 2 - 2
-          }px;
+  (height - (28 / 18) * options.fontSize * this.logoScale) / 2 - 2
+}px;
           margin-left: ${height / 3}px;
       }
 
@@ -310,8 +308,8 @@ class p5xrButton {
           font-size: ${options.fontSize}px;
           padding-left: ${height * 1.05}px;
           padding-right: ${
-            borderRadius - 10 < 5 ? height / 3 : borderRadius - 10
-          }px;
+  borderRadius - 10 < 5 ? height / 3 : borderRadius - 10
+}px;
       }
 
       /*
@@ -468,8 +466,8 @@ class p5xrButton {
     } else if (this.device) {
       // feature detect
       if (
-        typeof DeviceMotionEvent !== 'undefined' &&
-        typeof DeviceMotionEvent.requestPermission === 'function'
+        typeof DeviceMotionEvent !== 'undefined'
+        && typeof DeviceMotionEvent.requestPermission === 'function'
       ) {
         DeviceMotionEvent.requestPermission()
           .then((permissionState) => {
@@ -481,8 +479,8 @@ class p5xrButton {
       }
 
       if (
-        typeof DeviceOrientationEvent !== 'undefined' &&
-        typeof DeviceOrientationEvent.requestPermission === 'function'
+        typeof DeviceOrientationEvent !== 'undefined'
+        && typeof DeviceOrientationEvent.requestPermission === 'function'
       ) {
         DeviceOrientationEvent.requestPermission()
           .then((permissionState) => {
