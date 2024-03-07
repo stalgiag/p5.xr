@@ -19,10 +19,10 @@ suite('p5xr', function() {
   });
   
   suite('init()', function() {
-    test('p5xr.isVR is true for VR sketch', function() {
+    test('p5xr mode is VR for VR sketch', function() {
       p5xr.instance = new p5vr();
       p5xr.instance.__initVR();
-      assert.isTrue(p5xr.instance.isVR);
+      assert.isTrue(p5xr.instance.mode === 'VR');
       p5xr.instance.remove();
     });
     

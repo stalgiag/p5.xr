@@ -2,17 +2,17 @@ import { quat } from 'gl-matrix';
 import p5xr from '../core/p5xr';
 
 /**
- * p5vr class holds all state and methods that are specific to VR
+ * p5vr class holds all state and methods that are specific to MR ( headset based AR )
  * @class
  * @private
  * @constructor
  * @ignore
  */
 
-export default class p5vr extends p5xr {
+export default class p5mr extends p5xr {
   constructor() {
     super();
-    this.mode = 'VR';
+    this.mode = 'MR';
     this.isImmersive = false;
     this.lookYaw = 0;
     this.lookPitch = 0;
@@ -33,13 +33,14 @@ export default class p5vr extends p5xr {
    * @private
    * @ignore
    */
-  __initVR() {
+  __initMR() {
+    console.log("create button");
     this.__createButton();
   }
 
   /**
    * This is where the actual p5 canvas is first created, and
-   * the GL rendering context is accessed by p5vr.
+   * the GL rendering context is accessed by p5mr.
    * The current XRSession also gets a frame of reference and
    * base rendering layer. <br>
    * @param {XRSession}
@@ -56,7 +57,7 @@ export default class p5vr extends p5xr {
       window.setup();
       p5.instance._millisStart = window.performance.now();
     }
-    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+    const refSpaceRequest = this.isImmersive ? 'local-floor' : 'viewer';
     this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
       this.xrRefSpace = refSpace;
       // Inform the session that we're ready to begin drawing.
@@ -88,18 +89,18 @@ export default class p5vr extends p5xr {
   }
 
   /**
-   * `navigator.xr.requestSession('immersive-vr')` must be called within a user gesture event.
+   * `navigator.xr.requestSession('immersive-ar')` must be called within a user gesture event.
    * @param {XRDevice}
    * @private
    * @ignore
    */
   __onXRButtonClicked() {
     if (this.hasImmersive) {
-      console.log('Requesting session with mode: immersive-vr');
+      console.log('Requesting MR session with mode: immersive-ar');
       this.isImmersive = true;
       this.resetXR();
       navigator.xr
-        .requestSession('immersive-vr')
+        .requestSession('immersive-ar')
         .then(this.__startSketch.bind(this));
     } else {
       this.xrButton.hide();
@@ -114,13 +115,13 @@ export default class p5vr extends p5xr {
   __onRequestSession() {
     p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-
-    this.gl = this.canvas.getContext(p5.instance.webglVersion);
+    console.log('Requesting reference space with mode: ' + refSpaceRequest);
+    this.gl = this.canvas.getContext('webgl');
     this.gl
       .makeXRCompatible()
       .then(() => {
         // Get a frame of reference, which is required for querying poses.
-        // 'local' places the initial pose relative to initial location of viewer
+        // space request types https://developer.mozilla.org/en-US/docs/Web/API/XRSession/requestReferenceSpace
         // 'viewer' is only for inline experiences and only allows rotation
         this.xrSession
           .requestReferenceSpace(refSpaceRequest)
@@ -152,7 +153,6 @@ export default class p5vr extends p5xr {
     if (this.curClearColor === null) {
       return;
     }
-    p5.instance.background(this.curClearColor);
 
     this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
   }

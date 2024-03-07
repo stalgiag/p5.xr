@@ -1,5 +1,6 @@
 import p5vr from './p5xr/p5vr/p5vr';
 import p5ar from './p5xr/p5ar/p5ar';
+import p5mr from './p5xr/p5mr/p5mr';
 
 window.p5xr = {
   instance: null,
@@ -47,6 +48,22 @@ p5.prototype.createARCanvas = function () {
   noLoop();
   p5xr.instance = new p5ar();
   p5xr.instance.initAR();
+};
+
+/**
+ * This creates a button that will create a AR canvas and new p5mr object
+ * on click. p5mr is for headset based AR with pass-through cameras.
+ * This should be called in `preload()` so
+ * that the entire sketch can wait to start until the user has "entered AR"
+ * via a button click gesture/
+ * @method createMRCanvas
+ * @section AR
+ * @category Initialization
+ */
+p5.prototype.createMRCanvas = function () {
+  noLoop();
+  p5xr.instance = new p5mr();
+  p5xr.instance.__initMR();
 };
 
 /**
@@ -155,7 +172,7 @@ p5.prototype.surroundTexture = function (tex) {
  * @section AR
  */
 p5.prototype.createAnchor = function (vec) {
-  if (p5xr.instance.isVR) {
+  if (p5xr.instance.mode === 'VR') {
     return;
   }
   return p5xr.instance.__createAnchor(vec);
@@ -165,7 +182,7 @@ p5.prototype.createAnchor = function (vec) {
  * @ignore
  */
 p5.prototype.detectHit = function (ev) {
-  if (p5xr.instance.isVR) {
+  if (p5xr.instance.mode === 'VR') {
     return;
   }
   return p5xr.instance.__detectHit(ev);
