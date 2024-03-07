@@ -132,7 +132,7 @@ export default class p5ar extends p5xr {
    * @ignore
    */
   __onRequestSession() {
-    this.gl = this.canvas.getContext('webgl', {
+    this.gl = this.canvas.getContext(p5.instance.webglVersion, {
       xrCompatible: true,
     });
     this.gl.makeXRCompatible().then(() => {

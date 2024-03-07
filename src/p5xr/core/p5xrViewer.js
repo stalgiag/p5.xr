@@ -28,7 +28,7 @@ class p5xrViewer {
    */
   set pose(newPose) {
     this._pose = newPose;
-    this.poseMatrix.set(newPose.poseModelMatrix);
+    this.poseMatrix.set(newPose.transform.matrix);
   }
 
   get pose() {

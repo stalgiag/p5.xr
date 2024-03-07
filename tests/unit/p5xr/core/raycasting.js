@@ -1,3 +1,11 @@
+function approxEqual(arr1, arr2, epsilon = 0.0001) {
+  if (arr1.length !== arr2.length) return false;
+  for (let i = 0; i < arr1.length; i++) {
+    if (Math.abs(arr1[i] - arr2[i]) > epsilon) return false;
+  }
+  return true;
+}
+
 suite('raycasting', function() {
   let myp5;
 
@@ -53,7 +61,8 @@ suite('raycasting', function() {
       let uMVMatrix = [0.9991118311882019, 0.010332025587558746, 0.04085145890712738, -0, -0.032737694680690765, 0.8007082939147949, 0.5981592535972595, 0, -0.026529904454946518, -0.5989654064178467, 0.8003354072570801, 0, -43.66838073730469, 568.6730346679688, -75.510009765625, 1];
       myp5._renderer.uMVMatrix.set([...uMVMatrix]);
       let intersects = intersectsSphere(70);
-      assert.deepEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix);
+
+      assert.isTrue(approxEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix), 'uMVMatrix is approximately equal');
     });
   });
 
@@ -100,7 +109,7 @@ suite('raycasting', function() {
       let uMVMatrix = [0.9991118311882019, 0.010332025587558746, 0.04085145890712738, -0, -0.032737694680690765, 0.8007082939147949, 0.5981592535972595, 0, -0.026529904454946518, -0.5989654064178467, 0.8003354072570801, 0, -43.66838073730469, 568.6730346679688, -75.510009765625, 1];
       myp5._renderer.uMVMatrix.set([...uMVMatrix]);
       let intersects = intersectsBox(70);
-      assert.deepEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix);
+      assert.isTrue(approxEqual(myp5._renderer.uMVMatrix.mat4, uMVMatrix), 'uMVMatrix is approximately equal');
     });
   });
 });

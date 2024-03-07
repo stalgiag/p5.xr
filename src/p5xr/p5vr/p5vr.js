@@ -115,7 +115,7 @@ export default class p5vr extends p5xr {
     p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
 
-    this.gl = this.canvas.getContext('webgl');
+    this.gl = this.canvas.getContext(p5.instance.webglVersion);
     this.gl
       .makeXRCompatible()
       .then(() => {
