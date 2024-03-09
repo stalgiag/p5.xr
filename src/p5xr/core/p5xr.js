@@ -128,6 +128,7 @@ export default class p5xr {
       const mode = this.isVR ? 'VR' : 'AR';
       const session = this.isVR ? 'immersive-vr' : 'immersive-ar';
       const supported = await navigator.xr.isSessionSupported(session);
+      this.hasImmersive = supported;
       this.xrButton.setAvailable(supported, mode);
     } else {
       console.log('XR Not Available');
