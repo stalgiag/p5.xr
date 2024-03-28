@@ -19,7 +19,7 @@ export default class p5xr {
   constructor(xrButton) {
     this.xrDevice = null;
     this.xrButton = xrButton || null;
-    this.isVR = null;
+    this.mode = null; // VR, AR or MR
     this.hasImmersive = null;
     this.xrSession = null;
     this.xrRefSpace = null;
@@ -125,8 +125,8 @@ export default class p5xr {
     // WebXR availabilty
     if (navigator?.xr) {
       console.log('XR Available');
-      const mode = this.isVR ? 'VR' : 'AR';
-      const session = this.isVR ? 'immersive-vr' : 'immersive-ar';
+      const mode = this.mode;
+      const session = this.mode === 'VR' ? 'immersive-vr' : 'immersive-ar';
       const supported = await navigator.xr.isSessionSupported(session);
       this.hasImmersive = supported;
       this.xrButton.setAvailable(supported, mode);
@@ -154,7 +154,7 @@ export default class p5xr {
     session.requestAnimationFrame(this.__onXRFrame.bind(this));
 
     let targetRefSpace = this.xrRefSpace;
-    if (this.isVR && !this.isImmersive) {
+    if (this.mode === 'VR' && !this.isImmersive) {
       // Account for the click-and-drag mouse movement or touch movement when
       // calculating the viewer pose for inline sessions.
       targetRefSpace = this.getAdjustedRefSpace(this.xrRefSpace);
@@ -176,7 +176,7 @@ export default class p5xr {
       // rendered.
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, glLayer.framebuffer);
 
-      if (this.isVR) {
+      if (this.mode === 'VR') {
         this.clearVR();
       }
 
@@ -225,7 +225,7 @@ export default class p5xr {
     const userDraw = context.draw;
     const userCalculate = context.calculate;
 
-    if (this.isVR) {
+    if (this.mode === 'VR' || this.mode === 'MR') {
       if (eyeIndex === 0) {
         if (typeof userCalculate === 'function') {
           userCalculate();
@@ -291,7 +291,7 @@ export default class p5xr {
    * @ignore
    */
   __onSessionEnded() {
-    if (!this.isVR) {
+    if (!(this.mode === 'VR')) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
     } else if (this.isImmersive) {
