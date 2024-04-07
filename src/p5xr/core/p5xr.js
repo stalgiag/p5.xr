@@ -20,6 +20,7 @@ export default class p5xr {
     this.xrDevice = null;
     this.isVR = null;
     this.hasImmersive = null;
+    this.isImmersive = false;
     this.xrSession = null;
     this.xrRefSpace = null;
     this.xrViewerSpace = null;
