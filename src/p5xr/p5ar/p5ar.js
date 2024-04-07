@@ -9,10 +9,6 @@ export default class p5ar extends p5xr {
 
   initAR() {
     this.__createButton();
-    // WebXR available
-    if (navigator?.xr) {
-      this.__sessionCheck();
-    }
   }
 
   //* ********************************************************//
