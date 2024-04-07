@@ -4,6 +4,7 @@ import ARAnchor from './ARAnchor';
 export default class p5ar extends p5xr {
   constructor() {
     super();
+    this.mode = 'immersive-ar';
     this.canvas = null;
     this.__createButton();
   }

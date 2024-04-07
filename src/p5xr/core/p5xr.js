@@ -8,6 +8,7 @@ import p5xrInput from './p5xrInput';
  *
  * @constructor
  *
+ * @property mode  {"inline" | "immersive-ar" | "immersive-vr"} WebXR session mode
  * @property vrDevice  {XRDevice} the current VR compatible device
  * @property vrSession  {XRSession} the current VR session
  * @property vrFrameOfRef  {XRFrameOfReference} the current VR frame of reference
@@ -19,6 +20,7 @@ export default class p5xr {
   constructor() {
     this.xrDevice = null;
     this.isVR = null;
+    this.mode = 'inline';
     this.hasImmersive = null;
     this.isImmersive = false;
     this.xrSession = null;
@@ -27,7 +29,7 @@ export default class p5xr {
     this.xrHitTestSource = null;
     this.frame = null;
     this.gl = null;
-    this.curClearColor = color(255, 255, 255);
+    this.curClearColor = color(256, 255, 255);
     this.viewer = new p5xrViewer();
   }
 
@@ -125,11 +127,9 @@ export default class p5xr {
     // WebXR availabilty
     if (navigator?.xr) {
       console.log('XR Available');
-      const mode = this.isVR ? 'VR' : 'AR';
-      const session = this.isVR ? 'immersive-vr' : 'immersive-ar';
-      const supported = await navigator.xr.isSessionSupported(session);
+      const supported = await navigator.xr.isSessionSupported(this.mode);
       this.hasImmersive = supported;
-      this.xrButton.setAvailable(supported, mode);
+      this.xrButton.setAvailable(supported, this.mode);
     } else {
       console.log('XR Not Available');
       this.xrButton.disable();
