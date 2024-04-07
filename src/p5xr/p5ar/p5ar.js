@@ -3,7 +3,9 @@ import ARAnchor from './ARAnchor';
 
 export default class p5ar extends p5xr {
   constructor() {
-    super();
+    super({
+      requiredFeatures: ['local', 'hit-test'],
+    });
     this.mode = 'immersive-ar';
     this.canvas = null;
     this.__createButton();
@@ -91,27 +93,6 @@ export default class p5ar extends p5xr {
       return null;
     }
     return new ARAnchor(vec.x, vec.y, vec.z);
-  }
-
-  /**
-   * `device.requestSession()` must be called within a user gesture event.
-   * @param {XRDevice}
-   * @private
-   * @ignore
-   */
-  __onXRButtonClicked() {
-    navigator.xr
-      .requestSession('immersive-ar', {
-        requiredFeatures: ['local', 'hit-test'],
-      })
-      .then(
-        (session) => {
-          this.__startSketch(session);
-        },
-        (error) => {
-          console.log(`${error} unable to request an immersive-ar session.`);
-        }
-      );
   }
 
   /**

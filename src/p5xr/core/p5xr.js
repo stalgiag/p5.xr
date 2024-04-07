@@ -8,6 +8,15 @@ import p5xrInput from './p5xrInput';
  *
  * @constructor
  *
+ * @param {Object} [options={}] - Configuration options for the XR session
+ * @param {Array<"anchors" | "bounded-floor" | "depth-sensing" | "dom-overlay" |
+ * "hand-tracking" | "hit-test" | "layers" | "light-estimation" | "local" |
+ * "local-floor" | "secondary-views" | "unbounded" | "viewer">} [options.requiredFeatures=[]] - Required features
+ * @param {Object} [options={}] - Configuration options for the XR session
+ * @param {Array<"anchors" | "bounded-floor" | "depth-sensing" | "dom-overlay" |
+ * "hand-tracking" | "hit-test" | "layers" | "light-estimation" | "local" |
+ * "local-floor" | "secondary-views" | "unbounded" | "viewer">} [options.optionalFeatures=[]] - Optional features
+ *
  * @property mode  {"inline" | "immersive-ar" | "immersive-vr"} WebXR session mode
  * @property vrDevice  {XRDevice} the current VR compatible device
  * @property vrSession  {XRSession} the current VR session
@@ -17,7 +26,12 @@ import p5xrInput from './p5xrInput';
  * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
  */
 export default class p5xr {
-  constructor() {
+  constructor(options = {}) {
+    const {
+      requiredFeatures = [],
+      optionalFeatures = [],
+    } = options;
+
     this.xrDevice = null;
     this.isVR = null;
     this.mode = 'inline';
@@ -31,6 +45,9 @@ export default class p5xr {
     this.gl = null;
     this.curClearColor = color(256, 255, 255);
     this.viewer = new p5xrViewer();
+
+    this.requiredFeatures = requiredFeatures;
+    this.optionalFeatures = optionalFeatures;
   }
 
   /**
@@ -133,6 +150,45 @@ export default class p5xr {
     } else {
       console.log('XR Not Available');
       this.xrButton.disable();
+    }
+  }
+
+  /**
+   * Helper function to reset XR and GL, should be called between
+   * ending an XR session and starting a new XR session
+   * @method resetXR
+   */
+  resetXR() {
+    this.xrDevice = null;
+    this.xrSession = null;
+    this.xrRefSpace = null;
+    this.xrViewerSpace = null;
+    this.xrHitTestSource = null;
+    this.gl = null;
+    this.frame = null;
+  }
+
+  /**
+   * `navigator.xr.requestSession()` must be called within a user gesture event.
+   * @private
+   * @ignore
+   */
+  __onXRButtonClicked() {
+    if (this.hasImmersive) {
+      console.log(`Requesting session with mode: ${this.mode}`);
+      this.isImmersive = true;
+      this.resetXR();
+      navigator.xr
+        .requestSession(this.mode, {
+          requiredFeatures: this.requiredFeatures,
+          optionalFeatures: this.optionalFeatures,
+        })
+        .then(this.__startSketch.bind(this))
+        .catch((error) => {
+          console.error(`An error occured activating ${this.mode}: ${error}`);
+        });
+    } else {
+      this.xrButton.hide();
     }
   }
 
