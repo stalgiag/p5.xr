@@ -102,13 +102,6 @@ export default class p5ar extends p5xr {
    * @ignore
    */
   __onXRButtonClicked() {
-    // Normalize the various vendor prefixed versions of getUserMedia.
-    navigator.getUserMedia =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
-
     navigator.xr
       .requestSession('immersive-ar', {
         requiredFeatures: ['local', 'hit-test'],
