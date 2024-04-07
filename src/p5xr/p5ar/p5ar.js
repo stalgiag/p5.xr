@@ -5,9 +5,6 @@ export default class p5ar extends p5xr {
   constructor() {
     super();
     this.canvas = null;
-  }
-
-  initAR() {
     this.__createButton();
   }
 

@@ -25,15 +25,6 @@ export default class p5vr extends p5xr {
     if (navigator?.xr) {
       navigator.xr.requestSession('inline').then(this.__startSketch.bind(this));
     }
-  }
-
-  /**
-   * Currently a stub function that just creates a button
-   * Previously handled more, now can be replaced with refactor
-   * @private
-   * @ignore
-   */
-  __initVR() {
     this.__createButton();
   }
 
