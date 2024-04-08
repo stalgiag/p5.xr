@@ -71,7 +71,7 @@ export default class p5ar extends p5xr {
         return createVector(
           pose.transform.position.x,
           pose.transform.position.y,
-          pose.transform.position.z
+          pose.transform.position.z,
         );
       }
     }

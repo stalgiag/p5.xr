@@ -340,7 +340,7 @@ export default class p5xr {
           viewport.x,
           viewport.y,
           viewport.width * scaleFactor,
-          viewport.height * scaleFactor
+          viewport.height * scaleFactor,
         );
         this.__updateViewport(viewport);
 
@@ -370,7 +370,7 @@ export default class p5xr {
    * @private
    * @ignore
    */
-  __drawEye(eyeIndex) {
+  __drawEye() {
     const context = window;
     const userSetup = context.setup;
     const userDraw = context.draw;
@@ -446,9 +446,9 @@ export default class p5xr {
    */
   printUnsupportedMessage() {
     console.warn(
-      'Your browser/hardware does not work with AR Mode currently. This is' +
-        ' undergoing heavy development currently.' +
-        'You may be able to fix this by enabling WebXR flags in Chrome.'
+      'Your browser/hardware does not work with AR Mode currently. This is'
+        + ' undergoing heavy development currently.'
+        + 'You may be able to fix this by enabling WebXR flags in Chrome.',
     );
   }
 

@@ -75,7 +75,7 @@ export default class p5vr extends p5xr {
         y: invOrientation[1],
         z: invOrientation[2],
         w: invOrientation[3],
-      }
+      },
     );
     return refSpace.getOffsetReferenceSpace(xform);
   }
@@ -130,7 +130,7 @@ export default class p5vr extends p5xr {
           this.primaryTouch = undefined;
           this.rotateInlineView(
             touch.pageX - this.prevTouchX,
-            touch.pageY - this.prevTouchY
+            touch.pageY - this.prevTouchY,
           );
         }
       }
@@ -154,7 +154,7 @@ export default class p5vr extends p5xr {
         if (this.primaryTouch === touch.identifier) {
           this.rotateInlineView(
             touch.pageX - this.prevTouchX,
-            touch.pageY - this.prevTouchY
+            touch.pageY - this.prevTouchY,
           );
           this.prevTouchX = touch.pageX;
           this.prevTouchY = touch.pageY;
