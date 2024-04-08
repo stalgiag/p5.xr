@@ -38,67 +38,7 @@ export default class p5vr extends p5xr {
    * @ignore
    */
   __startSketch(session) {
-    this.xrSession = session;
-    this.canvas = p5.instance.canvas;
-    this.canvas.style.visibility = 'visible';
-
-    this.xrSession.addEventListener('end', this.__onSessionEnded.bind(this));
-    if (typeof window.setup === 'function') {
-      window.setup();
-      p5.instance._millisStart = window.performance.now();
-    }
-    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
-      this.xrRefSpace = refSpace;
-      // Inform the session that we're ready to begin drawing.
-      this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
-      if (!this.isImmersive) {
-        this.xrSession.updateRenderState({
-          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
-          inlineVerticalFieldOfView: 70 * (Math.PI / 180),
-        });
-        this.addInlineViewListeners(this.canvas);
-      }
-    });
-    this.__onRequestSession();
-  }
-
-
-  /**
-   * Requests a reference space and makes the p5's WebGL layer XR compatible.
-   * @private
-   * @ignore
-   */
-  __onRequestSession() {
-    p5.instance._renderer._curCamera.cameraType = 'custom';
-    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-
-    this.gl = this.canvas.getContext(p5.instance.webglVersion);
-    this.gl
-      .makeXRCompatible()
-      .then(() => {
-        // Get a frame of reference, which is required for querying poses.
-        // 'local' places the initial pose relative to initial location of viewer
-        // 'viewer' is only for inline experiences and only allows rotation
-        this.xrSession
-          .requestReferenceSpace(refSpaceRequest)
-          .then((refSpace) => {
-            this.xrRefSpace = refSpace;
-          });
-
-        // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
-        // sessions baseLayer. This allows any content rendered to the layer to
-        // be displayed on the XRDevice;
-        this.xrSession.updateRenderState({
-          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    // Request initial animation frame
-    this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+    super.__startSketch(session);
   }
 
   /**
