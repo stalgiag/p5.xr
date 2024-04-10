@@ -1,6 +1,7 @@
 import p5xrViewer from './p5xrViewer';
 import p5xrButton from './p5xrButton';
 import p5xrInput from './p5xrInput';
+import '../features/handtracking';
 
 /**
  * p5vr class holds all state and methods that are specific to VR
@@ -29,7 +30,7 @@ export default class p5xr {
   constructor(options = {}) {
     const {
       requiredFeatures = [],
-      optionalFeatures = [],
+      optionalFeatures = ['hand-tracking'],
     } = options;
 
     this.xrDevice = null;
@@ -301,6 +302,11 @@ export default class p5xr {
     const viewer = frame.getViewerPose(this.xrRefSpace);
     const glLayer = session.renderState.baseLayer;
     this.frame = frame;
+
+    for (const inputSource of session.inputSources) {
+      _handleHandInput(frame, this.xrRefSpace, inputSource);
+    }
+
     // Getting the pose may fail if, for example, tracking is lost. So we
     // have to check to make sure that we got a valid pose before attempting
     // to render with it. If not in this case we'll just leave the
