@@ -43,6 +43,25 @@ p5.prototype.handAlt = p.handLeft;
 
 const flatMatrices = new Float32Array(16 * 25); // one 4x4 mat for 25 joints
 
+p5.prototype._pinchTreshold = 25e-3; // about 25 mm
+p5.prototype.fingersArePinched = false;
+p5.prototype.pFingersArePinched = false;
+
+p5.prototype._handleOnPinch = function () {
+  const finger = this.fingerMain;
+  const thumb = this.fingersRight[0];
+  const dist = this.dist(finger.x, finger.y, finger.z, thumb.x, thumb.y, thumb.z);
+
+  this._setProperty('fingersArePinched', dist < this._pinchTreshold);
+
+  if (!this.pFingersArePinched && this.fingersArePinched) {
+    const context = this._isGlobal ? window : this;
+    if (typeof context.fingersPinched === 'function') {
+      context.fingersPinched();
+    }
+  }
+};
+
 p5.prototype._handleHandInput = function (frame, refSpace, inputSource) {
   // todo: Refactor to only do this once
   this._setProperty('hands', this.hands);
@@ -82,7 +101,10 @@ p5.prototype._handleHandInput = function (frame, refSpace, inputSource) {
     this.hands[i + off].z = mat[14];
   }
 
-  // const pose = frame.getPose(inputSource.targetRaySpace, refSpace);
+  this._handleOnPinch();
+  this._setProperty('pFingersArePinched', this.fingersArePinched);
+
+  // const pose = frame.getPose(inputSource.targetRaySpace, refSpace);(
   // if (pose === undefined) {
   //   console.log('no pose');
   // }
