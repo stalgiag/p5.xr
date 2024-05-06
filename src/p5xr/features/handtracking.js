@@ -18,7 +18,9 @@ export const PINKY = 4;
 const p = p5.prototype;
 
 p5.prototype._mainHandMode = p5.prototype.RIGHT;
-p5.prototype.hands = Array.from({ length: 50 }, () => ({ x: 0, y: 0, z: 0 }));
+p5.prototype.hands = Array.from({ length: 50 }, () => ({
+  x: 0, y: 0, z: 0, rad: 0.1, mat: new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]), // Identity matrix
+}));
 
 p5.prototype.fingerLeft = p.hands[9];
 p5.prototype.fingerRight = p.hands[9 + 25];
@@ -42,6 +44,7 @@ p5.prototype.hand = p.handMain;
 p5.prototype.handAlt = p.handLeft;
 
 const flatMatrices = new Float32Array(16 * 25); // one 4x4 mat for 25 joints
+const radii = new Float32Array(25);
 
 p5.prototype._pinchTreshold = 25e-3; // about 25 mm
 p5.prototype.fingersArePinched = false;
@@ -93,12 +96,20 @@ p5.prototype._handleHandInput = function (frame, refSpace, inputSource) {
     return;
   }
 
+  // eslint-disable-next-line no-unused-vars
+  const areRadiiFilled = frame.fillJointRadii(inputSource.hand.values(), radii); // todo - handle when we don't get them
+  if (!areRadiiFilled) {
+    console.log('radii not filled');
+  }
+
   const off = inputSource.handedness === 'left' ? 0 : 25;
   for (let i = 0; i < 25; i++) {
     const mat = flatMatrices.slice(i * 16, (i + 1) * 16);
     this.hands[i + off].x = mat[12];
     this.hands[i + off].y = mat[13];
     this.hands[i + off].z = mat[14];
+    this.hands[i + off].mat4 = mat;
+    this.hands[i + off].rad = radii[i];
   }
 
   this._handleOnPinch();
