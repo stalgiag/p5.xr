@@ -22,6 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       - name: Generate release version
         run: npm run release
         env:
@@ -29,8 +34,6 @@ jobs:
 
       - name: Push version changes
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
           git push --follow-tags origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
