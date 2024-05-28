@@ -1,0 +1,41 @@
+name: Release npm package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate release version
+        run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}
+
+      - name: Push version changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git push --follow-tags origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}

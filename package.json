@@ -32,7 +32,8 @@
     "generate-csr": "openssl req -new -key key.pem -out csr.pem",
     "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
     "dev-server": "http-server -S -C cert.pem -K key.pem -o",
-    "jsdoc2md": "grunt jsdoc2md"
+    "jsdoc2md": "grunt jsdoc2md",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -92,6 +93,7 @@
     "p5": "^1.9.0",
     "parcel": "^2.6.2",
     "sinon": "^7.5.0",
+    "standard-version": "^9.5.0",
     "watchify": "^4.0.0"
   }
 }
