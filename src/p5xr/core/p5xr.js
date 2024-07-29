@@ -43,7 +43,7 @@ export default class p5xr {
     this.xrHitTestSource = null;
     this.frame = null;
     this.gl = null;
-    this.curClearColor = color(256, 255, 255);
+    this.curClearColor = color(255, 255, 255);
     this.viewer = new p5xrViewer();
 
     this.requiredFeatures = requiredFeatures;
@@ -210,19 +210,19 @@ export default class p5xr {
       window.setup();
       p5.instance._millisStart = window.performance.now();
     }
-    // const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-    // this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
-    //   this.xrRefSpace = refSpace;
-    //   // Inform the session that we're ready to begin drawing.
-    //   this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
-    //   if (!this.isImmersive) {
-    //     this.xrSession.updateRenderState({
-    //       baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
-    //       inlineVerticalFieldOfView: 70 * (Math.PI / 180),
-    //     });
-    //     this.addInlineViewListeners(this.canvas);
-    //   }
-    // });
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+    this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
+      this.xrRefSpace = refSpace;
+      // Inform the session that we're ready to begin drawing.
+      this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+      if (!this.isImmersive) {
+        this.xrSession.updateRenderState({
+          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+          inlineVerticalFieldOfView: 70 * (Math.PI / 180),
+        });
+        this.addInlineViewListeners(this.canvas);
+      }
+    });
     this.__onRequestSession();
   }
 
