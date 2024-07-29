@@ -422,18 +422,19 @@ class p5xrButton {
    * Set button state based on mode support
    */
   setAvailable(isAvailable, mode) {
+    const displayMode = mode.slice(-2).toUpperCase();
     if (isAvailable) {
-      const msg = `Enter ${mode}`;
+      const msg = `Enter ${displayMode}`;
       this.setTitle(msg);
       this.setTooltip(msg);
       this.enable();
       console.log(`${mode} supported`);
       this.setDevice(true);
-    } else if (mode === 'VR') {
+    } else if (displayMode === 'VR') {
       console.log('VR not supported. Falling back to inline mode.');
       this.hide();
     } else {
-      const msg = `${mode} not supported`;
+      const msg = `${displayMode} not supported`;
       this.setTitle(msg);
       this.setTooltip(msg);
       this.disable();

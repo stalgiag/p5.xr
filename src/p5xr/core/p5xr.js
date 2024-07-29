@@ -8,6 +8,16 @@ import p5xrInput from './p5xrInput';
  *
  * @constructor
  *
+ * @param {Object} [options={}] - Configuration options for the XR session
+ * @param {Array<"anchors" | "bounded-floor" | "depth-sensing" | "dom-overlay" |
+ * "hand-tracking" | "hit-test" | "layers" | "light-estimation" | "local" |
+ * "local-floor" | "secondary-views" | "unbounded" | "viewer">} [options.requiredFeatures=[]] - Required features
+ * @param {Object} [options={}] - Configuration options for the XR session
+ * @param {Array<"anchors" | "bounded-floor" | "depth-sensing" | "dom-overlay" |
+ * "hand-tracking" | "hit-test" | "layers" | "light-estimation" | "local" |
+ * "local-floor" | "secondary-views" | "unbounded" | "viewer">} [options.optionalFeatures=[]] - Optional features
+ *
+ * @property mode  {"inline" | "immersive-ar" | "immersive-vr"} WebXR session mode
  * @property vrDevice  {XRDevice} the current VR compatible device
  * @property vrSession  {XRSession} the current VR session
  * @property vrFrameOfRef  {XRFrameOfReference} the current VR frame of reference
@@ -16,11 +26,17 @@ import p5xrInput from './p5xrInput';
  * @property curClearColor  {Color} background clear color set by global `setVRBackgroundColor`
  */
 export default class p5xr {
-  constructor(xrButton) {
+  constructor(options = {}) {
+    const {
+      requiredFeatures = [],
+      optionalFeatures = [],
+    } = options;
+
     this.xrDevice = null;
-    this.xrButton = xrButton || null;
     this.isVR = null;
+    this.mode = 'inline';
     this.hasImmersive = null;
+    this.isImmersive = false;
     this.xrSession = null;
     this.xrRefSpace = null;
     this.xrViewerSpace = null;
@@ -29,6 +45,9 @@ export default class p5xr {
     this.gl = null;
     this.curClearColor = color(255, 255, 255);
     this.viewer = new p5xrViewer();
+
+    this.requiredFeatures = requiredFeatures;
+    this.optionalFeatures = optionalFeatures;
   }
 
   /**
@@ -125,15 +144,133 @@ export default class p5xr {
     // WebXR availabilty
     if (navigator?.xr) {
       console.log('XR Available');
-      const mode = this.isVR ? 'VR' : 'AR';
-      const session = this.isVR ? 'immersive-vr' : 'immersive-ar';
-      const supported = await navigator.xr.isSessionSupported(session);
+      const supported = await navigator.xr.isSessionSupported(this.mode);
       this.hasImmersive = supported;
-      this.xrButton.setAvailable(supported, mode);
+      this.xrButton.setAvailable(supported, this.mode);
     } else {
       console.log('XR Not Available');
       this.xrButton.disable();
     }
+  }
+
+  /**
+   * Helper function to reset XR and GL, should be called between
+   * ending an XR session and starting a new XR session
+   * @method resetXR
+   */
+  resetXR() {
+    this.xrDevice = null;
+    this.xrSession = null;
+    this.xrRefSpace = null;
+    this.xrViewerSpace = null;
+    this.xrHitTestSource = null;
+    this.gl = null;
+    this.frame = null;
+  }
+
+  /**
+   * `navigator.xr.requestSession()` must be called within a user gesture event.
+   * @private
+   * @ignore
+   */
+  __onXRButtonClicked() {
+    if (this.hasImmersive) {
+      console.log(`Requesting session with mode: ${this.mode}`);
+      this.isImmersive = true;
+      this.resetXR();
+      navigator.xr
+        .requestSession(this.mode, {
+          requiredFeatures: this.requiredFeatures,
+          optionalFeatures: this.optionalFeatures,
+        })
+        .then(this.__startSketch.bind(this))
+        .catch((error) => {
+          console.error(`An error occured activating ${this.mode}: ${error}`);
+        });
+    } else {
+      this.xrButton.hide();
+    }
+  }
+
+  /**
+   * This is where the actual p5 canvas is first created, and
+   * the GL rendering context is accessed by p5vr.
+   * The current XRSession also gets a frame of reference and
+   * base rendering layer. <br>
+   * @param {XRSession}
+   * @private
+   * @ignore
+   */
+  __startSketch(session) {
+    this.xrSession = session;
+    this.canvas = p5.instance.canvas;
+    this.canvas.style.visibility = 'visible';
+
+    if (typeof window.setup === 'function') {
+      window.setup();
+      p5.instance._millisStart = window.performance.now();
+    }
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+    this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
+      this.xrRefSpace = refSpace;
+      // Inform the session that we're ready to begin drawing.
+      this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+      if (!this.isImmersive) {
+        this.xrSession.updateRenderState({
+          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+          inlineVerticalFieldOfView: 70 * (Math.PI / 180),
+        });
+        this.addInlineViewListeners(this.canvas);
+      }
+    });
+    this.__onRequestSession();
+  }
+
+  /**
+   * Requests a reference space and makes the p5's WebGL layer XR compatible.
+   * @private
+   * @ignore
+   */
+  __onRequestSession() {
+    p5.instance._renderer._curCamera.cameraType = 'custom';
+    const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
+
+    this.gl = this.canvas.getContext(p5.instance.webglVersion);
+    this.gl
+      .makeXRCompatible()
+      .then(() => {
+        // Use the p5's WebGL context to create a XRWebGLLayer and set it as the
+        // sessions baseLayer. This allows any content rendered to the layer to
+        // be displayed on the XRDevice;
+        this.xrSession.updateRenderState({
+          baseLayer: new XRWebGLLayer(this.xrSession, this.gl),
+        });
+        // TODO : need better way to handle feature-specific actions
+        if (this.requiredFeatures.includes('hit-test')) {
+          this.xrSession.requestReferenceSpace('viewer').then((refSpace) => {
+            this.xrViewerSpace = refSpace;
+            this.xrSession
+              .requestHitTestSource({ space: this.xrViewerSpace })
+              .then((hitTestSource) => {
+                this.xrHitTestSource = hitTestSource;
+              });
+          });
+        }
+
+        // Get a frame of reference, which is required for querying poses.
+        // 'local' places the initial pose relative to initial location of viewer
+        // 'viewer' is only for inline experiences and only allows rotation
+        this.xrSession
+          .requestReferenceSpace(refSpaceRequest)
+          .then((refSpace) => {
+            this.xrRefSpace = refSpace;
+            // Request initial animation frame
+            this.xrSession.requestAnimationFrame(this.__onXRFrame.bind(this));
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   /**
@@ -180,6 +317,20 @@ export default class p5xr {
         this.clearVR();
       }
 
+      const context = window;
+      const userCalculate = context.calculate;
+      if (this.viewer.pose.views.length > 1) {
+        if (typeof userCalculate === 'function') {
+          userCalculate();
+        }
+        const now = window.performance.now();
+        p5.instance.deltaTime = now - p5.instance._lastFrameTime;
+        p5.instance._frameRate = 1000.0 / p5.instance.deltaTime;
+        p5.instance._setProperty('deltaTime', p5.instance.deltaTime);
+        p5.instance._lastFrameTime = now;
+        context._setProperty('frameCount', context.frameCount + 1);
+      }
+
       let i = 0;
       for (const view of this.viewer.pose.views) {
         this.viewer.view = view;
@@ -189,7 +340,7 @@ export default class p5xr {
           viewport.x,
           viewport.y,
           viewport.width * scaleFactor,
-          viewport.height * scaleFactor
+          viewport.height * scaleFactor,
         );
         this.__updateViewport(viewport);
 
@@ -219,28 +370,11 @@ export default class p5xr {
    * @private
    * @ignore
    */
-  __drawEye(eyeIndex) {
+  __drawEye() {
     const context = window;
     const userSetup = context.setup;
     const userDraw = context.draw;
-    const userCalculate = context.calculate;
 
-    if (this.isVR) {
-      if (eyeIndex === 0) {
-        if (typeof userCalculate === 'function') {
-          userCalculate();
-        }
-        const now = window.performance.now();
-        p5.instance.deltaTime = now - p5.instance._lastFrameTime;
-        p5.instance._frameRate = 1000.0 / p5.instance.deltaTime;
-        p5.instance._setProperty('deltaTime', p5.instance.deltaTime);
-        p5.instance._lastFrameTime = now;
-        context._setProperty('frameCount', context.frameCount + 1);
-      }
-    } else {
-      // Scale is much smaller in AR
-      scale(0.01);
-    }
     // 2D Mode should use graphics object
     if (!p5.instance._renderer.isP3D) {
       console.error('Sketch does not have 3D Renderer');
@@ -312,9 +446,9 @@ export default class p5xr {
    */
   printUnsupportedMessage() {
     console.warn(
-      'Your browser/hardware does not work with AR Mode currently. This is' +
-        ' undergoing heavy development currently.' +
-        'You may be able to fix this by enabling WebXR flags in Chrome.'
+      'Your browser/hardware does not work with AR Mode currently. This is'
+        + ' undergoing heavy development currently.'
+        + 'You may be able to fix this by enabling WebXR flags in Chrome.',
     );
   }
 

@@ -26,10 +26,9 @@ window.p5xr = {
  * @section VR
  * @category Initialization
  */
-p5.prototype.createVRCanvas = function (xrButton) {
+p5.prototype.createVRCanvas = function () {
   noLoop();
-  p5xr.instance = new p5vr(xrButton);
-  p5xr.instance.__initVR();
+  p5xr.instance = new p5vr();
 };
 
 /**
@@ -46,7 +45,6 @@ p5.prototype.createVRCanvas = function (xrButton) {
 p5.prototype.createARCanvas = function () {
   noLoop();
   p5xr.instance = new p5ar();
-  p5xr.instance.initAR();
 };
 
 /**
