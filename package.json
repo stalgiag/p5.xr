@@ -24,7 +24,7 @@
   "scripts": {
     "grunt": "grunt build",
     "build": "parcel build --no-cache --no-source-maps",
-    "watch": "parcel watch",
+    "watch": "parcel watch --no-hmr --no-cache",
     "test": "karma start karma.conf.js",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json -r",
     "setup-ssl": "npm run generate-privatekey && npm run generate-csr && npm run generate-cert",
