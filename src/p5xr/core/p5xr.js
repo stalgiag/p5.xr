@@ -27,10 +27,7 @@ import p5xrInput from './p5xrInput';
  */
 export default class p5xr {
   constructor(options = {}) {
-    const {
-      requiredFeatures = [],
-      optionalFeatures = [],
-    } = options;
+    const { requiredFeatures = [], optionalFeatures = [] } = options;
 
     this.xrDevice = null;
     this.isVR = null;
@@ -97,12 +94,25 @@ export default class p5xr {
   }
 
   /**
+   * Overrides some p5.js default values to reflect sensible real-world metric sizes in XR
+   * @private
+   * @ignore
+   */
+  __setupSensibleXRDefaults() {
+    if (typeof linePerspective !== 'undefined') {
+      // Stroke weight of 1mm
+      strokeWeight(0.001);
+    }
+  }
+
+  /**
    * Substitute for p5._setup() which creates a default webgl canvas
    * @private
    * @ignore
    */
   __setupCanvas() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+    this.__setupSensibleXRDefaults();
     p5.instance._setupDone = true;
   }
 
@@ -446,9 +456,9 @@ export default class p5xr {
    */
   printUnsupportedMessage() {
     console.warn(
-      'Your browser/hardware does not work with AR Mode currently. This is'
-        + ' undergoing heavy development currently.'
-        + 'You may be able to fix this by enabling WebXR flags in Chrome.',
+      'Your browser/hardware does not work with AR Mode currently. This is' +
+        ' undergoing heavy development currently.' +
+        'You may be able to fix this by enabling WebXR flags in Chrome.',
     );
   }
 
