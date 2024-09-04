@@ -100,8 +100,13 @@ export default class p5xr {
    */
   __setupSensibleXRDefaults() {
     if (typeof linePerspective !== 'undefined') {
-      // Stroke weight of 1mm
-      strokeWeight(0.001);
+      if (linePerspective()) {
+        // Stroke weight of 1mm
+        console.log(
+          'p5xr: linePerspective is active, setting stroke width to 0.001',
+        );
+        strokeWeight(0.001);
+      }
     }
   }
 
@@ -112,7 +117,6 @@ export default class p5xr {
    */
   __setupCanvas() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    this.__setupSensibleXRDefaults();
     p5.instance._setupDone = true;
   }
 
@@ -216,10 +220,16 @@ export default class p5xr {
     this.canvas = p5.instance.canvas;
     this.canvas.style.visibility = 'visible';
 
+    p5.instance._renderer._curCamera.cameraType = 'custom';
+    p5.instance._renderer._curCamera.useLinePerspective = false;
+
     if (typeof window.setup === 'function') {
       window.setup();
       p5.instance._millisStart = window.performance.now();
     }
+
+    this.__setupSensibleXRDefaults();
+
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
     this.xrSession.requestReferenceSpace(refSpaceRequest).then((refSpace) => {
       this.xrRefSpace = refSpace;
@@ -242,9 +252,7 @@ export default class p5xr {
    * @ignore
    */
   __onRequestSession() {
-    p5.instance._renderer._curCamera.cameraType = 'custom';
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
-
     this.gl = this.canvas.getContext(p5.instance.webglVersion);
     this.gl
       .makeXRCompatible()
