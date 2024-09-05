@@ -1,3 +1,4 @@
+import './p5xr/core/p5overrides';
 import p5vr from './p5xr/p5vr/p5vr';
 import p5ar from './p5xr/p5ar/p5ar';
 

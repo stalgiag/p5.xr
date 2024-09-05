@@ -41,6 +41,11 @@ class p5xrViewer {
    */
   set view(newView) {
     this._view = newView;
+
+    // eslint-disable-next-line no-unused-expressions
+    p5.instance._renderer.uViewMatrix?.set(this._view.transform.inverse.matrix);
+
+    // has not effect in v1.10.0, but kept for older version
     p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
     p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
     p5.instance._renderer._curCamera.cameraMatrix.set(
@@ -86,18 +91,21 @@ class p5xrViewer {
 
     // transform ray origin to view space
     const rayOriginCopy = ray.origin.copy();
-    ray.origin.x = initialMVMatrix[0] * rayOriginCopy.x
-      + initialMVMatrix[1] * rayOriginCopy.y
-      + initialMVMatrix[2] * rayOriginCopy.z
-      + initialMVMatrix[3];
-    ray.origin.y = initialMVMatrix[4] * rayOriginCopy.x
-      + initialMVMatrix[5] * rayOriginCopy.y
-      + initialMVMatrix[6] * rayOriginCopy.z
-      + initialMVMatrix[7];
-    ray.origin.z = initialMVMatrix[8] * rayOriginCopy.x
-      + initialMVMatrix[9] * rayOriginCopy.y
-      + initialMVMatrix[10] * rayOriginCopy.z
-      + initialMVMatrix[11];
+    ray.origin.x =
+      initialMVMatrix[0] * rayOriginCopy.x +
+      initialMVMatrix[1] * rayOriginCopy.y +
+      initialMVMatrix[2] * rayOriginCopy.z +
+      initialMVMatrix[3];
+    ray.origin.y =
+      initialMVMatrix[4] * rayOriginCopy.x +
+      initialMVMatrix[5] * rayOriginCopy.y +
+      initialMVMatrix[6] * rayOriginCopy.z +
+      initialMVMatrix[7];
+    ray.origin.z =
+      initialMVMatrix[8] * rayOriginCopy.x +
+      initialMVMatrix[9] * rayOriginCopy.y +
+      initialMVMatrix[10] * rayOriginCopy.z +
+      initialMVMatrix[11];
 
     // get ray direction from left eye
     const leftDirection = new p5.Vector(screenX, screenY, -1);
@@ -108,8 +116,14 @@ class p5xrViewer {
     leftPMatrixInverse = leftPMatrixInverse.mat4;
 
     const leftDirectionCopy = leftDirection.copy();
-    leftDirection.x = leftPMatrixInverse[0] * leftDirectionCopy.x + leftPMatrixInverse[1] * leftDirectionCopy.y + leftPMatrixInverse[2] * leftDirectionCopy.z;
-    leftDirection.y = leftPMatrixInverse[4] * leftDirectionCopy.x + leftPMatrixInverse[5] * leftDirectionCopy.y + leftPMatrixInverse[6] * leftDirectionCopy.z;
+    leftDirection.x =
+      leftPMatrixInverse[0] * leftDirectionCopy.x +
+      leftPMatrixInverse[1] * leftDirectionCopy.y +
+      leftPMatrixInverse[2] * leftDirectionCopy.z;
+    leftDirection.y =
+      leftPMatrixInverse[4] * leftDirectionCopy.x +
+      leftPMatrixInverse[5] * leftDirectionCopy.y +
+      leftPMatrixInverse[6] * leftDirectionCopy.z;
     leftDirection.normalize();
 
     // get ray direction from right eye
@@ -121,8 +135,14 @@ class p5xrViewer {
     rightPMatrixInverse = rightPMatrixInverse.mat4;
 
     const rightDirectionCopy = rightDirection.copy();
-    rightDirection.x = rightPMatrixInverse[0] * rightDirectionCopy.x + rightPMatrixInverse[1] * rightDirectionCopy.y + rightPMatrixInverse[2] * rightDirectionCopy.z;
-    rightDirection.y = rightPMatrixInverse[4] * rightDirectionCopy.x + rightPMatrixInverse[5] * rightDirectionCopy.y + rightPMatrixInverse[6] * rightDirectionCopy.z;
+    rightDirection.x =
+      rightPMatrixInverse[0] * rightDirectionCopy.x +
+      rightPMatrixInverse[1] * rightDirectionCopy.y +
+      rightPMatrixInverse[2] * rightDirectionCopy.z;
+    rightDirection.y =
+      rightPMatrixInverse[4] * rightDirectionCopy.x +
+      rightPMatrixInverse[5] * rightDirectionCopy.y +
+      rightPMatrixInverse[6] * rightDirectionCopy.z;
     rightDirection.normalize();
 
     // combine both ray directions
