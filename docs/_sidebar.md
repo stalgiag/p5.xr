@@ -2,9 +2,10 @@
 - __GENERAL__
   - [General Info](README.md)
   - [Community](general/community.md)
+
 ***
 - __QUICK START__
-  - [Device and Browser Support](quick-start/device-support.md)
+  - [Device and Browser Support](webxr-test.html)
   - [Examples](quick-start/examples.md)
 ***
 - __REFERENCE__
