@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
@@ -26,20 +26,22 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+      
+      - name: Check for release notes
+        run: |
+          RELEASE_NOTES="$(npm run release -- --dry-run | awk 'BEGIN { flag=0 } /^---$/ { if (flag == 0) { flag=1 } else { flag=2 }; next } flag == 1')"
+          # Don't release if there are no changes
+          if [ "$(echo "$RELEASE_NOTES" | wc -l)" -eq 1 ] ; then
+              echo "This release would have no release notes. Does it include changes?"
+              echo "   - You must have at least one fix / feat commit to generate release notes"
+              echo "*** STOPPING RELEASE PROCESS ***"
+              exit 1
+          fi
 
       - name: Generate release version
         run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}
-
-      - name: Check if version was bumped
-        run: |
-          LAST_TAG=$(git describe --tags --abbrev=0)
-          HEAD_TAG=$(git describe --tags)
-          if [ "$LAST_TAG" == "$HEAD_TAG" ]; then
-            echo "No new version detected, skipping push and publish."
-            exit 0
-          fi
 
       - name: Push version changes
         run: |
