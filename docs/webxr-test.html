@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Permissions-Policy" content="light-estimation=(self)" />
+
+    <title>WebXR Support Test</title>
+  </head>
+  <body>
+    <h2>Device Support Test</h2>
+    <p>
+      This page shows if your device supports WebXR, the technology behind
+      p5.xr. To test specific features, click on one of the test buttons below
+      to try starting an XRSession to see available features.
+    </p>
+    <p><strong>WebXR Supported:</strong> <span id="webxr-support"></span></p>
+    <p>
+      <strong>Immersive AR Supported:</strong>
+      <span id="immersive-ar-support"></span>
+      <button id="btn-immersive-ar">Test features</button>
+    </p>
+    <p>
+      <span id="immersive-ar-features"></span>
+    </p>
+    <p>
+      <strong>Immersive VR Supported:</strong>
+      <span id="immersive-vr-support"></span>
+      <button id="btn-immersive-vr">Test features</button>
+    </p>
+    <p>
+      <span id="immersive-vr-features"></span>
+    </p>
+    <p>
+      Alternatevely you can try to
+      <button id="btn-individual">Test individual features</button>
+    </p>
+    <div
+      id="button-container"
+      style="
+        display: none;
+        flex-direction: column;
+        gap: 0.5rem;
+      "
+    ></div>
+    <div id="xr-overlay"></div>
+    <p>
+      If you need browser support information for browsers and devices other
+      than the one you are currently testing, please refer to the
+      <a href="https://immersiveweb.dev/#supporttable"
+        >Immersive Web Support Table</a
+      >.
+    </p>
+    <h2>Device Support Overview</h2>
+    <p>
+      <strong>Mobile Devices:</strong> VR works with headsets like Google
+      Cardboard, displaying side-by-side scenes and tracking movement. AR
+      utilizes platform features (like ARCore) to blend 3D scenes with the real
+      world. <strong>Mobile iOS devices are not currently supported.</strong>
+    </p>
+    <p>
+      <strong>Desktop Computers:</strong> Supports tethered VR devices such as
+      Oculus Rift and HTC Vive for a fully immersive experience.
+    </p>
+    <p>
+      <strong>Standalone Headsets:</strong> Devices like the Oculus Quest or
+      Apple Vision Pro combine AR and VR capabilities. These headsets can
+      project 3D scenes into your environment (AR) or render immersive virtual
+      experiences using their native VR features.
+    </p>
+    <p>
+      <strong>Emulator:</strong> The Immersive Web Emulator simulates a
+      supported device, allowing you to test and debug VR and AR experiences
+      directly in your browser.
+    </p>
+    <p>
+      For the most up-to-date information, please refer to the
+      <a href="https://immersiveweb.dev/#supporttable"
+        >Immersive Web Support Table</a
+      >.
+    </p>
+    <script>
+      const sessionFeatures = [
+        'anchors',
+        'bounded-floor',
+        'depth-sensing',
+        'dom-overlay',
+        'hand-tracking',
+        'hit-test',
+        'layers',
+        'light-estimation',
+        'local',
+        'local-floor',
+        'secondary-views',
+        'unbounded',
+        'viewer',
+      ];
+
+      const modes = ['immersive-ar', 'immersive-vr'];
+
+      /**
+       * Immersive Web Emulator (v1.3.0) doesn't close it's injected canvas
+       * This canvas should not be created by something that's not done by the emulator
+       */
+      function emulatorCleanup() {
+        let element = document.querySelector('canvas[data-engine]');
+        if (element) {
+          element.parentElement?.remove();
+        }
+      }
+      let xrSession = null;
+
+      function testFeature(mode, feature, onSuccess, onFailure) {
+        if (xrSession) {
+          xrSession.end();
+        }
+        console.log(mode, feature, ' requested');
+        let session = navigator.xr
+          .requestSession(mode, {
+            requiredFeatures: [feature],
+            depthSensing: {
+              usagePreference: ['gpu-optimized', 'cpu-optimized'],
+              dataFormatPreference: [
+                'unsigned-short',
+                'float32',
+                'luminance-alpha',
+              ],
+            },
+            domOverlay: {
+              root: document.getElementById('xr-overlay'),
+            },
+          })
+          .then(
+            (session) => {
+              xrSession = session;
+              xrSession.addEventListener('end', function () {
+                emulatorCleanup();
+                xrSession = null;
+                onSuccess();
+              });
+              xrSession.end();
+            },
+            (error) => {
+              console.error(
+                `${mode} ${feature} not supported because ${error}`,
+              );
+              onFailure(error);
+            },
+          );
+      }
+
+      async function checkBasicSupport() {
+        const xrSupportSpan = document.getElementById('webxr-support');
+        const immersiveArSupportSpan = document.getElementById(
+          'immersive-ar-support',
+        );
+        const immersiveVrSupportSpan = document.getElementById(
+          'immersive-vr-support',
+        );
+        const buttonARFeatures = document.querySelector('#btn-immersive-ar');
+        const buttonVRFeatures = document.querySelector('#btn-immersive-vr');
+
+        const arSupported =
+          await navigator.xr?.isSessionSupported('immersive-ar');
+        const vrSupported =
+          await navigator.xr?.isSessionSupported('immersive-vr');
+
+        xrSupportSpan.textContent = navigator.xr ? 'Yes' : 'No';
+        immersiveArSupportSpan.textContent = arSupported ? '✅' : '❌';
+        buttonARFeatures.style.visibility = arSupported ? 'visible' : 'hidden';
+        immersiveVrSupportSpan.textContent = vrSupported ? '✅' : '❌';
+        buttonVRFeatures.style.visibility = vrSupported ? 'visible' : 'hidden';
+      }
+
+      function getTestFeatures() {
+        let testFeatures = [];
+        for (const mode of modes) {
+          for (const feature of sessionFeatures) {
+            testFeatures.push({ mode, feature });
+          }
+        }
+        const excludedCombinations = [
+          { mode: 'immersive-ar', feature: 'dom-overlay' },
+          { mode: 'immersive-vr', feature: 'dom-overlay' },
+          { mode: 'immersive-vr', feature: 'depth-sensing' },
+          { mode: 'immersive-vr', feature: 'anchors' },
+          { mode: 'immersive-vr', feature: 'light-estimation' },
+          { mode: 'immersive-vr', feature: 'unbounded' },
+        ];
+
+        testFeatures = testFeatures.filter(({ mode, feature }) => {
+          return !excludedCombinations.some(
+            (excluded) =>
+              excluded.mode === mode && excluded.feature === feature,
+          );
+        });
+        return testFeatures;
+      }
+
+      function createFeatureButtons() {
+        const testFeatures = getTestFeatures();
+        const buttonContainer = document.getElementById('button-container');
+        testFeatures.forEach((test) => {
+          const button = document.createElement('button');
+          button.innerText = `Test ${test.mode} with ${test.feature} `;
+
+          const statusIcon = document.createElement('span');
+          statusIcon.innerText = '🤔';
+          button.appendChild(statusIcon);
+          buttonContainer.appendChild(button);
+
+          button.addEventListener('click', function () {
+            testFeature(
+              test.mode,
+              test.feature,
+              function onSuccess() {
+                statusIcon.innerText = '✅';
+              },
+              function onFailure(err) {
+                statusIcon.innerText = '❌';
+                alert(err);
+              },
+            );
+          });
+        });
+      }
+
+      const startXrButton = document.getElementById('start-xr');
+      checkBasicSupport();
+      createFeatureButtons();
+
+      function testAllFeatures(mode, onSuccess, onFailure) {
+        let testFeatures = getTestFeatures();
+        testFeatures = testFeatures.filter((feature) => feature.mode === mode);
+        testFeatures = testFeatures.map((feature) => feature.feature);
+        let session = navigator.xr
+          .requestSession(mode, {
+            optionalFeatures: testFeatures,
+            depthSensing: {
+              usagePreference: ['gpu-optimized', 'cpu-optimized'],
+              dataFormatPreference: [
+                'unsigned-short',
+                'float32',
+                'luminance-alpha',
+              ],
+            },
+            domOverlay: {
+              root: document.getElementById('xr-overlay'),
+            },
+          })
+          .then(
+            (session) => {
+              xrSession = session;
+              let enabledFeatures = null;
+              xrSession.addEventListener('end', function () {
+                emulatorCleanup();
+                xrSession = null;
+                onSuccess(enabledFeatures);
+              });
+              enabledFeatures = xrSession.enabledFeatures;
+              xrSession.end();
+            },
+            (error) => {
+              console.error(`${mode} failed because ${error}`);
+              onFailure(error);
+            },
+          );
+      }
+
+      const buttonContainer = document.querySelector('#button-container');
+      const btnIndividualTest = document.querySelector('#btn-individual');
+
+      btnIndividualTest.addEventListener('click', function () {
+        buttonContainer.style.display = 'flex';
+      });
+
+      modes.forEach((mode) => {
+        let modeFeaturesTest = document.querySelector(`#btn-${mode}`);
+        let modeResults = document.querySelector(`#${mode}-features`);
+
+        modeFeaturesTest.addEventListener('click', function () {
+          testAllFeatures(
+            mode,
+            function onSuccess(enabledFeatures) {
+              let testFeatures = getTestFeatures();
+              testFeatures = testFeatures.filter(
+                (feature) => feature.mode === mode,
+              );
+              testFeatures = testFeatures.map((feature) => feature.feature);
+              testFeatures = testFeatures.map(
+                (feature) =>
+                  `${feature}${String.fromCharCode(160)}${enabledFeatures.includes(feature) ? '✅' : '❌'}`,
+              );
+              modeResults.innerText = testFeatures.join(', ');
+            },
+            function onFailure(err) {
+              console.error(err);
+              modeResults.innerText = `Test failed: ${err}`;
+            },
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
