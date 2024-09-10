@@ -5,7 +5,8 @@
 
 ***
 - __QUICK START__
-  - [Device and Browser Support](webxr-test.html)
+  - [Device and Browser Support](device-support.html)
+  - [Immersive Web Emulator](quick-start/emulator.md)
   - [Examples](quick-start/examples.md)
 ***
 - __REFERENCE__
