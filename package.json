@@ -1,6 +1,6 @@
 {
   "name": "p5.xr",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "A library for p5.js that allows coders to easily render p5.js sketches in AR/VR using WebXR",
   "source": "./src/app.js",
   "unpkg": "dist/p5xr.min.js",
