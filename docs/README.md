@@ -16,7 +16,7 @@ p5.xr sketches can be run with [p5's online editor.](https://editor.p5js.org/) A
 
 ## Getting Started
 1. Use the [the most recent version of p5.js](https://p5js.org/download/) 
-2. Check out the [Device and Browser Support Section](https://stalgiag.github.io/p5.xr/#/quick-start/device-support).
+2. Check out the [Device and Browser Support Section](https://stalgiag.github.io/p5.xr/#/device-support.html) or use the [Immersive Web Emulator](https://stalgiag.github.io/p5.xr/#/quick-start/emulator)
 3. Add p5.xr to your project. This can be done most easily by adding the script link to a CDN in the `<head>` of your HTML file underneath the p5 link:
     ```
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js"></script>

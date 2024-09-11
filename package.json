@@ -33,6 +33,7 @@
     "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
     "dev-server": "http-server -S -C cert.pem -K key.pem -o",
     "jsdoc2md": "grunt jsdoc2md",
+    "docs": "npx docsify serve docs",
     "release": "commit-and-tag-version"
   },
   "repository": {
