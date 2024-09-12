@@ -2,6 +2,22 @@ import { lineVert, lineFrag } from '../shaders/lineShader';
 import compareVersions from '../utilities/versionComparator';
 
 /**
+ * Override default p5 background to take viewport into account
+ * Important for stereo rendering
+ * @ignore
+ */
+const originalBackground = p5.prototype.background;
+p5.prototype.background = function (...args) {
+  const gl = this._renderer.GL;
+  const viewport = this._renderer._viewport;
+  gl.scissor(viewport[0], viewport[1], viewport[2], viewport[3]);
+  gl.enable(gl.SCISSOR_TEST);
+  originalBackground.call(this, ...args);
+  gl.disable(gl.SCISSOR_TEST);
+  return this;
+};
+
+/**
  * Override default p5 line shader to avoid issue in v1.10.0
  * https://github.com/processing/p5.js/issues/7200
  * @private
