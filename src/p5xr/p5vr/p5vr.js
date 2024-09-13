@@ -13,6 +13,7 @@ export default class p5vr extends p5xr {
   constructor() {
     super();
     this.mode = 'immersive-vr';
+    this.displayMode = 'VR';
     this.isVR = true;
     this.lookYaw = 0;
     this.lookPitch = 0;

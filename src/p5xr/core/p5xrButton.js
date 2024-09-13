@@ -39,7 +39,7 @@ class p5xrButton {
 
     // Bind button click events to __onClick
     this.domElement.addEventListener('click', () => this.__onXRButtonClicked());
-
+    this._enabled = false;
     this.__forceDisabled = false;
     this.__setDisabledAttribute(true);
     this.setTitle(this.options.textXRNotFoundTitle);
@@ -186,6 +186,26 @@ class p5xrButton {
     this.session = session;
     this.__updateButtonState();
     return this;
+  }
+
+  /**
+   * Updates the display of the button based on it's current state
+   * @private
+   */
+  __updateButtonState() {
+    if (this.session) {
+      this.setTitle(this.options.textExitXRTitle);
+      this.setTooltip('Exit XR presentation');
+      this.__setDisabledAttribute(false);
+    } else if (this._enabled) {
+      this.setTitle(this.options.textEnterXRTitle);
+      this.setTooltip('Enter XR');
+      this.__setDisabledAttribute(false);
+    } else {
+      this.setTitle(this.options.textXRNotFoundTitle);
+      this.setTooltip('No XR headset found.');
+      this.__setDisabledAttribute(true);
+    }
   }
 
   /**
@@ -394,6 +414,7 @@ class p5xrButton {
    * @return {p5xrButton}
    */
   enable() {
+    this._enabled = true;
     this.__setDisabledAttribute(false);
     this.__forceDisabled = false;
     return this;
@@ -404,6 +425,7 @@ class p5xrButton {
    * @return {p5xrButton}
    */
   disable() {
+    this._enabled = false;
     this.__setDisabledAttribute(true);
     this.__forceDisabled = true;
     return this;
@@ -463,7 +485,7 @@ class p5xrButton {
    */
   __onXRButtonClicked() {
     if (this.session) {
-      this.options.onRequestSession(this.device);
+      this.options.onEndSession(this.session);
     } else if (this.device) {
       // feature detect
       if (
@@ -480,8 +502,7 @@ class p5xrButton {
       }
 
       if (
-        typeof DeviceOrientationEvent !== 'undefined'
-        && typeof DeviceOrientationEvent.requestPermission === 'function'
+        typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'
       ) {
         DeviceOrientationEvent.requestPermission()
           .then((permissionState) => {

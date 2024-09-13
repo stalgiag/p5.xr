@@ -135,8 +135,10 @@ export default class p5xr {
     this.__removeLoadingElement();
     this.xrButton = new p5xrButton({
       onRequestSession: this.__onXRButtonClicked.bind(this),
-      onEndSession: this.__onSessionEnded.bind(this),
-      textEnterXRTitle: 'LOADING',
+      onEndSession: this.__onEndSession.bind(this),
+      textEnterXRTitle: `Enter ${this.displayMode}`,
+      textXRNotFoundTitle: `${this.displayMode} not found`,
+      textExitXRTitle: `Exit ${this.displayMode}`,
     });
     let header = document.querySelector('header');
     if (!header) {
@@ -175,6 +177,7 @@ export default class p5xr {
   resetXR() {
     this.xrDevice = null;
     this.xrSession = null;
+    this.xrButton.setSession(null);
     this.xrRefSpace = null;
     this.xrViewerSpace = null;
     this.xrHitTestSource = null;
@@ -197,7 +200,10 @@ export default class p5xr {
           requiredFeatures: this.requiredFeatures,
           optionalFeatures: this.optionalFeatures,
         })
-        .then(this.__startSketch.bind(this))
+        .then((session) => {
+          this.xrButton.setSession(session);
+          this.__startSketch.call(this, session);
+        })
         .catch((error) => {
           console.error(`An error occured activating ${this.mode}: ${error}`);
         });
@@ -252,6 +258,8 @@ export default class p5xr {
    * @ignore
    */
   __onRequestSession() {
+    this.xrSession.addEventListener('end', (event) => this.__onSessionEnded(event));
+
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
     this.gl = this.canvas.getContext(p5.instance.webglVersion);
     this.gl
@@ -435,14 +443,12 @@ export default class p5xr {
   }
 
   /**
-   * Called either when the user has explicitly ended the session
-   *  or when the UA has ended the session for any reason.
-   * The xrSession is ended and discarded. p5 is reset with `remove()`
-   *  //TODO: Revisit how we exit session
+   * Called by the XRButton when Exit XR is clicked
+   * Should perform cleanup here
    * @private
    * @ignore
    */
-  __onSessionEnded() {
+  __onEndSession(session) {
     if (!this.isVR) {
       this.xrHitTestSource.cancel();
       this.xrHitTestSource = null;
@@ -456,6 +462,20 @@ export default class p5xr {
     if (this.isImmersive && this.hasImmersive) {
       this.isImmersive = false;
     }
+
+    session.end();
+  }
+
+  /**
+   * Called either when the user has explicitly ended the session
+   *  or when the UA has ended the session for any reason.
+   * The xrSession is ended and discarded. p5 is reset with `remove()`
+   *  //TODO: Revisit how we exit session
+   * @private
+   * @ignore
+   */
+  __onSessionEnded() {
+    this.resetXR();
   }
 
   /**
@@ -464,9 +484,9 @@ export default class p5xr {
    */
   printUnsupportedMessage() {
     console.warn(
-      'Your browser/hardware does not work with AR Mode currently. This is' +
-        ' undergoing heavy development currently.' +
-        'You may be able to fix this by enabling WebXR flags in Chrome.',
+      'Your browser/hardware does not work with AR Mode currently. This is'
+        + ' undergoing heavy development currently.'
+        + 'You may be able to fix this by enabling WebXR flags in Chrome.',
     );
   }
 
