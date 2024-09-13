@@ -7,6 +7,7 @@ export default class p5ar extends p5xr {
       requiredFeatures: ['local', 'hit-test'],
     });
     this.mode = 'immersive-ar';
+    this.displayMode = 'AR';
     this.canvas = null;
     this.__createButton();
   }
