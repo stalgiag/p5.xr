@@ -1,5 +1,28 @@
+import * as constants from './constants';
+import p5vr from '../p5vr/p5vr';
+import p5ar from '../p5ar/p5ar';
+
 import { lineVert, lineFrag } from '../shaders/lineShader';
 import compareVersions from '../utilities/versionComparator';
+
+const originalCreateCanvas = p5.prototype.createCanvas;
+p5.prototype.createCanvas = function (w, h, renderer, canvas) {
+  let effectiveRenderer = renderer;
+  if (renderer === constants.AR || renderer === constants.VR) {
+    noLoop();
+    p5xr.instance = renderer === constants.AR ? new p5ar() : new p5vr();
+    effectiveRenderer = WEBGL;
+    w = windowWidth;
+    h = windowHeight;
+  }
+  originalCreateCanvas.call(
+    this,
+    windowWidth,
+    windowHeight,
+    effectiveRenderer,
+    canvas,
+  );
+};
 
 /**
  * Override default p5 background to take viewport into account

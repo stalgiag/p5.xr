@@ -117,7 +117,6 @@ export default class p5xr {
    */
   __setupCanvas() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    p5.instance._setupDone = true;
   }
 
   /**
@@ -230,7 +229,9 @@ export default class p5xr {
     p5.instance._renderer._curCamera.useLinePerspective = false;
 
     if (typeof window.setup === 'function') {
-      window.setup();
+      if (!p5.instance._setupDone) {
+        window.setup();
+      }
       p5.instance._millisStart = window.performance.now();
     }
 
@@ -258,7 +259,9 @@ export default class p5xr {
    * @ignore
    */
   __onRequestSession() {
-    this.xrSession.addEventListener('end', (event) => this.__onSessionEnded(event));
+    this.xrSession.addEventListener('end', (event) =>
+      this.__onSessionEnded(event),
+    );
 
     const refSpaceRequest = this.isImmersive ? 'local' : 'viewer';
     this.gl = this.canvas.getContext(p5.instance.webglVersion);
@@ -484,9 +487,9 @@ export default class p5xr {
    */
   printUnsupportedMessage() {
     console.warn(
-      'Your browser/hardware does not work with AR Mode currently. This is'
-        + ' undergoing heavy development currently.'
-        + 'You may be able to fix this by enabling WebXR flags in Chrome.',
+      'Your browser/hardware does not work with AR Mode currently. This is' +
+        ' undergoing heavy development currently.' +
+        'You may be able to fix this by enabling WebXR flags in Chrome.',
     );
   }
 
