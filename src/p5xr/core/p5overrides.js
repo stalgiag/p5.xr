@@ -5,6 +5,19 @@ import p5ar from '../p5ar/p5ar';
 import { lineVert, lineFrag } from '../shaders/lineShader';
 import compareVersions from '../utilities/versionComparator';
 
+/**
+ * @method  Overridden createCanvas function to handle different rendering modes: AR, VR, and default renderers.
+ * @param  {Number} [w]
+ * @param  {Number} [h]
+ * @param {string} renderer - The rendering mode. Possible values:
+   - P2D: 2D rendering context (default in p5.js)
+   - WEBGL: 3D rendering context
+   - AR: Augmented Reality mode (sets the renderer to WEBGL internally)
+   - VR: Virtual Reality mode (sets the renderer to WEBGL internally)
+ * @param  {HTMLCanvasElement} [canvas]
+ * @return {p5.Renderer}
+ */
+
 const originalCreateCanvas = p5.prototype.createCanvas;
 p5.prototype.createCanvas = function (w, h, renderer, canvas) {
   let effectiveRenderer = renderer;
