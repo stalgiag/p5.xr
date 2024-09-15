@@ -1,8 +1,5 @@
-function preload() {
-  createARCanvas();
-}
-
 function setup() {
+  createCanvas(windowWidth, windowHeight, AR);
   describe("A cube waiting to be seen");
 }
 

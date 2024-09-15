@@ -1,3 +1,4 @@
+import * as constants from './p5xr/core/constants';
 import './p5xr/core/p5overrides';
 import p5vr from './p5xr/p5vr/p5vr';
 import p5ar from './p5xr/p5ar/p5ar';
@@ -5,6 +6,12 @@ import p5ar from './p5xr/p5ar/p5ar';
 window.p5xr = {
   instance: null,
 };
+
+// attach constants to p5 prototype
+// eslint-disable-next-line guard-for-in
+for (const k in constants) {
+  p5.prototype[k] = constants[k];
+}
 
 /**
  * This file contains all functions that extend the p5 prototype.
@@ -58,7 +65,9 @@ p5.prototype.getXRButton = function () {
   if (p5xr && p5xr.instance && p5xr.instance.xrButton) {
     return p5xr.instance.xrButton;
   }
-  console.warn('No XR button found. Make sure to call createVRCanvas() or createARCanvas() first.');
+  console.warn(
+    'No XR button found. Make sure to call createVRCanvas() or createARCanvas() first.',
+  );
 };
 
 /**
@@ -200,51 +209,51 @@ p5.prototype.getXRInput = function (input) {
  * @category View
  * @example
  *  let z = 0;
-  * let viewerPosition;
-  *
-  * function preload() {
-  *   createVRCanvas();
-  * }
-  *
-  * function setup() {
-  *   setVRBackgroundColor(0, 0, 255);
-  *   noStroke();
-  *   angleMode(DEGREES);
-  *   viewerPosition = createVector(0, 0, 0);
-  * }
-  *
-  * function draw() {
-  *   //moves the viewer forward if controller trigger is pressed
-  *   const left = getXRInput(LEFT);
-  *   const right = getXRInput(RIGHT);
-  *   [left, right].forEach((hand) => {
-  *   if (hand) {
-  *       viewerPosition.z += hand.thumbstick2D.y * 0.01;
-  *       viewerPosition.x += hand.thumbstick2D.x * 0.01;
-  *       if(hand.thumbstick2D.x !== 0 || hand.thumbstick2D.y !== 0) {
-  *         fill('red');
-  *       } else {
-  *         fill('purple');
-  *       }
-  *       push();
-  *       applyMatrix(hand.pose)
-  *       box(0.05);
-  *       pop();
-  *     }
-  *   });
-  *   if (viewerPosition.z < -7) {
-  *     viewerPosition.z = 7;
-  *   }
-  *   setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
-  *   //draw a 10x10 floor
-  *   push();
-  *   translate(0, -1, 0);
-  *   rotateX(-90);
-  *   fill(0, 255, 0);
-  *   plane(10, 10);
-  *   pop();
-  *   //resets the viewer's position if they move too far
-  *  }
+ * let viewerPosition;
+ *
+ * function preload() {
+ *   createVRCanvas();
+ * }
+ *
+ * function setup() {
+ *   setVRBackgroundColor(0, 0, 255);
+ *   noStroke();
+ *   angleMode(DEGREES);
+ *   viewerPosition = createVector(0, 0, 0);
+ * }
+ *
+ * function draw() {
+ *   //moves the viewer forward if controller trigger is pressed
+ *   const left = getXRInput(LEFT);
+ *   const right = getXRInput(RIGHT);
+ *   [left, right].forEach((hand) => {
+ *   if (hand) {
+ *       viewerPosition.z += hand.thumbstick2D.y * 0.01;
+ *       viewerPosition.x += hand.thumbstick2D.x * 0.01;
+ *       if(hand.thumbstick2D.x !== 0 || hand.thumbstick2D.y !== 0) {
+ *         fill('red');
+ *       } else {
+ *         fill('purple');
+ *       }
+ *       push();
+ *       applyMatrix(hand.pose)
+ *       box(0.05);
+ *       pop();
+ *     }
+ *   });
+ *   if (viewerPosition.z < -7) {
+ *     viewerPosition.z = 7;
+ *   }
+ *   setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
+ *   //draw a 10x10 floor
+ *   push();
+ *   translate(0, -1, 0);
+ *   rotateX(-90);
+ *   fill(0, 255, 0);
+ *   plane(10, 10);
+ *   pop();
+ *   //resets the viewer's position if they move too far
+ *  }
  */
 p5.prototype.setViewerPosition = function (x, y, z) {
   const { viewer } = p5xr.instance;
@@ -259,7 +268,9 @@ p5.prototype.setViewerPosition = function (x, y, z) {
  */
 p5.prototype.getViewer = function () {
   if (!p5xr.instance || !p5xr.instance.viewer) {
-    console.warn('No viewer found. Make sure to call createVRCanvas() or createARCanvas() first.');
+    console.warn(
+      'No viewer found. Make sure to call createVRCanvas() or createARCanvas() first.',
+    );
   }
   return p5xr.instance.viewer;
 };
@@ -273,7 +284,9 @@ p5.prototype.getViewer = function () {
 p5.prototype.sticky = function (drawOnTop = false) {
   push();
   p5xr.instance.viewer.drawOnTop = drawOnTop;
-  if (drawOnTop) p5.instance._renderer.GL.disable(p5.instance._renderer.GL.DEPTH_TEST);
+  if (drawOnTop) {
+    p5.instance._renderer.GL.disable(p5.instance._renderer.GL.DEPTH_TEST);
+  }
   p5.instance._renderer.uMVMatrix.set(p5.Matrix.identity());
   const viewerPosition = p5xr.instance.viewer.position;
   setViewerPosition(viewerPosition.x, viewerPosition.y, viewerPosition.z);
@@ -303,7 +316,9 @@ p5.prototype.noSticky = function () {
  */
 p5.prototype.getRayFromScreen = function (x, y) {
   if (!p5xr.instance || !p5xr.instance.viewer) {
-    console.warn('No viewer found to calculate Ray. Make sure to call createVRCanvas() or createARCanvas() first.');
+    console.warn(
+      'No viewer found to calculate Ray. Make sure to call createVRCanvas() or createARCanvas() first.',
+    );
   }
   const { viewer } = p5xr.instance;
   return viewer.getRayFromScreen(x, y);
@@ -323,8 +338,8 @@ p5.prototype.intersectsSphere = function (radius) {
     direction: null,
   };
   if (arguments.length !== 2 || !Object.hasOwn(arguments[1], 'origin')) {
-    const screenX = arguments[1] || 0; const
-      screenY = arguments[2] || 0;
+    const screenX = arguments[1] || 0;
+    const screenY = arguments[2] || 0;
     ray = p5xr.instance.viewer.getRayFromScreen(screenX, screenY);
   } else {
     ray.origin = arguments[1].origin.copy();
@@ -348,13 +363,16 @@ p5.prototype.intersectsSphere = function (radius) {
   }
 
   // check if sphere is in front of ray
-  if (p5.Vector.dot(p5.Vector.sub(sphereCenter, ray.origin), ray.direction) < 0) {
+  if (
+    p5.Vector.dot(p5.Vector.sub(sphereCenter, ray.origin), ray.direction) < 0
+  ) {
     return false;
   }
 
   const sphereToRayOrigin = p5.Vector.sub(ray.origin, sphereCenter);
   const b = 2 * p5.Vector.dot(ray.direction, sphereToRayOrigin);
-  const c = p5.Vector.mag(sphereToRayOrigin) * p5.Vector.mag(sphereToRayOrigin) - radius * radius;
+  const c = p5.Vector.mag(sphereToRayOrigin) * p5.Vector.mag(sphereToRayOrigin)
+    - radius * radius;
 
   const det = b * b - 4 * c;
 
@@ -372,8 +390,9 @@ p5.prototype.intersectsSphere = function (radius) {
  * @category Raycasting
  */
 p5.prototype.intersectsBox = function () {
-  const width = arguments[0]; let height; let
-    depth;
+  const width = arguments[0];
+  let height;
+  let depth;
   let ray = {
     origin: null,
     direction: null,
@@ -417,9 +436,15 @@ p5.prototype.intersectsBox = function () {
     + uMVMatrixInv[11];
 
   const rayDirectionCopy = ray.direction.copy();
-  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x + uMVMatrixInv[1] * rayDirectionCopy.y + uMVMatrixInv[2] * rayDirectionCopy.z;
-  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x + uMVMatrixInv[5] * rayDirectionCopy.y + uMVMatrixInv[6] * rayDirectionCopy.z;
-  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x + uMVMatrixInv[9] * rayDirectionCopy.y + uMVMatrixInv[10] * rayDirectionCopy.z;
+  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x
+    + uMVMatrixInv[1] * rayDirectionCopy.y
+    + uMVMatrixInv[2] * rayDirectionCopy.z;
+  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x
+    + uMVMatrixInv[5] * rayDirectionCopy.y
+    + uMVMatrixInv[6] * rayDirectionCopy.z;
+  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x
+    + uMVMatrixInv[9] * rayDirectionCopy.y
+    + uMVMatrixInv[10] * rayDirectionCopy.z;
   ray.direction.normalize();
 
   // representing AABB (Axis aligned bounding box) with 2 extreme points
@@ -434,8 +459,14 @@ p5.prototype.intersectsBox = function () {
   const t5 = (min.z - ray.origin.z) / ray.direction.z;
   const t6 = (max.z - ray.origin.z) / ray.direction.z;
 
-  const tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
-  const tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+  const tmin = Math.max(
+    Math.max(Math.min(t1, t2), Math.min(t3, t4)),
+    Math.min(t5, t6),
+  );
+  const tmax = Math.min(
+    Math.min(Math.max(t1, t2), Math.max(t3, t4)),
+    Math.max(t5, t6),
+  );
 
   if (tmax < 0 || tmin > tmax) {
     return false;
@@ -472,14 +503,29 @@ p5.prototype.intersectsPlane = function () {
   uMVMatrixInv = uMVMatrixInv.mat4;
 
   const rayOriginCopy = ray.origin.copy();
-  ray.origin.x = uMVMatrixInv[0] * rayOriginCopy.x + uMVMatrixInv[1] * rayOriginCopy.y + uMVMatrixInv[2] * rayOriginCopy.z + uMVMatrixInv[3];
-  ray.origin.y = uMVMatrixInv[4] * rayOriginCopy.x + uMVMatrixInv[5] * rayOriginCopy.y + uMVMatrixInv[6] * rayOriginCopy.z + uMVMatrixInv[7];
-  ray.origin.z = uMVMatrixInv[8] * rayOriginCopy.x + uMVMatrixInv[9] * rayOriginCopy.y + uMVMatrixInv[10] * rayOriginCopy.z + uMVMatrixInv[11];
+  ray.origin.x = uMVMatrixInv[0] * rayOriginCopy.x
+    + uMVMatrixInv[1] * rayOriginCopy.y
+    + uMVMatrixInv[2] * rayOriginCopy.z
+    + uMVMatrixInv[3];
+  ray.origin.y = uMVMatrixInv[4] * rayOriginCopy.x
+    + uMVMatrixInv[5] * rayOriginCopy.y
+    + uMVMatrixInv[6] * rayOriginCopy.z
+    + uMVMatrixInv[7];
+  ray.origin.z = uMVMatrixInv[8] * rayOriginCopy.x
+    + uMVMatrixInv[9] * rayOriginCopy.y
+    + uMVMatrixInv[10] * rayOriginCopy.z
+    + uMVMatrixInv[11];
 
   const rayDirectionCopy = ray.direction.copy();
-  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x + uMVMatrixInv[1] * rayDirectionCopy.y + uMVMatrixInv[2] * rayDirectionCopy.z;
-  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x + uMVMatrixInv[5] * rayDirectionCopy.y + uMVMatrixInv[6] * rayDirectionCopy.z;
-  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x + uMVMatrixInv[9] * rayDirectionCopy.y + uMVMatrixInv[10] * rayDirectionCopy.z;
+  ray.direction.x = uMVMatrixInv[0] * rayDirectionCopy.x
+    + uMVMatrixInv[1] * rayDirectionCopy.y
+    + uMVMatrixInv[2] * rayDirectionCopy.z;
+  ray.direction.y = uMVMatrixInv[4] * rayDirectionCopy.x
+    + uMVMatrixInv[5] * rayDirectionCopy.y
+    + uMVMatrixInv[6] * rayDirectionCopy.z;
+  ray.direction.z = uMVMatrixInv[8] * rayDirectionCopy.x
+    + uMVMatrixInv[9] * rayDirectionCopy.y
+    + uMVMatrixInv[10] * rayDirectionCopy.z;
   ray.direction.normalize();
 
   // representing plane
@@ -494,7 +540,10 @@ p5.prototype.intersectsPlane = function () {
   }
 
   const k = Math.abs(p5.Vector.dot(w, planeNormal) / d);
-  const intersectionPoint = p5.Vector.add(ray.origin, ray.direction.copy().setMag(k));
+  const intersectionPoint = p5.Vector.add(
+    ray.origin,
+    ray.direction.copy().setMag(k),
+  );
 
   return createVector(intersectionPoint.x, intersectionPoint.y);
 };
@@ -522,14 +571,29 @@ p5.prototype.generateRay = function (x1, y1, z1, x2, y2, z2) {
   uMVMatrix = uMVMatrix.mat4;
 
   const originCopy = origin.copy();
-  origin.x = uMVMatrix[0] * originCopy.x + uMVMatrix[1] * originCopy.y + uMVMatrix[2] * originCopy.z + uMVMatrix[3];
-  origin.y = uMVMatrix[4] * originCopy.x + uMVMatrix[5] * originCopy.y + uMVMatrix[6] * originCopy.z + uMVMatrix[7];
-  origin.z = uMVMatrix[8] * originCopy.x + uMVMatrix[9] * originCopy.y + uMVMatrix[10] * originCopy.z + uMVMatrix[11];
+  origin.x = uMVMatrix[0] * originCopy.x
+    + uMVMatrix[1] * originCopy.y
+    + uMVMatrix[2] * originCopy.z
+    + uMVMatrix[3];
+  origin.y = uMVMatrix[4] * originCopy.x
+    + uMVMatrix[5] * originCopy.y
+    + uMVMatrix[6] * originCopy.z
+    + uMVMatrix[7];
+  origin.z = uMVMatrix[8] * originCopy.x
+    + uMVMatrix[9] * originCopy.y
+    + uMVMatrix[10] * originCopy.z
+    + uMVMatrix[11];
 
   const directionCopy = direction.copy();
-  direction.x = uMVMatrix[0] * directionCopy.x + uMVMatrix[1] * directionCopy.y + uMVMatrix[2] * directionCopy.z;
-  direction.y = uMVMatrix[4] * directionCopy.x + uMVMatrix[5] * directionCopy.y + uMVMatrix[6] * directionCopy.z;
-  direction.z = uMVMatrix[8] * directionCopy.x + uMVMatrix[9] * directionCopy.y + uMVMatrix[10] * directionCopy.z;
+  direction.x = uMVMatrix[0] * directionCopy.x
+    + uMVMatrix[1] * directionCopy.y
+    + uMVMatrix[2] * directionCopy.z;
+  direction.y = uMVMatrix[4] * directionCopy.x
+    + uMVMatrix[5] * directionCopy.y
+    + uMVMatrix[6] * directionCopy.z;
+  direction.z = uMVMatrix[8] * directionCopy.x
+    + uMVMatrix[9] * directionCopy.y
+    + uMVMatrix[10] * directionCopy.z;
 
   direction.normalize();
 
