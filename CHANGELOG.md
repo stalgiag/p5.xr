@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.4.14 (2024-09-15)
+
+
+### Features
+
+*  createCanvas api / Merge pull request [#235](https://github.com/stalgiag/p5.xr/issues/235) from TiborUdvari/feat/create-xr-canvas ([169507e](https://github.com/stalgiag/p5.xr/commit/169507e4e4e495a04aa405c9d66dc406da4742d6))
+
 ## 0.4.13 (2024-09-12)
 
 
