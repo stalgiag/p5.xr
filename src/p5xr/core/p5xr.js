@@ -212,6 +212,15 @@ export default class p5xr {
   }
 
   /**
+   * Attempts to start an interactive session outside of the normal flow
+   * Useful for development with the Immersive Web Emulator or when a special flag is activated to bypass the need for a user action
+   */
+  startXRWithoutUserAction() {
+    this.hasImmersive = true;
+    this.__onXRButtonClicked();
+  }
+
+  /**
    * This is where the actual p5 canvas is first created, and
    * the GL rendering context is accessed by p5vr.
    * The current XRSession also gets a frame of reference and
