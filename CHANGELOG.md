@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.4.15 (2024-09-16)
+
+
+### Features
+
+* avoiding enter xr btn Merge PR [#236](https://github.com/stalgiag/p5.xr/issues/236) from TiborUdvari/feat/user-actionless-init ([47695b8](https://github.com/stalgiag/p5.xr/commit/47695b8b491ef1b0be0b850a42141d7fb3b79c0b))
+
 ## 0.4.14 (2024-09-15)
 
 
