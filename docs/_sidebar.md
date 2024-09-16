@@ -7,6 +7,7 @@
 - __QUICK START__
   - [Device and Browser Support](device-support.html)
   - [Immersive Web Emulator](quick-start/emulator.md)
+  - [Tips](quick-start/tips.md)
   - [Examples](quick-start/examples.md)
 ***
 - __REFERENCE__

@@ -21,12 +21,22 @@ import compareVersions from '../utilities/versionComparator';
 const originalCreateCanvas = p5.prototype.createCanvas;
 p5.prototype.createCanvas = function (w, h, renderer, canvas) {
   let effectiveRenderer = renderer;
-  if (renderer === constants.AR || renderer === constants.VR) {
+  const isXRNoUserAction =
+    renderer === constants.AR || renderer === constants.VR;
+  const isXRUserAction =
+    renderer === constants.AR_BUTTON || renderer === constants.VR_BUTTON;
+  if (isXRUserAction || isXRNoUserAction) {
     noLoop();
-    p5xr.instance = renderer === constants.AR ? new p5ar() : new p5vr();
+    p5xr.instance =
+      renderer === constants.AR || renderer === constants.AR_BUTTON
+        ? new p5ar()
+        : new p5vr();
     effectiveRenderer = WEBGL;
     w = windowWidth;
     h = windowHeight;
+    if (isXRNoUserAction) {
+      p5xr.instance.startXRWithoutUserAction();
+    }
   }
   originalCreateCanvas.call(
     this,
