@@ -41,16 +41,17 @@ class p5xrViewer {
    */
   set view(newView) {
     this._view = newView;
+    const renderer = p5.instance._renderer;
 
-    // eslint-disable-next-line no-unused-expressions
-    p5.instance._renderer.uViewMatrix?.set(this._view.transform.inverse.matrix);
+    if (renderer.uViewMatrix) {
+      renderer.uViewMatrix.mat4 = this._view.transform.inverse.matrix;
+    }
 
     // has not effect in v1.10.0, but kept for older version
-    p5.instance._renderer.uMVMatrix.set(this._view.transform.inverse.matrix);
-    p5.instance._renderer.uPMatrix.set(this._view.projectionMatrix);
-    p5.instance._renderer._curCamera.cameraMatrix.set(
-      p5.Matrix.identity().mult(this._view.transform.inverse.matrix),
-    );
+    renderer.uMVMatrix.mat4 = this._view.transform.inverse.matrix;
+    renderer.uPMatrix.mat4 = this._view.projectionMatrix;
+
+    renderer._curCamera.cameraMatrix.mat4 = this._view.transform.inverse.matrix;
 
     if (newView.eye === 'left') {
       this.leftPMatrix.set(p5.instance._renderer.uPMatrix.copy());

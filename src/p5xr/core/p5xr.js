@@ -190,24 +190,45 @@ export default class p5xr {
    * @ignore
    */
   __onXRButtonClicked() {
-    if (this.hasImmersive) {
-      console.log(`Requesting session with mode: ${this.mode}`);
-      this.isImmersive = true;
-      this.resetXR();
-      navigator.xr
+    if (!this.hasImmersive) {
+      this.xrButton.hide();
+      return;
+    }
+
+    console.log(`Requesting session with mode: ${this.mode}`);
+    this.isImmersive = true;
+    this.resetXR();
+
+    const isEmulator = typeof CustomWebXRPolyfill !== 'undefined';
+    const isP5LiveEditor = window.parent?.p5frame;
+    const parentFrameXRSession = !isEmulator && isP5LiveEditor;
+    const context = parentFrameXRSession ? window.parent : window;
+
+    if (parentFrameXRSession) {
+      console.log('p5xr: p5live experimental xr session persistance mode');
+    }
+
+    if (context.xrSession) {
+      console.log('p5xr: p5live mode attempting xr session reuse');
+      setTimeout(() => {
+        const session = context.xrSession;
+        this.xrButton.setSession(session);
+        this.__startSketch.call(this, session);
+      }, 1);
+    } else {
+      context.navigator.xr
         .requestSession(this.mode, {
           requiredFeatures: this.requiredFeatures,
           optionalFeatures: this.optionalFeatures,
         })
         .then((session) => {
+          context.xrSession = session;
           this.xrButton.setSession(session);
           this.__startSketch.call(this, session);
         })
         .catch((error) => {
           console.error(`An error occured activating ${this.mode}: ${error}`);
         });
-    } else {
-      this.xrButton.hide();
     }
   }
 
@@ -488,6 +509,9 @@ export default class p5xr {
    */
   __onSessionEnded() {
     this.resetXR();
+    if (window.parent && window.parent.xrSession) {
+      window.parent.xrSession = null;
+    }
   }
 
   /**
