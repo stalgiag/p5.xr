@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.4.17 (2024-09-19)
+
+
+### Bug Fixes
+
+* build step before release in workflow ([8418ec0](https://github.com/stalgiag/p5.xr/commit/8418ec02eb7cbe49b8f55e86e52c6b689625be0a))
+
 ## 0.4.16 (2024-09-19)
 
 
