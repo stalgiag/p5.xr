@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.5.0 (2024-09-19)
+
+
+### Features
+
+* bump minor version ([c199dc5](https://github.com/stalgiag/p5.xr/commit/c199dc5ea0fa804a637d16d013c0b04e5b5b3d0a))
+
+## 0.4.17 (2024-09-19)
+
+
+### Bug Fixes
+
+* build step before release in workflow ([8418ec0](https://github.com/stalgiag/p5.xr/commit/8418ec02eb7cbe49b8f55e86e52c6b689625be0a))
+
+## 0.4.16 (2024-09-19)
+
+
+### Features
+
+* p5LIVE live coding / Merge pull request [#238](https://github.com/stalgiag/p5.xr/issues/238) from TiborUdvari/feat/p5live-hardreload ([20aeccc](https://github.com/stalgiag/p5.xr/commit/20aeccc8ed263a32b05e812bec8e0a0735859000))
+
 ## 0.4.15 (2024-09-16)
 
 

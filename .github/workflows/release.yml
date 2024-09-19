@@ -47,6 +47,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_KEY }}
 
+      - name: Build the project
+        if: success() && env.RELEASE_NOTES_AVAILABLE == 'true'
+        run: npm run build
+
       - name: Push version changes
         if: success() && env.RELEASE_NOTES_AVAILABLE == 'true'
         run: |
