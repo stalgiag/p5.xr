@@ -29,7 +29,7 @@ p5.xr sketches can be run with [p5's online editor.](https://editor.p5js.org/) A
 3. Add p5.xr to your project. This can be done most easily by adding the script link to a CDN in the `<head>` of your HTML file underneath the p5 link:
     ```
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5.xr/dist/p5xr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5.xr@latest/dist/p5xr.min.js"></script>
     ```
 4. Change the `createCanvas()` call in your p5 WEBGL sketch to `createVRCanvas()` and put it in `preload()` -or-
 5. [Try out one of the Examples](https://stalgiag.github.io/p5.xr/#/quick-start/examples)!
