@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.5.0 (2024-09-19)
+
+
+### Features
+
+* bump minor version ([c199dc5](https://github.com/stalgiag/p5.xr/commit/c199dc5ea0fa804a637d16d013c0b04e5b5b3d0a))
+
 ## 0.4.17 (2024-09-19)
 
 
