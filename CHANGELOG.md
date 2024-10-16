@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.5.1 (2024-10-16)
+
+
+### Features
+
+* Hand Tracking ([20cd49b](https://github.com/stalgiag/p5.xr/commit/20cd49bd50cab7ca674744b3d8b9f8ebb2a2b75c))
+
 ## 0.5.0 (2024-09-19)
 
 
