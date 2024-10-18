@@ -449,7 +449,7 @@ export default class p5xr {
       if (typeof userSetup === 'undefined') {
         context.scale(context._pixelDensity, context._pixelDensity);
       }
-
+      context.resetMatrix();
       this.__updateXR();
 
       p5.instance._inUserDraw = true;
