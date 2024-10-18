@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.5.2 (2024-10-18)
+
+
+### Bug Fixes
+
+* deploy reset matrix ([c78f4c1](https://github.com/stalgiag/p5.xr/commit/c78f4c128a961ff54e2485c91081cb86a6062e64))
+
 ## 0.5.1 (2024-10-16)
 
 
