@@ -33,13 +33,13 @@ function setup() {
     sampleFactor: samplefact,
   });
 
-  gold = createGraphics(600, 600);
+  gold = createGraphics(600, 600, WEBGL);
   gold.background(255, 80);
 
-  ring = createGraphics(600, 600);
+  ring = createGraphics(600, 600, WEBGL);
   ring.background(5);
 
-  letter = createGraphics(200, 200);
+  letter = createGraphics(200, 200, WEBGL);
 
   for (let i = 0; i < 10; ++i) {
     randomX[i] = random(-800, 800);
