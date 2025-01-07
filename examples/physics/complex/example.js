@@ -39,7 +39,7 @@ function preload() {
 
 function setup() {
   setVRBackgroundColor(255, 255, 255);
-  textGraphics = createGraphics(600, 600);
+  textGraphics = createGraphics(600, 600, WEBGL);
   textGraphics.background(0, 0, 0);
 
   ground = new Boundary(0, -3, 0, 20, 1, 20, 1, -1, 1);

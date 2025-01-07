@@ -46,7 +46,7 @@ function preload() {
 
 function setup() {
   setVRBackgroundColor(0, 0, 0);
-  graphics = createGraphics(800, 800);
+  graphics = createGraphics(800, 800, WEBGL);
 }
 
 function draw() {
