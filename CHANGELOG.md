@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 0.5.3 (2025-08-03)
+
+
+### Bug Fixes
+
+* figersMain and fingersAlt respect handedness ([fefbb1b](https://github.com/stalgiag/p5.xr/commit/fefbb1b1b63fd477c8d2cd87634474ba1e658aa2))
+
 ## 0.5.2 (2024-10-18)
 
 
