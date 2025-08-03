@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "commit": false,
   "contributors": [
@@ -10,63 +8,49 @@
       "name": "Vedhant Agarwal",
       "avatar_url": "https://avatars1.githubusercontent.com/u/32607479?v=4",
       "profile": "https://github.com/vedhant",
-      "contributions": [
-        "infra",
-        "test",
-        "code"
-      ]
+      "contributions": ["infra", "test", "code"]
     },
     {
       "login": "stalgiag",
       "name": "Stalgia Grigg",
       "avatar_url": "https://avatars2.githubusercontent.com/u/10382506?v=4",
       "profile": "https://github.com/stalgiag",
-      "contributions": [
-        "test",
-        "infra",
-        "maintenance",
-        "code"
-      ]
+      "contributions": ["test", "infra", "maintenance", "code"]
     },
     {
       "login": "msub2",
       "name": "Daniel Adams",
       "avatar_url": "https://avatars.githubusercontent.com/u/70986246?v=4",
       "profile": "http://msub2.com",
-      "contributions": [
-        "code",
-        "example",
-        "design"
-      ]
+      "contributions": ["code", "example", "design"]
     },
     {
       "login": "anagondesign",
       "name": "anagondesign",
       "avatar_url": "https://avatars.githubusercontent.com/u/83731139?v=4",
       "profile": "https://github.com/anagondesign",
-      "contributions": [
-        "example"
-      ]
+      "contributions": ["example"]
     },
     {
       "login": "smrghsh",
       "name": "Samir Ghosh",
       "avatar_url": "https://avatars.githubusercontent.com/u/22751315?v=4",
       "profile": "http://samir.tech",
-      "contributions": [
-        "code",
-        "design",
-        "doc"
-      ]
+      "contributions": ["code", "design", "doc"]
     },
     {
       "login": "TiborUdvari",
       "name": "Tibor Udvari",
       "avatar_url": "https://avatars.githubusercontent.com/u/1434442?v=4",
       "profile": "http://tiborudvari.com",
-      "contributions": [
-        "code"
-      ]
+      "contributions": ["code"]
+    },
+    {
+      "login": "gongbaodd",
+      "name": "MiaTakeshi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1665287?v=4",
+      "profile": "https://growgen.xyz/",
+      "contributions": ["code"]
     }
   ],
   "contributorsPerLine": 7,
@@ -78,3 +62,4 @@
   "commitConvention": "angular",
   "commitType": "docs"
 }
+

@@ -53,6 +53,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/anagondesign"><img src="https://avatars.githubusercontent.com/u/83731139?v=4?s=100" width="100px;" alt="anagondesign"/><br /><sub><b>anagondesign</b></sub></a><br /><a href="#example-anagondesign" title="Examples">💡</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://samir.tech"><img src="https://avatars.githubusercontent.com/u/22751315?v=4?s=100" width="100px;" alt="Samir Ghosh"/><br /><sub><b>Samir Ghosh</b></sub></a><br /><a href="https://github.com/stalgiag/p5.xr/commits?author=smrghsh" title="Code">💻</a> <a href="#design-smrghsh" title="Design">🎨</a> <a href="https://github.com/stalgiag/p5.xr/commits?author=smrghsh" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://tiborudvari.com"><img src="https://avatars.githubusercontent.com/u/1434442?v=4?s=100" width="100px;" alt="Tibor Udvari"/><br /><sub><b>Tibor Udvari</b></sub></a><br /><a href="https://github.com/stalgiag/p5.xr/commits?author=TiborUdvari" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://growgen.xyz/"><img src="https://avatars.githubusercontent.com/u/1665287?v=4?s=100" width="100px;" alt="MiaTakeshi"/><br /><sub><b>MiaTakeshi</b></sub></a><br /><a href="https://github.com/stalgiag/p5.xr/commits?author=gongbaodd" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
