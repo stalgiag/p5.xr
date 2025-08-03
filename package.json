@@ -29,8 +29,8 @@
     "docs": "npx docsify serve docs",
     "setup-ssl": "npm run generate-privatekey && npm run generate-csr && npm run generate-cert",
     "generate-privatekey": "openssl genrsa -out key.pem",
-    "generate-csr": "openssl req -new -key key.pem -out csr.pem",
-    "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem",
+    "generate-csr": "openssl req -new -key key.pem -out csr.pem -config openssl-san.conf",
+    "generate-cert": "openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem -extfile openssl-san.conf -extensions req_ext",
     "dev-server": "http-server -S -C cert.pem -K key.pem -o",
     "jsdoc2md": "grunt jsdoc2md",
     "release": "commit-and-tag-version"
